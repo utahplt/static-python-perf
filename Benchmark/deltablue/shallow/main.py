@@ -691,3 +691,7 @@ planner = None
 def delta_blue(n: int) -> None:
     chain_test(n)
     projection_test(n)
+
+if __name__ == "__main__":
+    n = 10000
+    delta_blue(n)
