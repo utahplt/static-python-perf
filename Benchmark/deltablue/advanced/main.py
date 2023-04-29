@@ -59,7 +59,7 @@ NORMAL = Strength(4, "normal")
 WEAK_DEFAULT = Strength(5, "weakDefault")
 WEAKEST = Strength(6, "weakest")
 
-STRENGTHS: CheckedList[Strength] = [
+STRENGTHS: CheckedList[Strength] = CheckedList[Strength]([
     WEAKEST,
     WEAK_DEFAULT,
     NORMAL,
@@ -68,7 +68,7 @@ STRENGTHS: CheckedList[Strength] = [
     # TODO: This looks like a bug in the original code. Shouldn't this be
     #       ``STRONG_PREFERRED? Keeping for porting sake...
     REQUIRED,
-]
+])
 
 
 class Constraint(object):
@@ -186,8 +186,8 @@ class EditConstraint(UrnaryConstraint):
     def is_input(self) -> cbool:
         return True
 
-
-class Direction(IntEnum):
+@final
+class Direction(object):
     # Hooray for things that ought to be structs!
     NONE = 0
     FORWARD = 1
@@ -563,6 +563,7 @@ def projection_test(n: int64) -> None:
     dests: CheckedList[Variable] = []
 
     i: int64 = 0
+    dst = Variable("dst%s" % 0, 0)
     while i < n:
         bi = box(i)
         src = Variable("src%s" % bi, i)
@@ -622,7 +623,8 @@ def change(v: Variable, new_value: int64) -> None:
 # In spirit of the original, we'll keep it, but ugh.
 planner = None
 
-def delta_blue(n: int64) -> None:
+def delta_blue(i: int) -> None:
+    n = int64(i)
     chain_test(n)
     projection_test(n)
 
