@@ -611,6 +611,7 @@ def projection_test(n):
     dests = OrderedCollection()
 
     i = 0
+    dst = Variable("dst%s" % 0, 0)
     while i < n:
         src = Variable("src%s" % i, i)
         dst = Variable("dst%s" % i, i)
