@@ -191,28 +191,3 @@ if __name__ == "__main__":
 
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
-
-def bench_nbody(loops, reference, iterations):
-    # Set up global state
-    offset_momentum(BODIES[reference], SYSTEM)
-
-    range_it = range(loops)
-    for _ in range_it:
-        report_energy(SYSTEM, PAIRS)
-        advance(0.01, iterations, SYSTEM, PAIRS)
-        report_energy(SYSTEM, PAIRS)
-
-
-def run():
-    num_loops = 5
-    bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
-
-
-if __name__ == "__main__":
-    import sys
-
-    num_loops = 5
-    #    if len(sys.argv) > 1:
-    #        num_loops = int(sys.argv[1])
-
-    bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
