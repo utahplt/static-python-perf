@@ -22,6 +22,8 @@ from __future__ import annotations
 
 import __static__
 
+from enum import IntEnum
+
 from __static__ import CheckedList, box, cast, cbool, clen, int64, inline
 from typing import final
 
@@ -187,7 +189,7 @@ class EditConstraint(UrnaryConstraint):
         return True
 
 @final
-class Direction(object):
+class Direction(IntEnum):
     # Hooray for things that ought to be structs!
     NONE = 0
     FORWARD = 1
@@ -233,7 +235,9 @@ class BinaryConstraint(Constraint):
         self.direction = Direction.NONE
 
     def is_satisfied(self) -> cbool:
-        return self.direction != Direction.NONE
+        if self.direction != Direction.NONE:
+          return True
+        return False
 
     def mark_inputs(self, mark: int64) -> None:
         self.input().mark = mark
