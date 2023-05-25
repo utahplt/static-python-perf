@@ -6,8 +6,6 @@
 # Dirtily sped up by Simon Descarpentries
 # Concurrency by Jason Stitt
 
-from Timer import Timer
-
 """
 bg:
 - remove `main` function
@@ -61,16 +59,14 @@ def part_At_times_u(i_u):
 DEFAULT_N = 130
 
 if __name__ == "__main__":
-  t = Timer()
-  with t:
-    u = [1] * DEFAULT_N
+  u = [1] * DEFAULT_N
 
-    for dummy in range(10):
-        v = eval_AtA_times_u(u)
-        u = eval_AtA_times_u(v)
+  for dummy in range(10):
+      v = eval_AtA_times_u(u)
+      u = eval_AtA_times_u(v)
 
-    vBv = vv = 0
+  vBv = vv = 0
 
-    for ue, ve in zip(u, v):
-        vBv += ue * ve
-        vv  += ve * ve
+  for ue, ve in zip(u, v):
+      vBv += ue * ve
+      vv  += ve * ve
