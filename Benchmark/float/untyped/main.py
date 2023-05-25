@@ -1,4 +1,4 @@
-from Timer import Timer
+# from Timer import Timer
 
 """
 bg:
@@ -53,6 +53,7 @@ def benchmark(n: int) -> Point:
 POINTS = 200000
 
 if __name__ == "__main__":
-    t = Timer()
-    with t:
-        benchmark(POINTS)
+    # t = Timer()
+    # with t:
+    benchmark(POINTS)
+    print("hello world")
