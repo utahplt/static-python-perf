@@ -1,22 +1,18 @@
-from retic import fields, Dict, Int, Void, Tuple
-from __static__ import * # ??
+import dontno__static__
 
-
-# @fields({'my_dict': Dict(Int, Tuple(Int, Int))})
-@fields({'my_dict': Dict[Int, Tuple[Int, Int]]})
 class UnionFind:
-    def __init__(self: UnionFind, my_dict: Dict[Int, Tuple[Int, Int]]) -> Void:
+    def __init__(self: UnionFind, my_dict: dict[int, tuple[int, int]]) -> None:
         self.my_dict = my_dict
 
-    def add_node(self: UnionFind, n: Int) -> Void:
+    def add_node(self: UnionFind, n: int) -> None:
         self.my_dict[n] = (n, 0)
 
-    def find(self: UnionFind, n: Int) -> Tuple[Int, Int]:
+    def find(self: UnionFind, n: int) -> tuple[int, int]:
         if self.my_dict[n][0] != n:
             self.my_dict[n] = self.find(self.my_dict[n][0])
         return self.my_dict[n]
 
-    def union(self: UnionFind, l1: Tuple[Int, Int], l2: Tuple[Int, Int]) -> Void:
+    def union(self: UnionFind, l1: tuple[int, int], l2: tuple[int, int]) -> None:
         k1 = l1[0]
         k2 = l2[0]
         r1 = l1[1]
