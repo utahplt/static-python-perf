@@ -1,4 +1,5 @@
 import dontno__static__
+from typing import List, Dict, Tuple
 
 class UnionFind:
     def __init__(self: UnionFind, my_dict: dict[int, tuple[int, int]]) -> None:

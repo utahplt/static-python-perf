@@ -2,6 +2,8 @@ import os
 from operator import itemgetter
 from union_find import UnionFind
 import dontno__static__
+from typing import List, Dict, Tuple
+
 
 
 def main(all_lines: list[str]) -> None:
