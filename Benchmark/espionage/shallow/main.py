@@ -1,12 +1,11 @@
 import os
 from operator import itemgetter
 from union_find import UnionFind
-import dontno__static__
+import __static__
 from typing import List, Dict, Tuple
 
 
-
-def main(all_lines: list[str]) -> None:
+def main(all_lines: List[str]) -> None:
     l1 = all_lines[0].split(" ")
     edge_count = int(l1[1])
     edges = [make_tuple(line) for line in all_lines[1:edge_count + 1]]
@@ -18,7 +17,7 @@ def main(all_lines: list[str]) -> None:
     return
 
 
-def output_result(res: list[tuple[int, int]], edges: list[tuple[int, int]]) -> list[str]:
+def output_result(res: List[Tuple[int, int]], edges: List[Tuple[int, int]]) -> List[str]:
     results = []
     for e in edges:
         n1 = e[0]
@@ -30,7 +29,7 @@ def output_result(res: list[tuple[int, int]], edges: list[tuple[int, int]]) -> l
     return results
 
 
-def convert_to_set(res: list[tuple[int, int, int]]) -> list[tuple[int, int]]:
+def convert_to_set(res: List[Tuple[int, int, int]]) -> List[Tuple[int, int]]:
     res_tuple = []
     for r in res:
         (e1, e2, w) = r
@@ -38,7 +37,7 @@ def convert_to_set(res: list[tuple[int, int, int]]) -> list[tuple[int, int]]:
     return res_tuple
 
 
-def create_nodes(edges: list[tuple[int, int, int]]) -> list[int]:
+def create_nodes(edges: List[Tuple[int, int, int]]) -> List[int]:
     all_nodes = set()
     for edge in edges:
         e1 = edge[0]
@@ -50,18 +49,18 @@ def create_nodes(edges: list[tuple[int, int, int]]) -> list[int]:
     return list(all_nodes)
 
 
-def make_tuple(line: str) -> tuple[int, int, int]:
+def make_tuple(line: str) -> Tuple[int, int, int]:
     split = line.split(" ")
     return (int(split[0]), int(split[1]), int(split[2]))
 
 
-def make_set(line: str) -> tuple[int, int]:
+def make_set(line: str) -> Tuple[int, int]:
     split = line.split(" ")
     return (int(split[0]), int(split[1]))
 
 
-def kruskal(nodes: list[int], edges: list[tuple[int, int, int]], edges_to_check: list[tuple[int, int]]) \
-        -> list[tuple[int, int, int]]:
+def kruskal(nodes: List[int], edges: List[Tuple[int, int, int]], edges_to_check: List[Tuple[int, int]]) \
+        -> List[Tuple[int, int, int]]:
     sets = UnionFind({})
     mst = []
     for n in nodes:
@@ -80,9 +79,8 @@ def kruskal(nodes: list[int], edges: list[tuple[int, int, int]], edges_to_check:
     return mst
 
 
-# t = Timer()
-fname = os.path.join(os.path.dirname(__file__), "us-input.txt")
+fname = "../us-input.txt"
 with open(fname, "r") as f:
     in_lines = f.readlines()
+    main(in_lines)
 
-# print(get_num_calls())

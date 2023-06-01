@@ -78,8 +78,8 @@ def kruskal(nodes, edges, edges_to_check):
     return mst
 
 
-fname = os.path.join(os.path.dirname(__file__), "us-input.txt")
+fname = "../us-input.txt"
 with open(fname, "r") as f:
     in_lines = f.readlines()
+    main(in_lines)
 
-# print(get_num_calls())
