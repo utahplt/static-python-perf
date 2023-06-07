@@ -66,6 +66,7 @@ def sha512(message):
     ''' Returns a new sha512 hash object '''
     return new('sha512', message)
 
+
 ## -----------------------------------------------------------------------------
 
 from sha1 import SHA1
@@ -83,4 +84,6 @@ def main():
                 sha1(word).digest()
                 sha512(word).hexdigest()
                 sha512(word).digest()
+
+
 main()

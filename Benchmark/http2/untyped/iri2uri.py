@@ -56,16 +56,16 @@ class Iri2Uri:
     # bg: really, Char->Char, but that's not a Python type
 
 
-def encode(self, c):
-    retval = c
-    i = ord(c)
-    for low, high in self.escape_range:
-        if i < low:
-            break
-        if i >= low and i <= high:
-            retval = "".join(["%%%2X" % o for o in c.encode('utf-8')])
-            break
-    return retval
+    def encode(self, c):
+        retval = c
+        i = ord(c)
+        for low, high in self.escape_range:
+            if i < low:
+                break
+            if i >= low and i <= high:
+                retval = "".join(["%%%2X" % o for o in c.encode('utf-8')])
+                break
+        return retval
     # bg: really, url:(bytes | string)
 
 
@@ -84,4 +84,3 @@ def iri2uri(self, uri):
         return uri
     else:
         raise ValueError(uri)
-

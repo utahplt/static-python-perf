@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import Tuple
 from sha2_64 import sha2_64
 import __static__
+
+
 class SHA512(sha2_64):
     h0: int = 0x6a09e667f3bcc908
     h1: int = 0xbb67ae8584caa73b

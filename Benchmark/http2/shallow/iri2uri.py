@@ -16,6 +16,7 @@ from typing import List, Tuple
 import urllib.parse
 import __static__
 
+
 # Convert an IRI to a URI following the rules in RFC 3987
 #
 # The characters we need to enocde and escape are defined in the spec:
@@ -29,7 +30,6 @@ import __static__
 #         / %xD0000-DFFFD / %xE1000-EFFFD
 
 class Iri2Uri:
-
     escape_range: List[Tuple[int, int]] = [
         (0xA0, 0xD7FF),
         (0xE000, 0xF8FF),
@@ -53,24 +53,25 @@ class Iri2Uri:
         (0x100000, 0x10FFFD),
     ]
 
-  #bg: really, Char->Char, but that's not a Python type
-def encode(self: 'Iri2Uri', c: str) -> str:
-    retval: str = c
-    i: int = ord(c)
-    for low, high in self.escape_range:
-        if i < low:
-            break
-        if i >= low and i <= high:
-            retval = "".join(["%%%2X" % o for o in c.encode('utf-8')])
-            break
-    return retval
-  #bg: really, url:(bytes | string)
-def iri2uri(self: 'Iri2Uri', uri: str) -> str:
-    if isinstance(uri, str):
-        scheme, authority, path, query, fragment = urllib.parse.urlsplit(uri)
-        authority = authority.encode('idna').decode('utf-8')
-        uri = urllib.parse.urlunsplit((scheme, authority, path, query, fragment))
-        uri = "".join([self.encode(c) for c in uri])
-        return uri
-    else:
-        raise ValueError(uri)
+    # bg: really, Char->Char, but that's not a Python type
+    def encode(self: 'Iri2Uri', c: str) -> str:
+        retval: str = c
+        i: int = ord(c)
+        for low, high in self.escape_range:
+            if i < low:
+                break
+            if i >= low and i <= high:
+                retval = "".join(["%%%2X" % o for o in c.encode('utf-8')])
+                break
+        return retval
+
+    # bg: really, url:(bytes | string)
+    def iri2uri(self: 'Iri2Uri', uri: str) -> str:
+        if isinstance(uri, str):
+            scheme, authority, path, query, fragment = urllib.parse.urlsplit(uri)
+            authority = authority.encode('idna').decode('utf-8')
+            uri = urllib.parse.urlunsplit((scheme, authority, path, query, fragment))
+            uri = "".join([self.encode(c) for c in uri])
+            return uri
+        else:
+            raise ValueError(uri)

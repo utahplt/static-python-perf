@@ -1,5 +1,5 @@
 import __static__
-from __static__ import List, String, Bytes, Function, Void
+from typing import String, Bytes, Function, Void
 from sha1 import SHA1
 from sha512 import SHA512
 

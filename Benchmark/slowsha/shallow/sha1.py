@@ -1,5 +1,6 @@
 import __static__
-from __static__ import Int, Bytes, Tuple, String, List
+from typing import Int, Bytes, Tuple, String, List
+
 
 class SHA1(object):
 

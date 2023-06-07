@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates. (http://www.facebook.com)
 """
-main.py
+square.py
 ============
 
 Ported for the PyPy project.

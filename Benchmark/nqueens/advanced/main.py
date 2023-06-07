@@ -1,6 +1,6 @@
 """
 Simple, brute-force N-Queens solver. Using static python
-Made by sebastiancr@fb.com(Sebastian Chaves) based on main.py made by collinwinter@google.com (Collin Winter)
+Made by sebastiancr@fb.com(Sebastian Chaves) based on square.py made by collinwinter@google.com (Collin Winter)
 """
 from __future__ import annotations
 import __static__

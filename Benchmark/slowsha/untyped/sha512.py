@@ -1,5 +1,6 @@
 from sha2_64 import sha2_64
 
+
 class SHA512(sha2_64):
     h0, h1, h2, h3, h4, h5, h6, h7 = (
         0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b,
