@@ -1,10 +1,10 @@
 import __static__
-from typing import String, Bytes, Function, Void
+from typing import Callable
 from sha1 import SHA1
 from sha512 import SHA512
 
 
-def new(algorithm: String, message: Bytes) -> Function([], Bytes):
+def new(algorithm: str, message: bytes) -> Callable:
     obj = {
         'sha1': SHA1,
         'sha512': SHA512,
@@ -12,19 +12,15 @@ def new(algorithm: String, message: Bytes) -> Function([], Bytes):
     return obj
 
 
-def sha1(message: Bytes) -> SHA1:
+def sha1(message: bytes) -> SHA1:
     ''' Returns a new sha1 hash object '''
     x = new('sha1', message)
     return x
 
 
-def sha512(message: Bytes) -> SHA512:
+def sha512(message: bytes) -> SHA512:
     ''' Returns a new sha512 hash object '''
     return new('sha512', message)
-
-
-from sha1 import SHA1
-from sha512 import SHA512
 
 
 def main() -> None:

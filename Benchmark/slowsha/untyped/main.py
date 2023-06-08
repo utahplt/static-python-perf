@@ -83,6 +83,7 @@ def main():
                 sha1(word).digest()
                 sha512(word).hexdigest()
                 sha512(word).digest()
+    return None
 
 
 main()

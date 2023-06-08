@@ -1,11 +1,11 @@
 import __static__
-from typing import Int, Bytes, Self, Void, List
+from typing import List
 
 
 class sha2_64(object):
     ''' Superclass for both 64 bit SHA2 objects (SHA384 and SHA512) '''
 
-    def __init__(self: Self, message: Bytes) -> Void:
+    def __init__(self, message: bytes) -> None:
         length: str = bin(len(message) * 8)[2:].rjust(128, "0")
         while len(message) > 128:
             self.handle(''.join(bin(i)[2:].rjust(8, "0") for i in message[:128]))
@@ -15,11 +15,11 @@ class sha2_64(object):
         for i in range(len(strmessage) // 1024):
             self.handle(bytes(strmessage[i * 1024:i * 1024 + 1024], encoding="utf-8"))
 
-    def handle(self: Self, chunk: Bytes) -> Void:
+    def handle(self, chunk: bytes) -> None:
         rrot = lambda x, n: (x >> n) | (x << (64 - n))
-        w: List[Int] = []
+        w: List[int] = []
 
-        k: List[Int] = [
+        k: List[int] = [
             0x428a2f98d728ae22, 0x7137449123ef65cd,
             0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
             0x3956c25bf348b538, 0x59f111f1b605d019,
@@ -104,11 +104,11 @@ class sha2_64(object):
         self.h6 = (self.h6 + g) & 0xffffffffffffffff
         self.h7 = (self.h7 + h) & 0xffffffffffffffff
 
-    def hexdigest(self: Self) -> str:
+    def hexdigest(self) -> str:
         return ''.join(hex(i)[2:].rjust(16, "0")
                        for i in self._digest())
 
-    def digest(self: Self) -> bytes:
+    def digest(self) -> bytes:
         hexdigest = self.hexdigest()
         return bytes(int(hexdigest[i * 2:i * 2 + 2], 16)
                      for i in range(len(hexdigest) // 2))

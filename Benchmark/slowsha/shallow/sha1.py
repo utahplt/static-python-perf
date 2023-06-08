@@ -1,15 +1,15 @@
 import __static__
-from typing import Int, Bytes, Tuple, String, List
+from typing import Tuple, List
 
 
 class SHA1(object):
 
-    def __init__(self, message: Bytes):
-        self.h0: Int
-        self.h1: Int
-        self.h2: Int
-        self.h3: Int
-        self.h4: Int
+    def __init__(self, message: bytes):
+        self.h0: int
+        self.h1: int
+        self.h2: int
+        self.h3: int
+        self.h4: int
         self.h0, self.h1, self.h2, self.h3, self.h4 = (
             0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0)
         length: str = bin(len(message) * 8)[2:].rjust(64, "0")
@@ -22,9 +22,9 @@ class SHA1(object):
         for i in range(len(strmessage) // 512):
             self.handle(bytes(strmessage[i * 512:i * 512 + 512], encoding="utf-8"))
 
-    def handle(self, chunk: Bytes) -> None:
+    def handle(self, chunk: bytes) -> None:
         lrot = lambda x, n: (x << n) | (x >> (32 - n))
-        w: List[Int] = []
+        w: List[int] = []
 
         for j in range(len(chunk) // 32):
             w.append(int(chunk[j * 32:j * 32 + 32], 2))
@@ -32,11 +32,11 @@ class SHA1(object):
         for i in range(16, 80):
             w.append(lrot(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1) & 0xffffffff)
 
-        a: Int = self.h0
-        b: Int = self.h1
-        c: Int = self.h2
-        d: Int = self.h3
-        e: Int = self.h4
+        a: int = self.h0
+        b: int = self.h1
+        c: int = self.h2
+        d: int = self.h3
+        e: int = self.h4
 
         for i in range(80):
 
@@ -58,12 +58,12 @@ class SHA1(object):
         self.h3 = (self.h3 + d) & 0xffffffff
         self.h4 = (self.h4 + e) & 0xffffffff
 
-    def _digest(self) -> Tuple[Int, Int, Int, Int, Int]:
+    def _digest(self) -> Tuple[int, int, int, int, int]:
         return (self.h0, self.h1, self.h2, self.h3, self.h4)
 
-    def hexdigest(self) -> String:
+    def hexdigest(self) -> str:
         return ''.join(hex(i)[2:].rjust(8, "0") for i in self._digest())
 
-    def digest(self) -> Bytes:
+    def digest(self) -> bytes:
         hexdigest = self.hexdigest()
         return bytes(int(hexdigest[i * 2:i * 2 + 2], 16) for i in range(len(hexdigest) // 2))

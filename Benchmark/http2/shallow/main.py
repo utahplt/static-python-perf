@@ -36,11 +36,11 @@ def main() -> None:
 
     ### 3. stress test
     iri2uri = Iri2Uri().iri2uri
-    testfile = os.path.join(os.path.dirname("__file__"), "sample_urls.csv")
+    testfile = "../sample_urls.csv"
     with open(testfile) as fd:
         for ln in fd:
             url = ln.split(",", 1)[0]
-            iri2uri(url)
+            print(iri2uri(url))
 
-    for i in range(10):
-        main()
+for i in range(10):
+    main()
