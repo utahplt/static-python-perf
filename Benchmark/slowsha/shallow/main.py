@@ -25,13 +25,12 @@ def sha512(message: Bytes) -> SHA512:
 
 from sha1 import SHA1
 from sha512 import SHA512
-import os
 
 
 def main() -> None:
     # To unit test, compare against hashlib
 
-    with open(os.path.join(os.path.dirname(__file__), "mysterious_words.txt"), "rb") as f:
+    with open("../mysterious_words.txt", "rb") as f:
         for line in f:
             for word in line.split():
                 sha1(word).hexdigest()

@@ -71,7 +71,6 @@ def sha512(message):
 
 from sha1 import SHA1
 from sha512 import SHA512
-import os
 
 
 def main():
