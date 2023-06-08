@@ -100,6 +100,10 @@ class sha2_64(object):
         self.h6 = (self.h6 + g) & 0xffffffffffffffff
         self.h7 = (self.h7 + h) & 0xffffffffffffffff
 
+    def hexdigest(self):
+        return ''.join(hex(i)[2:].rjust(16, "0")
+                       for i in self._digest())
+
     def digest(self):
         return (hex(self.h0)[2:].rjust(16, "0") +
                 hex(self.h1)[2:].rjust(16, "0") +

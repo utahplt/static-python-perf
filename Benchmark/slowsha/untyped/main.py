@@ -35,14 +35,14 @@
 
     For example, to obtain the digest of the string 'Hello World':
 
-        >>> import slowsha
-        >>> m = slowsha.sha1(b"Hello World")
-        >>> m.digest()
-        b'\\nMU\\xa8\\xd7x\\xe5\\x02/\\xabp\\x19w\\xc5\\xd8@\\xbb\\xc4\\x86\\xd0'
+         import slowsha
+         m = slowsha.sha1(b"Hello World")
+         m.digest()
+         b'\\nMU\\xa8\\xd7x\\xe5\\x02/\\xabp\\x19w\\xc5\\xd8@\\xbb\\xc4\\x86\\xd0'
 
     More condensed:
 
-        >>> slowsha.sha224(b"Hello World").hexdigest()
+        slowsha.sha224(b"Hello World").hexdigest()
         'c4890faffdb0105d991a461e668e276685401b02eab1ef4372795047'
 
 '''
@@ -77,7 +77,7 @@ import os
 def main():
     # To unit test, compare against hashlib
 
-    with open(os.path.join(os.path.dirname(__file__), "mysterious_words.txt"), "rb") as f:
+    with open("../mysterious_words.txt", "rb") as f:
         for line in f:
             for word in line.split():
                 sha1(word).hexdigest()

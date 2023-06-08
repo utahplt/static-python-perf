@@ -1,5 +1,5 @@
 import random
-# from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
+from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 # instead of importing constants, I copied the values here to avoid adding the file to this benchmark
 
 """
@@ -26,16 +26,6 @@ NOTE: the object fields in `Square` are Dyn
 - subtyping failed with the right types (huge error message #recursion)
 - cannot be 'object', retic doesn't know the object type
 """
-
-SIZE = 9
-GAMES = 200
-KOMI = 7.5
-EMPTY, WHITE, BLACK = 0, 1, 2
-SHOW = {EMPTY: '.', WHITE: 'o', BLACK: 'x'}
-PASS = -1
-MAXMOVES = SIZE*SIZE*3
-TIMESTAMP = 0
-MOVES = 0
 
 def to_pos(x, y):
     return y * SIZE + x

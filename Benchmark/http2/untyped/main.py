@@ -38,12 +38,14 @@ def main():
     # assertNotEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri("/fred?bar=\N{BLACK LEFT POINTING INDEX}#COMET".encode('utf-8')))
     ### 3. stress test
     iri2uri = Iri2Uri().iri2uri
-    testfile = os.path.join(os.path.dirname("__file__"), "sample_urls.csv")
+    testfile = "../sample_urls.csv"
     with open(testfile) as fd:
         for ln in fd:
             url = ln.split(",", 1)[0]
             iri2uri(url)
 
     # indent change fixed the file not running
-    for i in range(10):
-        main()
+
+
+for i in range(10):
+    main()

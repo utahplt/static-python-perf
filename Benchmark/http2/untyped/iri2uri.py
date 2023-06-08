@@ -55,7 +55,6 @@ class Iri2Uri:
 
     # bg: really, Char->Char, but that's not a Python type
 
-
     def encode(self, c):
         retval = c
         i = ord(c)
@@ -66,21 +65,22 @@ class Iri2Uri:
                 retval = "".join(["%%%2X" % o for o in c.encode('utf-8')])
                 break
         return retval
+
     # bg: really, url:(bytes | string)
 
+    def iri2uri(self, uri):
 
-def iri2uri(self, uri):
-    """Convert an IRI to a URI. Note that IRIs must be
-    passed in a unicode strings. That is, do not utf-8 encode
-    the IRI before passing it into the function."""
-    if isinstance(uri, str):
-        (scheme, authority, path, query, fragment) = urllib.parse.urlsplit(uri)
-        authority = authority.encode('idna').decode('utf-8')
-        # For each character in 'ucschar' or 'iprivate'
-        #  1. encode as utf-8
-        #  2. then %-encode each octet of that utf-8
-        uri = urllib.parse.urlunsplit((scheme, authority, path, query, fragment))
-        uri = "".join([self.encode(c) for c in uri])
-        return uri
-    else:
-        raise ValueError(uri)
+        """Convert an IRI to a URI. Note that IRIs must be
+        passed in a unicode strings. That is, do not utf-8 encode
+        the IRI before passing it into the function."""
+        if isinstance(uri, str):
+            (scheme, authority, path, query, fragment) = urllib.parse.urlsplit(uri)
+            authority = authority.encode('idna').decode('utf-8')
+            # For each character in 'ucschar' or 'iprivate'
+            #  1. encode as utf-8
+            #  2. then %-encode each octet of that utf-8
+            uri = urllib.parse.urlunsplit((scheme, authority, path, query, fragment))
+            uri = "".join([self.encode(c) for c in uri])
+            return uri
+        else:
+            raise ValueError(uri)
