@@ -248,6 +248,7 @@ class UCTNode:
         self.losses = 0
         self.pos_child = [None for x in range(SIZE*SIZE)]
         self.parent = None
+        self.unexplored = True
 
     #def play(self:UCTNode, board:Board)->Void:
     def play(self, board):
