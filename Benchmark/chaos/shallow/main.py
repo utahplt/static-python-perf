@@ -1,3 +1,9 @@
+from __future__ import annotations
+import random
+import math
+from typing import List, Tuple
+import __static__
+
 #   Copyright (C) 2005 Carl Friedrich Bolz
 
 """create chaosgame-like fractals
@@ -22,14 +28,9 @@ bg:
   - inlined create_image_chaos
   - inlined GetKnots
 """
-import random
 
 random.seed(1234)
 ITERATIONS = 1
-import math
-from __future__ import annotations
-from typing import List, Tuple
-import __static__
 
 
 class GVector:
@@ -148,6 +149,24 @@ class Chaosgame:
                 length += curr.dist(last)
             self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
+        # def create_image_chaos(self, w: int, h: int, n: int) -> None:
+        im = [[1] * h for i in range(w)]
+        point = GVector((self.maxx + self.minx) / 2,
+                        (self.maxy + self.miny) / 2,
+                        0)
+        colored = 0
+        for _ in range(n):
+            for i in range(5000):
+                point = self.transform_point(point)
+                x = (point.x - self.minx) / self.width * w
+                y = (point.y - self.miny) / self.height * h
+                x = int(x)
+                y = int(y)
+                if x == w:
+                    x -= 1
+                if y == h:
+                    y -= 1
+                im[x][h - y - 1] = 0
 
     def transform_point(self, point: GVector) -> GVector:
         x = (point.x - self.minx) / self.width
@@ -174,24 +193,50 @@ class Chaosgame:
             basepoint.x += derivative.y / derivative.Mag() * (y - 0.5) * self.thickness
             basepoint.y += -derivative.x / derivative.Mag() * (y - 0.5) * self.thickness
         else:
-            print_("r", end='')
+            print("r", end='')
+        # bg: inlined
+        ##self.truncate(basepoint)
+        if basepoint.x >= self.maxx:
+            basepoint.x = self.maxx
+        if basepoint.y >= self.maxy:
+            basepoint.y = self.maxy
+        if basepoint.x < self.minx:
+            basepoint.x = self.minx
+        if basepoint.y < self.miny:
+            basepoint.y = self.miny
+        return basepoint
 
-    def create_image_chaos(self, w: int, h: int, n: int) -> None:
-        im = [[1] * h for i in range(w)]
-        point = GVector((self.maxx + self.minx) / 2, (self.maxy + self.miny) / 2, 0)
-        colored = 0
-        for _ in range(n):
-            for i in range(5000):
-                point = self.transform_point(point)
-                x = (point.x - self.minx) / self.width * w
-                y = (point.y - self.miny) / self.height * h
-                x = int(x)
-                y = int(y)
-                if x == w:
-                    x -= 1
-                if y == h:
-                    y -= 1
-                im[x][h - y - 1] = 0
+    # bg: inlined
+    # def truncate(self:Chaosgame, point:GVector)->Void:
+    #    if point.x >= self.maxx:
+    #        point.x = self.maxx
+    #    if point.y >= self.maxy:
+    #        point.y = self.maxy
+    #    if point.x < self.minx:
+    #        point.x = self.minx
+    #    if point.y < self.miny:
+    #        point.y = self.miny
+
+    # bg: inlined
+    # def create_image_chaos(self:Chaosgame, w:int, h:int, n:int)->Void:
+    #    im = [[1] * h for i in range(w)]
+    #    point = GVector((self.maxx + self.minx) / 2,
+    #                    (self.maxy + self.miny) / 2,
+    #                    0)
+    #    colored = 0
+    #    for _ in range(n):
+    #        for i in range(5000):
+    #            point = self.transform_point(point)
+    #            x = (point.x - self.minx) / self.width * w
+    #            y = (point.y - self.miny) / self.height * h
+    #            x = int(x)
+    #            y = int(y)
+    #            if x == w:
+    #                x -= 1
+    #            if y == h:
+    #                y -= 1
+    #            im[x][h - y - 1] = 0
+    #    return
 
 
 if __name__ == "__main__":
@@ -219,3 +264,4 @@ if __name__ == "__main__":
             3, [0, 0, 0, 1, 1, 1])
     ]
     c = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
+    print(c)

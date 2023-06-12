@@ -221,7 +221,7 @@ class Chaosgame(object):
             basepoint.y += -derivative.x / derivative.Mag() * (y - 0.5) * \
                            self.thickness
         else:
-            print_("r", end='') #seems odd
+            print("r", end='') #seems odd
         # bg: inlined
         ##self.truncate(basepoint)
         if basepoint.x >= self.maxx:
