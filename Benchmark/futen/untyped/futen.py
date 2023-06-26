@@ -25,7 +25,7 @@ def get_netlocs(lines):
     entries = parser._config
     netlocs = {}
     for entry in entries:
-        netloc = get_netloc(entry, parser)
+        netloc = get_netloc(parser)
         if not netloc:
             continue
         hostname, port = netloc

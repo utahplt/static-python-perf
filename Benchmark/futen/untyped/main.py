@@ -30,5 +30,4 @@ def main(n):
     return
 
 
-
 main(1900)
