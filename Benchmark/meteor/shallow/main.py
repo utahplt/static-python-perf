@@ -21,6 +21,7 @@ bg:
 """
 from typing import List, Dict, Set
 import __static__
+from bisect import bisect
 
 w: int = 20
 h: int = 40
@@ -65,7 +66,7 @@ def get_footprints(board: List[float], cti: Dict[float, int], pieces: List[List[
     for c in board:
         for pi, p in enumerate(pieces):
             for pp in p:
-                fp = frozenset([cti[c + o] for o in pp if (c + o) in cti])
+                fp = list([cti[c + o] for o in pp if (c + o) in cti])
                 if len(fp) == 5:
                     fps[min(fp)][pi].append(fp)
     return fps
@@ -100,7 +101,7 @@ def get_puzzle() -> (List[float], Dict[float, int], List[List[List[float]]]):
     return (board, cti, pieces)
 
 
-def solve(n: int, i_min: int, free: List[int], curr_board: List[int], pieces_left: List[int], solutions: List[int]) -> None:
+def solve(n: int, i_min: int, free: List[int], curr_board: List[int], pieces_left: List[int], fps:List[List[List[Set[List[int]]]]], se_nh: List[Set[List[int]]], solutions: List[int]) -> None:
     fp_i_cands: List[List[List[Set[List[int]]]]] = fps[i_min]
     for p in pieces_left:
         fp_cands: List[Set[List[int]]] = fp_i_cands[p]
@@ -116,7 +117,7 @@ def solve(n: int, i_min: int, free: List[int], curr_board: List[int], pieces_lef
                         n_pieces_left: List[int] = pieces_left[:]
                         n_pieces_left.remove(p)
                         solve(n, n_i_min, n_free, n_curr_board,
-                              n_pieces_left, solutions)
+                              n_pieces_left, fps, se_nh, solutions)
                 else:
                     s: str = ''.join(map(str, n_curr_board))
                     solutions.insert(bisect(solutions, s), s)
@@ -139,4 +140,4 @@ if __name__ == "__main__":
     curr_board = [-1] * len(board)
     pieces_left = list(range(len(pieces)))
     solutions = []
-    solve(SOLVE_ARG, 0, free, curr_board, pieces_left, solutions)
+    solve(SOLVE_ARG, 0, free, curr_board, pieces_left, fps, se_nh, solutions)
