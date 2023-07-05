@@ -1,31 +1,26 @@
-# import sys
-# import argparse
 import os
 from paramiko_config import SSHConfig
 
 NO_PORT = "-1"  # bg
-
 
 def parse(lines):
     parser = SSHConfig()
     parser.parse(lines)
     return parser
 
-
 def get_netloc(entry, Dict, parser):
-    hostname = "".join(entry[0])  # bg
+    hostname = "".join(entry[0])
     if hostname == "*":
         return ("*", NO_PORT)
     port = parser.lookup(hostname).get('port')
     return (hostname, port)
 
-
-def get_netlocs(lines):
+def get_netlocs(lines, Dict):
     parser = parse(lines)
     entries = parser._config
     netlocs = {}
     for entry in entries:
-        netloc = get_netloc(parser)
+        netloc = get_netloc(entry, Dict, parser)
         if not netloc:
             continue
         hostname, port = netloc
@@ -33,9 +28,8 @@ def get_netlocs(lines):
             netlocs[hostname] = port
     return netlocs
 
-
 def execute(lines, template_file):
-    netlocs = get_netlocs(lines)
+    netlocs = get_netlocs(lines, dict)
 
     # bg simplified
     dirpath, filename = os.path.split(template_file)

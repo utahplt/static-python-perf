@@ -1,10 +1,5 @@
 from os import path
-#import argparse
-#from collections import namedtuple
 from futen import get_netlocs, execute
-
-#bg: all test files should be in current directory when tests run
-
 
 def main(n):
     testfile = path.join(path.dirname(__file__), '../ssh.config.dat')
@@ -12,7 +7,7 @@ def main(n):
     with open(testfile) as fd:
         lines = fd.readlines()
         for i in range(n):
-            actual = get_netlocs(lines)
+            actual = get_netlocs(lines, dict)  # Pass dict as an argument
         if expect != actual:
             raise AssertionError("'%s' is not equal to '%s'" % (expect, actual))
 
@@ -28,6 +23,5 @@ def main(n):
         if result != expect:
             raise ValueError("'%s' is not equal to '%s'" % (expect, result))
     return
-
 
 main(1900)
