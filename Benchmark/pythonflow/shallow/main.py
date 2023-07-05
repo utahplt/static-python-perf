@@ -7,7 +7,7 @@
 """
 from __future__ import annotations
 import os
-from retic import fields, Void, String, Int, List
+from typing import List, Int
 import __static__
 
 
