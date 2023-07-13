@@ -40,7 +40,7 @@ def main() -> None:
     with open(testfile) as fd:
         for ln in fd:
             url = ln.split(",", 1)[0]
-            print(iri2uri(url))
+            iri2uri(url)
 
 for i in range(10):
     main()
