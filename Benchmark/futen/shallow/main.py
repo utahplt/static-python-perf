@@ -7,6 +7,7 @@ def main(n: int) -> None:
     expect = {'web': '2200', 'app': '2201', 'db': '2202'}
     with open(testfile) as fd:
         lines = fd.readlines()
+        actual = None
         for i in range(n):
             actual = get_netlocs(lines)
         if expect != actual:
@@ -19,6 +20,7 @@ def main(n: int) -> None:
         expect = ''.join(fd.readlines()).strip()
     with open(testfile) as fd:
         lines = fd.readlines()
+        result = None
         for i in range(n):
             result = execute(lines, template)
         if result != expect:
