@@ -6,8 +6,6 @@
 
 """
 
-import os
-
 class PythonFlow:
     # PythonFlow implement Ford-Fulkerson method to maximize flow on graph problems.
     # example of input text:
@@ -30,7 +28,7 @@ class PythonFlow:
         # total flow which can be retrieved
         self.total_flow = 0
         # file name
-        self.file_name = os.path.join(os.path.dirname("__file__"), "graph2.txt")
+        self.file_name = "graph2.txt"
 
         """  -- testing --
         n = 20

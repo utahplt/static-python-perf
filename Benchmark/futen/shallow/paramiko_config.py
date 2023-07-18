@@ -10,7 +10,7 @@ import re
 import shlex  # shell lexical analyzers
 import socket
 
-from retic import List, Void, String, Bool
+from typing import Dict, List
 import __static__
 
 SSH_PORT = 22

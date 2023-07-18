@@ -6,7 +6,6 @@
 
 """
 from __future__ import annotations
-import os
 from typing import List
 import __static__
 
@@ -16,7 +15,7 @@ class PythonFlow:
         self.flow = []
         self.residual = []
         self.total_flow = 0
-        self.file_name = os.path.join(os.path.dirname(__file__), "graph2.txt")
+        self.file_name = "graph2.txt"
 
         self.load_file()
         self.init_flow()

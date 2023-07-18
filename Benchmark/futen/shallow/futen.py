@@ -1,10 +1,9 @@
 #import sys
 #import argparse
 import os
-from retic import String, Void, List
 from paramiko_config import SSHConfig
 import __static__
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 NO_PORT = "-1" #bg
 
