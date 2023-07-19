@@ -1,7 +1,6 @@
 from __future__ import annotations
 from typing import List
 from cardplay import CardPlay
-from retic import Int, Bool, List, Void, Dyn, String, fields
 from evolution.player.player_state import PlayerState
 import __static__
 class ExchangeForPopulation(CardPlay):

@@ -1,6 +1,4 @@
-from retic import List, Dyn, Void, String, Int, Float
-from retic import fields
-
+from typing import List, Float, Int
 
 @fields({'current':Int, 'payoff':Float, 'table':List(List(Int)),
          'initial':Int})

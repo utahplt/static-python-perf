@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import List
-from retic import Void, List, Int, Bool, Dyn, fields
 from evolution.player.player_state import PlayerState
 import __static__
 class CardPlay:
