@@ -1,6 +1,5 @@
 import os
 from operator import itemgetter
-# from retic import Void, List, Tuple, Int, String, Dict
 
 from union_find import UnionFind
 

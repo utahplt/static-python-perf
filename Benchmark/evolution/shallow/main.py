@@ -1,7 +1,6 @@
 import sys
 from evolution.player.player import Player
 from Timer import Timer
-
 from dealer.dealer import Dealer
 from dealer.deck import Deck
 
