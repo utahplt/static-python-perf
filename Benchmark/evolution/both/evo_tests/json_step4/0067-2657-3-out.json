@@ -1,0 +1,35 @@
+
+[
+  [
+    [["id", 1],
+      ["species", [
+        [["food", 6],
+          ["body", 1],
+          ["population",6],
+          ["traits", ["long-neck", "climbing"]]]
+      ]],
+      ["bag", 0]],
+    [["id", 1],
+      ["species", [
+        [["food", 1],
+          ["body", 0],
+          ["population", 1],
+          ["traits", []]],
+        [["food", 1],
+          ["body", 0],
+          ["population", 1],
+          ["traits", ["cooperation", "foraging"]]]
+      ]],
+      ["bag", 0]],
+    [["id", 1],
+      ["species", [
+        [["food", 1],
+          ["body", 2],
+          ["population", 1],
+          ["traits", ["carnivore", "long-neck", "burrowing"]]
+        ]]],
+      ["bag", 0]]
+  ],
+  2,
+  []
+]

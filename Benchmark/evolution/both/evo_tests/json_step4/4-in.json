@@ -1,0 +1,51 @@
+[
+	[
+		[
+			[
+				["id", 4],
+				["species", [
+					[
+						["food", 0],
+						["body", 0],
+						["population", 2],
+						["traits", ["hard-shell"]]
+					]
+				]],
+				["bag", 0],
+				["cards", [
+					[0, "foraging"],
+					[1, "carnivore"]
+				]]
+			],
+			[
+				["id", 13],
+				["species", [
+					[
+						["food", 0],
+						["body", 0],
+						["population", 1],
+						["traits", ["foraging"]]
+					]
+				]],
+				["bag", 0],
+				["cards", [
+					[-1, "foraging"]
+				]]
+
+
+			]
+		], 2, []
+	],
+	[
+		[1, [],
+			[],
+			[],
+			[[0, 0, 0]]
+		],
+		[0, [],
+			[],
+			[],
+			[]
+		]
+	]
+]

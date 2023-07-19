@@ -1,0 +1,57 @@
+[
+  [
+    [
+      [["id", 1],
+        ["species", [[["food", 2],
+                      ["body", 5],
+                      ["population", 6],
+                      ["traits", ["cooperation"]]],
+                      [["food", 2],
+                      ["body", 5],
+                      ["population", 3],
+                      ["traits", ["foraging", "cooperation"]]],
+                      [["food", 2],
+                      ["body", 5],
+                      ["population", 3],
+                      ["traits", ["cooperation"]]]]],
+        ["bag", 0],
+        ["cards", [[0, "burrowing"], [3, "horns"], [0, "climbing"], [0, "horns"], [0, "scavenger"], [0, "foraging"]]]
+      ],
+      [["id", 2],
+        ["species", [[["food", 2],
+                      ["body", 5],
+                      ["population", 4],
+                      ["traits", ["scavenger"]]]]],
+        ["bag", 0],
+        ["cards", [[2, "carnivore"], [0, "horns"], [0, "fertile"], [1, "horns"], [3, "scavenger"], [0, "foraging"]]]
+      ],
+      [["id", 3], ["species",
+                    [[["food", 2],
+                      ["body", 1],
+                      ["population", 6],
+                      ["traits", ["foraging", "horns"]]]]],
+        ["bag", 0],
+        ["cards", [[2, "carnivore"], [0, "horns"], [0, "warning-call"], [0, "horns"], [3, "scavenger"], [1, "foraging"]]]
+      ]
+    ],
+    92,
+    [
+      [4, "carnivore"],
+      [3, "scavenger"],
+      [0, "fertile"],
+      [3, "long-neck"],
+      [4, "carnivore"],
+      [3, "scavenger"],
+      [-1, "horns"],
+      [3, "fat-tissue"]
+    ]
+  ],
+  [
+    [1, [], [], [[4, 0, 2, 3]], [[2, 0, 5]]],
+
+    [4, [], [["body", 0, 1], ["body", 0, 0]], [], []],
+
+    [0, [], [], [[1, 2], [3, 4, 5]], []]
+
+  ]
+]

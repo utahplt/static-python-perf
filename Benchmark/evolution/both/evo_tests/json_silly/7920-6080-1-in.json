@@ -1,0 +1,15 @@
+[[["id", 1],
+["species", 
+	[[["food", 0], ["body", 2], ["population", 2], ["traits", ["warning-call"]]]]],
+["bag", 0],
+["cards", [[-3, "carnivore"],
+		   [0, "fat-tissue"],
+		   [3, "scavenger"],
+		   [2, "fertile"]]]],
+
+[],
+
+[
+	[[["food", 0], ["body", 0], ["population", 1], ["traits", []]]],
+	[[["food", 0], ["body", 0], ["population", 1], ["traits", []]]]
+]]

@@ -1,0 +1,48 @@
+[
+  [
+    [
+      ["id", 1],
+      ["species",
+        [
+          [
+            ["food", 1],
+            ["body", 2],
+            ["population", 3],
+            ["traits", ["carnivore"]]
+          ],
+          [
+            ["food", 1],
+            ["body", 3],
+            ["population", 4],
+            ["traits", ["foraging", "fat-tissue"]],
+            ["fat-food", 2]
+          ]
+        ]
+      ],
+      ["bag", 3]
+    ],
+    [
+      ["id", 2],
+      ["species",
+        [
+          [
+            ["food", 3],
+            ["body", 3],
+            ["population", 3],
+            ["traits", ["burrowing", "long-neck", "fertile"]]
+          ]
+        ]
+      ],
+      ["bag", 4]
+    ],
+    [
+      ["id", 3],
+      ["species",
+        []
+      ],
+      ["bag", 5]
+    ]
+  ],
+  0,
+  []
+]

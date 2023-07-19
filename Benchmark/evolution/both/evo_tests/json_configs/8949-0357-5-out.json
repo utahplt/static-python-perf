@@ -1,0 +1,33 @@
+[
+  [
+    [
+      ["id", 1],
+      ["species",
+        [
+          [
+            ["food", 4],
+            ["body", 3],
+            ["population", 4],
+            ["traits", ["foraging", "carnivore", "scavenger"]]
+          ]
+        ]
+      ],
+      ["bag", 3]],
+    [
+      ["id", 2],
+      ["species",
+        []
+      ],
+      ["bag", 4]
+    ],
+    [
+      ["id", 3],
+      ["species",
+        []
+      ],
+      ["bag", 5]
+    ]
+  ],
+  10,
+  []
+]

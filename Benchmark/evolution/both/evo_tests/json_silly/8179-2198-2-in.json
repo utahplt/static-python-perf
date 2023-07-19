@@ -1,0 +1,38 @@
+[
+  [
+    ["id",1],
+    ["species",[
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]],
+      [
+        ["food",0],
+        ["body",3],
+        ["population",7],
+        ["traits",[]]]
+    ]],
+    ["bag",0],
+    ["cards", [[7, "carnivore"], [2, "warning-call"], [-3, "foraging"], [-1, "cooperation"],
+      [0, "fat-tissue"], [-3, "symbiosis"], [2, "hard-shell"], [-4, "carnivore"]]]],
+  [],
+  [
+    [
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]
+      ]
+    ],
+    [
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]
+      ]
+    ]
+  ]
+]

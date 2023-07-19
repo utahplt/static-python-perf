@@ -1,0 +1,21 @@
+[
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", ["cooperation", "fertile", "ambush"]]
+	],
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", ["carnivore"]]
+	],
+	false,
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", ["warning-call", "horns"]]
+	]
+]

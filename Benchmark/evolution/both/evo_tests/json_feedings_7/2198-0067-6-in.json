@@ -1,0 +1,95 @@
+[
+  [
+    ["id", 3],
+    ["species",
+      [
+      [
+        ["food", 1],
+        ["body", 1],
+        ["population", 3],
+        ["traits", ["herding"]]
+      ],
+      [
+        ["food", 1],
+        ["body", 4],
+        ["population", 6],
+        ["traits", ["carnivore"]]
+      ],
+      [
+        ["food", 1],
+        ["body", 1],
+        ["population", 3],
+        ["traits", ["foraging"]]
+      ],[
+        ["food", 1],
+        ["body", 1],
+        ["population", 5],
+        ["traits", ["burrowing"]]
+      ]
+    ]],
+    ["bag", 1]
+  ],
+  10,
+  [
+    [
+      ["id", 4],
+      ["species",
+        [[
+          ["food", 1],
+          ["body", 2],
+          ["population", 6],
+          ["traits", ["symbiosis"]]
+        ],
+        [
+          ["food", 1],
+          ["body", 4],
+          ["population", 5],
+          ["traits", ["herding"]]
+        ]
+      ]],
+      ["bag", 5]
+    ],
+    [
+      ["id", 5],
+      ["species",
+        [[
+          ["food", 1],
+          ["body", 5],
+          ["population", 6],
+          ["traits", ["scavenger"]]
+        ],
+        [
+          ["food", 1],
+          ["body", 4],
+          ["population", 5],
+          ["traits", ["symbiosis"]]
+        ],
+        [
+          ["food", 5],
+          ["body", 5],
+          ["population", 5],
+          ["traits", ["burrowing"]]
+        ]
+      ]],
+      ["bag", 5]
+    ],
+    [
+      ["id", 6],
+      ["species",
+        [[
+          ["food", 1],
+          ["body", 2],
+          ["population", 3],
+          ["traits", ["symbiosis"]]
+        ],
+        [
+          ["food", 1],
+          ["body", 5],
+          ["population", 6],
+          ["traits", ["foraging"]]
+        ]
+      ]],
+      ["bag", 5]
+    ]
+  ]
+]

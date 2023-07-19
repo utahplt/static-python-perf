@@ -1,0 +1,18 @@
+[
+    [
+        ["id", 1],
+        ["species", []],
+        ["bag", 0],
+        ["cards", [
+            [1, "carnivore"],
+            [2, "carnivore"],
+            [3, "carnivore"],
+            [4, "carnivore"],
+            [5, "carnivore"],
+            [6, "carnivore"],
+            [7, "carnivore"]
+        ]]
+    ],
+    [],
+    []
+]

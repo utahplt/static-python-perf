@@ -1,0 +1,47 @@
+[
+    [
+        ["id", 5],
+        ["species", [
+            [
+                ["food", 1],
+                ["body", 2],
+                ["population", 1],
+                ["traits", ["carnivore"]]
+            ]
+        ]],
+        ["bag", 10],
+        ["cards", [
+            [3, "climbing"],
+            [2, "burrowing"],
+            [-3, "ambush"],
+            [7, "carnivore"]
+        ]]
+    ],
+    [
+        [
+            [
+                ["food", 1],
+                ["body", 5],
+                ["population", 3],
+                ["traits", ["fat-tissue"]],
+                ["fat-food", 4]
+            ],
+            [
+                ["food", 3],
+                ["body", 4],
+                ["population", 5],
+                ["traits", []]
+            ]
+        ]
+    ],
+    [
+        [
+            [
+                ["food", 2],
+                ["body", 4],
+                ["population", 2],
+                ["traits", ["carnivore"]]
+            ]
+        ]
+    ]
+]
