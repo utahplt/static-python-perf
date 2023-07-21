@@ -38,7 +38,7 @@ class ExchangeForSpecies(CardPlay):
     def verify_self(self: ExchangeForSpecies, player_state: PlayerState, food_card_index: Int,
                     card_plays_before_this: List[CardPlay]) -> Bool:
         verify_rest = super(ExchangeForSpecies, self).verify_self(player_state, food_card_index, card_plays_before_this)
-        verify_loi = player_state.validate_trait_cards_indices(self.loi)
+        verify_loi = player_state.validate_trait_cards_indicies(self.loi)
 
         return verify_loi and verify_rest
 
