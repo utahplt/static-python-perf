@@ -1,0 +1,49 @@
+[
+  [
+    [
+      ["id",1],
+      ["species",[
+        [
+          ["food",1],
+          ["body",3],
+          ["population",1],
+          ["traits",[]]],
+        [
+          ["food",1],
+          ["body",3],
+          ["population",1],
+          ["traits",[]]],
+        [
+          ["food",1],
+          ["body",1],
+          ["population",1],
+          ["traits",["fat-tissue"]],
+          ["fat-food", 1]]
+      ]],
+      ["bag",0]
+    ],
+    [
+      ["id",2],
+      ["species",[
+        [
+          ["food",1],
+          ["body",2],
+          ["population",1],
+          ["traits",[]]],
+        [
+          ["food",2],
+          ["body",3],
+          ["population",2],
+          ["traits",["horns", "carnivore"]]]]],
+      ["bag",0]
+    ],
+    [
+      ["id",3],
+      ["species",[]],
+      ["bag",0],
+      ["cards", [[-3, "ambush"], [0, "fertile"]]]
+    ]
+  ],
+  0,
+  []
+]

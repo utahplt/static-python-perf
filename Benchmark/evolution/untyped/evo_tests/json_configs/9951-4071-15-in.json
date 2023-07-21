@@ -1,0 +1,37 @@
+[
+  [
+    [
+      ["id", 1],
+      ["species",
+        [
+          [
+            ["food", 0],
+            ["body", 7],
+            ["population", 7],
+            ["traits", ["burrowing", "fat-tissue"]]
+          ]
+        ]
+      ],
+      ["bag", 0]
+    ],
+    [
+      ["id", 2],
+      ["species", []],
+      ["bag", 0]
+    ],
+    [
+      ["id", 3],
+      ["species", []],
+      ["bag", 0]
+    ]
+  ],
+  100,
+  [
+    [-3, "burrowing"],
+    [-2, "burrowing"],
+    [-1, "burrowing"],
+    [1, "burrowing"],
+    [2, "burrowing"],
+    [3, "burrowing"]
+  ]
+]

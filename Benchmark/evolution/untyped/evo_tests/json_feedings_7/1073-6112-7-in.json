@@ -1,0 +1,76 @@
+[
+	[
+		["id", 1],
+		["species", [
+			[
+				["food", 1],
+				["body", 2],
+				["population", 3],
+				["traits", ["carnivore", "horns"]]
+			],
+			[
+				["food", 1],
+				["body", 3],
+				["population", 3],
+				["traits", ["carnivore", "ambush"]]
+			]
+		]],
+		["bag", 1]
+	],
+	5, [
+		[
+			["id", 2],
+			["species", [
+				[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["ambush"]]
+				], 
+[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["fertile"]]
+				]
+			]],
+			["bag", 6]
+		],
+		[
+			["id", 3],
+			["species", [
+				[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["horns"]]
+				], 
+[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["symbiosis"]]
+				]
+			]],
+			["bag", 3]
+		],
+		[
+			["id", 4],
+			["species", [
+				[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["foraging"]]
+				], 
+[
+					["food", 1],
+					["body", 2],
+					["population", 1],
+					["traits", ["long-neck"]]
+				]
+			]],
+			["bag", 0]
+		]
+	]
+]

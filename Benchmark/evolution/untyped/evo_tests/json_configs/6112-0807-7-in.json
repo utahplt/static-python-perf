@@ -1,0 +1,5 @@
+[
+[[["id",1],["species",[[["food",2],["body",3],["population",4],["traits",["carnivore"]]]]],["bag",2]],
+[["id",2],["species",[[["food",2],["body",2],["population",3],["traits",["scavenger","foraging"]]]]],["bag",2]],
+[["id",3],["species",[[["food",1],["body",1],["population",3],["traits",["scavenger","cooperation","climbing"]]],[["food",1],["body",2],["population",3],["traits",[]]]]],["bag",2]]],
+15,[]]

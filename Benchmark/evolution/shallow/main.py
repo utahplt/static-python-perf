@@ -1,6 +1,7 @@
 import sys
 from evolution.player.player import Player
 from Timer import Timer
+
 from dealer.dealer import Dealer
 from dealer.deck import Deck
 
@@ -53,3 +54,4 @@ if __name__ == "__main__":
             main(["7"])
         else:
             main(sys.argv[1:])
+

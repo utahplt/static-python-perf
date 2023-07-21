@@ -1,0 +1,40 @@
+[
+  [
+    ["id", 1],
+    ["species", [
+      [
+        ["food", 0],
+        ["body", 0],
+        ["population", 2],
+        ["traits", []]],
+      [
+        ["food", 0],
+        ["body", 0],
+        ["population", 2],
+        ["traits", []]],
+      [
+        ["food", 3],
+        ["body", 3],
+        ["population", 6],
+        ["traits", ["burrowing"]]],
+      [
+        ["food", 3],
+        ["body", 3],
+        ["population", 6],
+        ["traits", []]]
+    ]],
+    ["bag", 5]],
+  15,
+  [
+    [
+      ["id", 2],
+      ["species", []],
+      ["bag", 3]
+    ],
+    [
+      ["id", 3],
+      ["species", []],
+      ["bag", 0]
+    ]
+  ]
+]

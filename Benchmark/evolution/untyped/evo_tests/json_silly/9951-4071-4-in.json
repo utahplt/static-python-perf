@@ -1,0 +1,26 @@
+[
+	[
+		["id", 1],
+		["species",
+			[
+				[
+					["food",0],
+					["body",7],
+					["population",7],
+					["traits",[]]
+				]
+			]
+		],
+		["bag", 0],
+		["cards",
+			[
+				[1, "fertile"],
+				[-3, "foraging"],
+				[2, "fat-tissue"],
+				[3, "fat-tissue"]
+			]
+		]
+	],
+	[],
+	[]
+]

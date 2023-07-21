@@ -1,0 +1,29 @@
+[
+  [
+			[
+				["id", 4],
+				["species", [
+					[
+						["food", 2],
+						["body", 0],
+						["population", 2],
+						["traits", ["foraging"]]
+					]
+				]],
+				["bag", 0]
+			],
+			[
+				["id", 13],
+				["species", [
+					[
+						["food", 0],
+						["body", 0],
+						["population", 1],
+						["traits", ["foraging"]]
+					]
+				]],
+				["bag", 0]
+
+			]
+		], 0, []
+	]

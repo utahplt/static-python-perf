@@ -1,0 +1,40 @@
+[
+  [
+    [
+      [["id", 1],
+        ["species", [
+          [["food", 0],
+            ["body", 1],
+            ["population",3 ],
+            ["traits", ["long-neck", "climbing"]]]
+        ]],
+        ["bag", 0],
+        ["cards",[[3, "carnivore"], [4, "carnivore"], [-1, "herding"], [3, "symbiosis"], [1, "cooperation"]]]],
+      [["id", 1],
+        ["species", [
+          [["food", 0],
+            ["body", 0],
+            ["population", 1],
+            ["traits", ["cooperation"]]]
+        ]],
+        ["bag", 0],
+        ["cards", [[1, "herding"], [-2, "hard-shell"], [0, "scavenger"], [1, "foraging"], [2, "burrowing"]]]],
+      [["id", 1],
+        ["species", [
+          [["food", 0],
+            ["body", 0],
+            ["population", 1],
+            ["traits", ["symbiosis", "herding", "burrowing"]]
+          ]]],
+        ["bag", 0],
+        ["cards", [[2, "long-neck"], [1, "climbing"], [1, "burrowing"], [0, "carnivore"], [6, "carnivore"]]]]
+    ],
+    0,
+    [[2, "herding"], [0, "herding"], [3, "herding"], [-6, "carnivore"], [-2, "symbiosis"]]
+  ],
+  [
+    [0, [["population",1,4]],[],[[3,1,2]],[]],
+    [0, [],[],[[1,2,3,4]],[]],
+    [0, [],[],[[3,2,4]],[[0,0,1]]]
+  ]
+]

@@ -1,0 +1,12 @@
+[
+    [
+        ["id", 1],
+        ["species", [[["food", 0], ["body", 0], ["population", 1], ["traits", []]]]],
+        ["bag", 1],
+        ["cards", [[2, "horns"], [1, "horns"], [0, "horns"], [-1, "horns"]]]
+    ],
+    [],
+    []
+]
+
+

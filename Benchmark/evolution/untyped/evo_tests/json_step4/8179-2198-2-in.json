@@ -1,0 +1,61 @@
+[
+  [
+    [
+      [
+        ["id",1],
+        ["species",[
+          [
+            ["food",0],
+            ["body",3],
+            ["population",1],
+            ["traits",[]]],
+          [
+            ["food",1],
+            ["body",3],
+            ["population",1],
+            ["traits",[]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",1],
+            ["traits",["carnivore"]]]]],
+        ["bag",0],
+        ["cards", [[3, "warning-call"]]]
+      ],
+      [
+        ["id",2],
+        ["species",[
+          [
+            ["food",0],
+            ["body",3],
+            ["population",1],
+            ["traits",[]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",1],
+            ["traits",["climbing"]]]]],
+        ["bag",0],
+        ["cards", [[-1, "burrowing"]]]
+      ],
+      [
+        ["id",3],
+        ["species",[
+          [
+            ["food",1],
+            ["body",3],
+            ["population",1],["traits",[]]]]],
+        ["bag",0],
+        ["cards", [[-4, "carnivore"]]]
+      ]
+    ],
+    0,
+    []
+  ],
+  [
+    [0, [], [], [], []],
+    [0, [], [], [], []],
+    [0, [], [], [], []]
+  ]
+]
+

@@ -1,0 +1,66 @@
+[
+  [
+    [
+      [
+        ["id",1],
+        ["species",[
+          [
+            ["food",0],
+            ["body",3],
+            ["population",2],
+            ["traits",["long-neck"]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",3],
+            ["traits",[]]]]],
+        ["bag",0],
+        ["cards", [[-1, "foraging"], [3, "fat-tissue"], [3, "pack-hunting"], [-7, "carnivore"],
+          [-2, "hard-shell"]]]
+      ],
+      [
+        ["id",2],
+        ["species",[
+          [
+            ["food",0],
+            ["body",2],
+            ["population",1],
+            ["traits",["symbiosis"]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",3],
+            ["traits",["climbing", "carnivore", "fat-tissue"]],
+            ["fat-food", 3]
+          ]]],
+        ["bag",0],
+        ["cards", [[3, "warning-call"], [3, "horns"], [0, "cooperation"]]]
+      ],
+      [
+        ["id",3],
+        ["species",[
+          [
+            ["food",0],
+            ["body",3],
+            ["population",2],
+            ["traits",["herding", "fertile"]]]]],
+        ["bag",0],
+        ["cards", [[-1, "burrowing"], [7, "carnivore"], [-2, "carnivore"], [3, "scavenger"]]]
+      ]
+    ],
+    0,
+    [[-3, "ambush"],
+      [0, "fertile"],
+      [-6, "carnivore"],
+      [0, "cooperation"],
+      [2, "hard-shell"],
+      [-3, "scavenger"],
+      [1, "scavenger"]
+    ]
+  ],
+  [
+    [1, [["population", 2, 4]], [], [[2, 0, 3]], []],
+    [1, [["population", 1, 2]], [], [], []],
+    [1, [], [], [[0, 2]], [[0, 0, 3]]]
+  ]
+]

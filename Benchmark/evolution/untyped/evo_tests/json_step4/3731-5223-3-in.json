@@ -1,0 +1,20 @@
+[[[[["id",1],
+     ["species",[]],
+     ["bag", 0],
+     ["cards", [[3, "cooperation"], [1, "climbing"], [2, "fertile"]]]],
+
+    [["id",2],
+     ["species",[]],
+     ["bag", 0],
+     ["cards", [[2, "carnivore"]]]],
+
+    [["id",3],
+     ["species",[]],
+     ["bag", 0],
+     ["cards", [[2, "long-neck"], [-8, "carnivore"]]]]],
+     0,
+     []],
+
+ [[1, [], [], [[0, 2]], []],
+  [0, [], [], [], []],
+  [1, [], [], [], []]]]

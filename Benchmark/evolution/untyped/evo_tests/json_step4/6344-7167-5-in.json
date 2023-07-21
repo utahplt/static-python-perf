@@ -1,0 +1,63 @@
+[
+  [
+    [
+      [["id", 1],
+        ["species", [[["food", 2],
+                      ["body", 5],
+                      ["population", 6],
+                      ["traits", ["cooperation"]]],
+                      [["food", 2],
+                      ["body", 5],
+                      ["population", 3],
+                      ["traits", ["foraging", "cooperation"]]],
+                      [["food", 2],
+                      ["body", 5],
+                      ["population", 3],
+                      ["traits", ["cooperation"]]]]],
+        ["bag", 10],
+        ["cards", [[-1, "long-neck"], [3, "horns"], [-2, "fertile"], [2, "fat-tissue"], [1, "scavenger"], [0, "foraging"]]]
+      ],
+      [["id", 2],
+        ["species", [[["food", 2],
+                      ["body", 5],
+                      ["population", 4],
+                      ["traits", ["fat-tissue", "long-neck"]],
+                      ["fat-food", 4]]]],
+        ["bag", 1],
+        ["cards", [[2, "carnivore"], [2, "horns"], [0, "fertile"], [1, "horns"], [-1, "scavenger"], [0, "foraging"]]]
+      ],
+      [["id", 3], ["species",
+                    [[["food", 2],
+                      ["body", 1],
+                      ["population", 6],
+                      ["traits", ["carnivore", "long-neck"]]],
+                     [["food", 2],
+                      ["body", 1],
+                      ["population", 6],
+                      ["traits", ["foraging", "long-neck", "fat-tissue"]],
+                      ["fat-food", 1]]]],
+        ["bag", 5],
+        ["cards", [[5, "carnivore"], [0, "horns"], [-1, "warning-call"], [0, "horns"], [3, "scavenger"], [1, "foraging"]]]
+      ]
+    ],
+    5,
+    [
+      [4, "carnivore"],
+      [3, "scavenger"],
+      [0, "fertile"],
+      [3, "long-neck"],
+      [4, "carnivore"],
+      [3, "scavenger"],
+      [-1, "horns"],
+      [3, "fat-tissue"]
+    ]
+  ],
+  [
+    [0, [], [], [], []],
+
+    [0, [], [], [], []],
+
+    [0, [], [["body", 1, 1], ["body", 1, 2], ["body", 1, 3]], [], []]
+
+  ]
+]
