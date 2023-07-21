@@ -16,6 +16,8 @@ class PythonFlow:
         self.residual = []
         self.total_flow = 0
         self.file_name = "graph2.txt"
+        self.options = []
+        self.cost = []
 
         self.load_file()
         self.init_flow()

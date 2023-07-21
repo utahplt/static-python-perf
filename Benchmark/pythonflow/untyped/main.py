@@ -29,6 +29,8 @@ class PythonFlow:
         self.total_flow = 0
         # file name
         self.file_name = "graph2.txt"
+        self.options = []
+        self.cost = []
 
         """  -- testing --
         n = 20
