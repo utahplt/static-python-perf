@@ -43,6 +43,7 @@ def fannkuch(n):
             r += 1
         else:
             return max_flips
+    return 0
 
 if __name__ == "__main__":
     import sys

@@ -11,18 +11,17 @@ from __static__ import box, int64, Array
 import sys
 
 DEFAULT_ARG = 9
-ArrayI64 = Array[int64]
 
 
 def fannkuch(nb: int) -> int:
     n: int64 = int64(nb)
-    count: ArrayI64 = ArrayI64(range(1, nb + 1))
+    count: Array[int64] = Array[int64](nb)
     max_flips: int64 = 0
     m: int64 = n - 1
     r: int64 = n
-    perm1: ArrayI64 = ArrayI64(range(nb))
-    perm: ArrayI64 = ArrayI64(range(nb))
-    perm0: ArrayI64 = ArrayI64(range(nb))
+    perm1: Array[int64] = Array[int64](nb)
+    perm: Array[int64] = Array[int64](nb)
+    perm0: Array[int64] = Array[int64](nb)
 
     while 1:
         while r != 1:
@@ -64,6 +63,7 @@ def fannkuch(nb: int) -> int:
             r += 1
         else:
             return box(max_flips)
+    return 0
 
 if __name__ == "__main__":
     num_iterations = 1

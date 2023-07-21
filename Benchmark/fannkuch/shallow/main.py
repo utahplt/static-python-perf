@@ -48,6 +48,7 @@ def fannkuch(n: int) -> int:
             r += 1
         else:
             return max_flips
+    return 0
 
 if __name__ == "__main__":
     num_iterations = 1
