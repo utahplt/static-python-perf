@@ -54,7 +54,7 @@ class Iri2Uri:
     ]
 
     # bg: really, Char->Char, but that's not a Python type
-    def encode(self: 'Iri2Uri', c: str) -> str:
+    def encode(self, c: str) -> str:
         retval: str = c
         i: int = ord(c)
         for low, high in self.escape_range:
@@ -66,7 +66,7 @@ class Iri2Uri:
         return retval
 
     # bg: really, url:(bytes | string)
-    def iri2uri(self: 'Iri2Uri', uri: str) -> str:
+    def iri2uri(self, uri: str) -> str:
         if isinstance(uri, str):
             scheme, authority, path, query, fragment = urllib.parse.urlsplit(uri)
             authority = authority.encode('idna').decode('utf-8')
