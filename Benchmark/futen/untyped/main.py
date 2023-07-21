@@ -2,7 +2,7 @@ from os import path
 from futen import get_netlocs, execute
 
 def main(n):
-    testfile = path.join(path.dirname(__file__), '../ssh.config.dat')
+    testfile = '../ssh.config.dat'
     expect = {'web': '2200', 'app': '2201', 'db': '2202'}
     with open(testfile) as fd:
         lines = fd.readlines()
@@ -12,9 +12,9 @@ def main(n):
         if expect != actual:
             raise AssertionError("'%s' is not equal to '%s'" % (expect, actual))
 
-    testfile = path.join(path.dirname(__file__), '../ssh.config.dat')
-    template = path.join(path.dirname(__file__), '../inventory_template.dat')
-    expectfile = path.join(path.dirname(__file__), 'inventory_expect.dat')
+    testfile = '../ssh.config.dat'
+    template = '../inventory_template.dat'
+    expectfile = 'inventory_expect.dat'
     with open(expectfile) as fd:
         expect = ''.join(fd.readlines()).strip()
     with open(testfile) as fd:

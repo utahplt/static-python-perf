@@ -96,7 +96,7 @@ class SSHConfig(object):
         if 'proxycommand' in ret and ret['proxycommand'] is None:
             del ret['proxycommand']
         return ret
-    def _allowed(self, hosts: List[str], hostname: str) -> Bool:
+    def _allowed(self, hosts: List[str], hostname: str) -> bool:
         match = False
         for host in hosts:
             if host.startswith('!') and fnmatch.fnmatch(hostname, host[1:]):
