@@ -7,12 +7,12 @@ from typing import Dict, Tuple, List
 
 NO_PORT = "-1" #bg
 
-def parse(lines: List[String]) -> SSHConfig:
+def parse(lines: List[str]) -> SSHConfig:
     parser = SSHConfig()
     parser.parse(lines)
     return parser
 
-def get_netloc(entry: Tuple[List[String], Dict[String, String]], parser: SSHConfig) -> Tuple[String, String]:
+def get_netloc(entry: Tuple[List[str], Dict[str, str]], parser: SSHConfig) -> Tuple[str, str]:
     hostname = "".join(entry[0])  # bg
     if hostname == "*":
         return ("*", NO_PORT)
@@ -20,7 +20,7 @@ def get_netloc(entry: Tuple[List[String], Dict[String, String]], parser: SSHConf
     return (hostname, port)
 
 
-def get_netlocs(lines: List[String]) -> Dict[String, String]:
+def get_netlocs(lines: List[str]) -> Dict[str, str]:
     parser = parse(lines)
     entries = parser._config
     netlocs = {}
@@ -33,7 +33,7 @@ def get_netlocs(lines: List[String]) -> Dict[String, String]:
             netlocs[hostname] = port
     return netlocs
 
-def execute(lines: List[String], template_file: String) -> String:
+def execute(lines: List[str], template_file: str) -> str:
     netlocs = get_netlocs(lines)
 
     # bg simplified

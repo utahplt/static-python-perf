@@ -35,7 +35,7 @@ class SSHConfig(object):
         """
         self._config = []
 
-    def parse(self: SSHConfig, file_obj: List(String)) -> None:
+    def parse(self: SSHConfig, file_obj: List(str)) -> None:
         """
         Read an OpenSSH config from the given file object.
 
@@ -79,7 +79,7 @@ class SSHConfig(object):
                     host[1][key] = value
         self._config.append(host)
 
-    def lookup(self: SSHConfig, hostname: String) -> Dict[String, String]:
+    def lookup(self: SSHConfig, hostname: str) -> Dict[str, str]:
         matches = [
             config for config in self._config
             if self._allowed(config[0], hostname)
@@ -96,7 +96,7 @@ class SSHConfig(object):
         if 'proxycommand' in ret and ret['proxycommand'] is None:
             del ret['proxycommand']
         return ret
-    def _allowed(self: SSHConfig, hosts: List[String], hostname: String) -> Bool:
+    def _allowed(self: SSHConfig, hosts: List[str], hostname: str) -> Bool:
         match = False
         for host in hosts:
             if host.startswith('!') and fnmatch.fnmatch(hostname, host[1:]):
@@ -105,7 +105,7 @@ class SSHConfig(object):
                 match = True
         return match
 
-    def _expand_variables(self: SSHConfig, config: Dict[String, String], hostname: String) -> Dict[String, String]:
+    def _expand_variables(self: SSHConfig, config: Dict[str, str], hostname: str) -> Dict[str, str]:
         if 'hostname' in config:
             config['hostname'] = config['hostname'].replace('%h', hostname)
         else:
@@ -167,13 +167,13 @@ class SSHConfig(object):
                             config[k] = config[k].replace(find, str(replace))
         return config
 
-    def _get_hosts(self: SSHConfig, host: String) -> List[String]:
+    def _get_hosts(self: SSHConfig, host: str) -> List[str]:
         try:
             return shlex.split(host)
         except ValueError:
             raise Exception("Unparsable host %s" % host)
 
-    def _get_hosts(self: SSHConfig, host: String) -> List(String):
+    def _get_hosts(self: SSHConfig, host: str) -> List(str):
         """
         Return a list of host_names from host value.
         """
@@ -182,12 +182,12 @@ class SSHConfig(object):
         except ValueError:
             raise Exception("Unparsable host %s" % host)
 class LazyFqdn(object):
-    def __init__(self: LazyFqdn, config: Dict[String, String], host: String) -> None:
+    def __init__(self: LazyFqdn, config: Dict[str, str], host: str) -> None:
         self.fqdn = None
         self.config = config
         self.host = host
 
-    def __str__(self: LazyFqdn) -> String:
+    def __str__(self: LazyFqdn) -> str:
         if self.fqdn is None:
             fqdn = None
             address_family = self.config.get('addressfamily', 'any').lower()
