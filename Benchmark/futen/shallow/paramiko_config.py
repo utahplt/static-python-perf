@@ -168,12 +168,6 @@ class SSHConfig(object):
         return config
 
     def _get_hosts(self, host: str) -> List[str]:
-        try:
-            return shlex.split(host)
-        except ValueError:
-            raise Exception("Unparsable host %s" % host)
-
-    def _get_hosts(self, host: str) -> List(str):
         """
         Return a list of host_names from host value.
         """
@@ -181,6 +175,7 @@ class SSHConfig(object):
             return shlex.split(host)
         except ValueError:
             raise Exception("Unparsable host %s" % host)
+
 class LazyFqdn(object):
     def __init__(self, config: Dict[str, str], host: str) -> None:
         self.fqdn = None
