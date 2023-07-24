@@ -1,11 +1,9 @@
 #!/usr/bin/env retic
-from retic import List, Void, Int, Float
 from Utilities import choose_randomly
 from Automata import Automaton
 from copy import copy
 
 import os, itertools
-from retic import fields
 fname = os.path.join(os.path.dirname(__file__), "population-random-numbers.txt")
 #TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))

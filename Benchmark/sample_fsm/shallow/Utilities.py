@@ -1,4 +1,3 @@
-from retic import List, Float, Int
 import os, itertools
 fname = os.path.join(os.path.dirname(__file__), "util-random-numbers.txt")
 #TODO: Cannot type variable in retic

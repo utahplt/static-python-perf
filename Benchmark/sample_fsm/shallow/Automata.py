@@ -1,9 +1,4 @@
-from retic import List, Dyn, Void, String, Int, Float
-from retic import fields
 
-
-@fields({'current':Int, 'payoff':Float, 'table':List(List(Int)),
-         'initial':Int})
 class Automaton:
 
     #TODO: Variables cannot be typed in retic

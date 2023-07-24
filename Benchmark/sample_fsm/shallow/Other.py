@@ -1,7 +1,6 @@
 from Population import Population
 from Automata import Automaton
 from random import randrange
-from retic import Int
 
 import os, itertools
 fname = os.path.join(os.path.dirname(__file__), "automata-random-numbers.txt")
