@@ -28,7 +28,7 @@ def evolve(p: Population, c: int, s: int, r: int) -> List[float]:
 
     return payoffs
 
-def simulation_to_lines(data: List[Float])->List(Tuple(Int, Float)):
+def simulation_to_lines(data: List[float])->List[Tuple[int, float]]:
     """
     Turn average payoffs into a list of Cartesian points
     :param data: [Payoffs]
