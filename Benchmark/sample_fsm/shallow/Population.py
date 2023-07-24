@@ -5,9 +5,11 @@ from copy import copy
 from typing import List
 import os, itertools
 import __static__
+
 fname = "population-random-numbers.txt"
-#TODO: Cannot type variable in retic
+# TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))
+
 
 class Population:
     """
@@ -17,7 +19,7 @@ class Population:
     def __init__(self: Population, a: List[Automaton]) -> None:
         self.a = a
 
-    def payoffs(self: Population)->List[float]:
+    def payoffs(self: Population) -> List[float]:
         result = []
         for element in self.a:
             result = result + [element.payoff]
@@ -33,13 +35,13 @@ class Population:
 
         for i in range(0, len(self.a) - 1, 2):
             p1 = self.a[i]
-            p2 = self.a[i+1]
+            p2 = self.a[i + 1]
             a = p1.interact(p2, r)
             self.a[i] = a[0]
-            self.a[i+1] = a[1]
+            self.a[i + 1] = a[1]
         return self
 
-    def regenerate(self:Population, rate: int)->Population:
+    def regenerate(self: Population, rate: int) -> Population:
         """
         Replaces r elements of p with r 'children' of randomly chosen
         fittest elements of p, also shuffle constraint (r < (len p))
@@ -55,7 +57,7 @@ class Population:
         self.shuffle()
         return self
 
-    def shuffle(self:Population)->None:
+    def shuffle(self: Population) -> None:
         b = copy(self.a)
         for i in range(len(self.a)):
             j = next(rand_num)

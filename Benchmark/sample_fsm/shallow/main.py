@@ -3,9 +3,12 @@ from Utilities import relative_average
 from Other import build_random_population
 from typing import List, Tuple
 import __static__
+
+
 def run() -> None:
     simulation_to_lines(evolve(build_random_population(100), 10, 2, 1))
     return
+
 
 def evolve(p: Population, c: int, s: int, r: int) -> List[float]:
     """
@@ -28,7 +31,8 @@ def evolve(p: Population, c: int, s: int, r: int) -> List[float]:
 
     return payoffs
 
-def simulation_to_lines(data: List[float])->List[Tuple[int, float]]:
+
+def simulation_to_lines(data: List[float]) -> List[Tuple[int, float]]:
     """
     Turn average payoffs into a list of Cartesian points
     :param data: [Payoffs]
@@ -38,10 +42,10 @@ def simulation_to_lines(data: List[float])->List[Tuple[int, float]]:
     counter = 0
     for payoff in data:
         result = result + [(counter, payoff)]
-        counter+=1
+        counter += 1
     return result
 
-    #print(str(result))
+    # print(str(result))
 
 
 for i in range(100):

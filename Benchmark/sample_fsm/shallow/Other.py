@@ -3,12 +3,13 @@ from Automata import Automaton
 from random import randrange
 import __static__
 import os, itertools
+
 fname = "automata-random-numbers.txt"
-#TODO: Cannot type variable in retic
+# TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))
 
 
-def make_random_automaton(n: int)->Automaton:
+def make_random_automaton(n: int) -> Automaton:
     """
     builds an n states x k inputs automation
     with a random transition table
@@ -20,7 +21,7 @@ def make_random_automaton(n: int)->Automaton:
     return Automaton(seed, 0.0, table, seed)
 
 
-def build_random_population(n: int)->Population:
+def build_random_population(n: int) -> Population:
     """
     for even n, build a population of size n
     :param n: Natural
