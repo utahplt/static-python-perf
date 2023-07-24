@@ -3,7 +3,7 @@ from Utilities import choose_randomly
 from copy import copy
 
 import os, itertools
-fname = os.path.join(os.path.dirname(__file__), "population-random-numbers.txt")
+fname = "population-random-numbers.txt"
 #TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))
 

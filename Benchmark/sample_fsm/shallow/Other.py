@@ -1,15 +1,15 @@
 from Population import Population
 from Automata import Automaton
 from random import randrange
+from retic import Int
 
 import os, itertools
-
-fname = "automata-random-numbers.txt"
-# TODO: Cannot type variable in retic
+fname = os.path.join(os.path.dirname(__file__), "automata-random-numbers.txt")
+#TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))
 
 
-def make_random_automaton(n):
+def make_random_automaton(n: Int)->Automaton:
     """
     builds an n states x k inputs automation
     with a random transition table
@@ -21,7 +21,7 @@ def make_random_automaton(n):
     return Automaton(seed, 0.0, table, seed)
 
 
-def build_random_population(n):
+def build_random_population(n: Int)->Population:
     """
     for even n, build a population of size n
     :param n: Natural

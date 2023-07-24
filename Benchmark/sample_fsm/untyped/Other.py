@@ -2,7 +2,7 @@ from Population import Population
 from Automata import Automaton
 import os, itertools
 
-fname = os.path.join(os.path.dirname(__file__), "automata-random-numbers.txt")
+fname = "automata-random-numbers.txt"
 #TODO: Cannot type variable in retic
 rand_num = itertools.cycle((int(line.strip()) for line in open(fname, "r")))
 
