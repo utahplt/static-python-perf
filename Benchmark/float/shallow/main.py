@@ -11,6 +11,7 @@ bg:
 - remove unused imports
 """
 
+
 class Point(object):
 
     def __init__(self: Point, i: float) -> None:
@@ -41,11 +42,13 @@ def maximize(points: List[Point]) -> Point:
         next = next.maximize(p)
     return next
 
+
 def benchmark(n: int) -> Point:
     points: List[Point] = [Point(i) for i in range(n)]
     for p in points:
         p.normalize()
     return maximize(points)
+
 
 POINTS = 200000
 

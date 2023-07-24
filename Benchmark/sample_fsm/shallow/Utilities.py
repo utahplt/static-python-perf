@@ -1,5 +1,6 @@
 import os, itertools
-fname = os.path.join(os.path.dirname(__file__), "util-random-numbers.txt")
+import __static__
+fname = "util-random-numbers.txt"
 #TODO: Cannot type variable in retic
 rand_num = itertools.cycle((float(line.strip()) for line in open(fname, "r")))
 
