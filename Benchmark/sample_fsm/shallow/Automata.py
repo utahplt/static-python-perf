@@ -1,18 +1,15 @@
 from typing import List, Float, Int
 
-@fields({'current':Int, 'payoff':Float, 'table':List(List(Int)),
-         'initial':Int})
-class Automaton:
 
-    #TODO: Variables cannot be typed in retic
+class Automaton:
+    # TODO: Variables cannot be typed in retic
     PAYOFF_TABLE = [[(3, 3), (0, 4)],
                     [(4, 0), (1, 1)]]
-
 
     def __init__(self: Automaton, current: Int,
                  payoff: Float,
                  table: List(List(Int)),
-                 initial: Int)->Void:
+                 initial: Int) -> Void:
         self.current = current
         self.payoff = payoff
         self.table = table
@@ -46,17 +43,16 @@ class Automaton:
         other.payoff = y2
         return [self, other]
 
-    def clone(self: Automaton)->Automaton:
+    def clone(self: Automaton) -> Automaton:
         """
         reset payoff and current state to initial strategy
         :return: Automaton
         """
         return Automaton(self.initial, 0, self.table, self.initial)
 
-    def reset(self: Automaton)->Automaton:
+    def reset(self: Automaton) -> Automaton:
         """
         reset the historic payoff
         :return: Automation
         """
         return Automaton(self.current, 0, self.table, self.initial)
-
