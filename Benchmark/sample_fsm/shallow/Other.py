@@ -21,7 +21,7 @@ def make_random_automaton(n):
     return Automaton(seed, 0.0, table, seed)
 
 
-def build_random_population(n) -> Population:
+def build_random_population(n):
     """
     for even n, build a population of size n
     :param n: Natural
