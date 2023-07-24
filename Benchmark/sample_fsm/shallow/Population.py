@@ -2,7 +2,7 @@
 from Utilities import choose_randomly
 from Automata import Automaton
 from copy import copy
-
+from typing import List
 import os, itertools
 import __static__
 fname = "population-random-numbers.txt"
@@ -14,16 +14,16 @@ class Population:
     Populations of Automata
     """
 
-    def __init__(self: Population, a: List(Automaton)) -> Void:
+    def __init__(self: Population, a: List[Automaton]) -> None:
         self.a = a
 
-    def payoffs(self: Population)->List(Float):
+    def payoffs(self: Population)->List[float]:
         result = []
         for element in self.a:
             result = result + [element.payoff]
         return result
 
-    def match_up(self: Population, r: Int) -> Population:
+    def match_up(self: Population, r: int) -> Population:
         """
         matches up neighboring pairs of
         automata in this population for r rounds
@@ -39,7 +39,7 @@ class Population:
             self.a[i+1] = a[1]
         return self
 
-    def regenerate(self:Population, rate: Int)->Population:
+    def regenerate(self:Population, rate: int)->Population:
         """
         Replaces r elements of p with r 'children' of randomly chosen
         fittest elements of p, also shuffle constraint (r < (len p))
@@ -55,7 +55,7 @@ class Population:
         self.shuffle()
         return self
 
-    def shuffle(self:Population)->Void:
+    def shuffle(self:Population)->None:
         b = copy(self.a)
         for i in range(len(self.a)):
             j = next(rand_num)
