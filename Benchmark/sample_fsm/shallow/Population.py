@@ -15,16 +15,16 @@ class Population:
     Populations of Automata
     """
 
-    def __init__(self: Population, a: List(Automaton)) -> Void:
+    def __init__(self, a):
         self.a = a
 
-    def payoffs(self: Population) -> List(Float):
+    def payoffs(self):
         result = []
         for element in self.a:
             result = result + [element.payoff]
         return result
 
-    def match_up(self: Population, r: Int) -> Population:
+    def match_up(self, r):
         """
         matches up neighboring pairs of
         automata in this population for r rounds
@@ -40,7 +40,7 @@ class Population:
             self.a[i + 1] = a[1]
         return self
 
-    def regenerate(self: Population, rate: Int) -> Population:
+    def regenerate(self, rate):
         """
         Replaces r elements of p with r 'children' of randomly chosen
         fittest elements of p, also shuffle constraint (r < (len p))
@@ -56,7 +56,7 @@ class Population:
         self.shuffle()
         return self
 
-    def shuffle(self: Population) -> Void:
+    def shuffle(self):
         b = copy(self.a)
         for i in range(len(self.a)):
             j = next(rand_num)
