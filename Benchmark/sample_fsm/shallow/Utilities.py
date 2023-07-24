@@ -5,7 +5,7 @@ fname = "util-random-numbers.txt"
 rand_num = itertools.cycle((float(line.strip()) for line in open(fname, "r")))
 
 
-def accumulated_s(probabilities: List(Float)) -> List(Float):
+def accumulated_s(probabilities):
     total = sum(probabilities)
     payoffs = probabilities
     result = []
@@ -16,7 +16,7 @@ def accumulated_s(probabilities: List(Float)) -> List(Float):
     return result
 
 
-def choose_randomly(probabilities: List(Float), speed: Int) -> List(Int):
+def choose_randomly(probabilities, speed):
     s = accumulated_s(probabilities)
     res = []  ### changed here
     for n in range(speed):
@@ -29,5 +29,5 @@ def choose_randomly(probabilities: List(Float), speed: Int) -> List(Int):
     return res  ### and here
 
 
-def relative_average(l: List(Float), w: Float) -> Float:
+def relative_average(l, w):
     return sum(l) / w / len(l)
