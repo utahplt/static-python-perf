@@ -113,7 +113,8 @@ functions/methods.  Their inclusion here is for function name consistency.
 
 import copy
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
-
+import __static__
+from typing import List
 __version__ = 0.4
 
 ###===========================  LIST FUNCTIONS  ==========================
@@ -123,7 +124,7 @@ __version__ = 0.4
 ###
 
 #GN
-def abut (source:Dyn,tgt:Dyn)->List(Dyn):
+def abut (source:Dyn,tgt:Dyn)->List[Dyn]:
     """
 Like the |Stat abut command.  It concatenates two lists side-by-side
 and returns the result.  '2D' lists are also accomodated for either argument
@@ -171,7 +172,7 @@ Returns: a list of lists as long as the LONGEST list past, source on the
     return source
 
 #GN
-def simpleabut (source:List(Dyn), addon:List(Dyn))->List(Dyn):
+def simpleabut (source:List[Dyn], addon:List[Dyn])->List[Dyn]:
     """
 Concatenates two lists as columns and returns the result.  '2D' lists
 are also accomodated for either argument (source or addon).  This DOES NOT
@@ -207,7 +208,7 @@ Returns: a list of lists as long as source, with source on the 'left' and
     return source
 
 #GM
-def colex (listoflists:List(List(Dyn)),cnums:Dyn)->Dyn:
+def colex (listoflists:List[List[Dyn]],cnums:Dyn)->Dyn:
     """
 Extracts from listoflists the columns specified in the list 'cnums'
 (cnums can be an integer, a sequence of integers, or a string-expression that
@@ -237,7 +238,7 @@ Returns: a list-of-lists corresponding to the columns from listoflists
 
 
 #GN
-def linexand (listoflists:List(List(Dyn)),columnlist:Dyn,valuelist:Dyn)->List(List(Dyn)):
+def linexand (listoflists:List[List[Dyn]],columnlist:Dyn,valuelist:Dyn)->List[List[Dyn]]:
     """
 Returns the rows of a list of lists where col (from columnlist) = val
 (from valuelist) for EVERY pair of values (columnlist[i],valuelists[i]).
@@ -263,7 +264,7 @@ Returns: the rows of listoflists where columnlist[i]=valuelist[i] for ALL i
     return lines
 
 #GM
-def recode (inlist:Dyn,listmap:Dyn,cols:Dyn)->List(Dyn):
+def recode (inlist:Dyn,listmap:Dyn,cols:Dyn)->List[Dyn]:
     """
 Changes the values in a list to a new set of values (useful when
 you need to recode data from (e.g.) strings to numbers.  cols defaults
@@ -294,7 +295,7 @@ Returns: inlist with the appropriate values replaced with new ones
     return lst
 
 #GY
-def unique (inlist:List(float))->List(float):
+def unique (inlist:List[float])->List[float]:
     """
 Returns all unique items in the passed list.  If the a list-of-lists
 is passed, unique LISTS are found (i.e., items in the first dimension are
