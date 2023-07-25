@@ -5,7 +5,7 @@ from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 ####################################
 
 #bg: lifted `ex` to top-level
-def ex(x:float,BIG:float)->float:
+def ex(x,BIG):
     if x < -BIG:
         return 0.0
     else:
@@ -234,5 +234,3 @@ Usage:   lbetai(a,b,x)
         return bt*betacf(a,b,x)/float(a)
     else:
         return 1.0-bt*betacf(b,a,1.0-x)/float(b)
-
-
