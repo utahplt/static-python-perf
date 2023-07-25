@@ -1,7 +1,7 @@
 from player import Player
 from dealer import Dealer
 
-def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
+def generate_dealer(players, cards_per_game):
     """
     Instantiates the dealer which will take over the game
     :return: Dealer
@@ -9,7 +9,7 @@ def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
     points = [0 for i in range(len(players))]
     return Dealer(players, points, cards_per_game)
 
-def generate_players(num_players:Int)->List(Player):
+def generate_players(num_players):
     """
     instantiates n players with an empty list of cards
     :param num_players: int
@@ -20,7 +20,7 @@ def generate_players(num_players:Int)->List(Player):
         players.append(Player(i, []))
     return players
 
-def main()->Void:
+def main():
 
     num = 3 #number of players
     cards_per_player = 10
