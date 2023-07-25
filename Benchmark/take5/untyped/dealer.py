@@ -7,13 +7,12 @@ max_val = 7
 turns = 10
 stack_size = 5
 
-@fields({"players": List(Player), "bull_points": List(Int), "cards_per_game": Int})
 class Dealer:
     """
     To represent the Dealer for the whole game
     """
 
-    def __init__(self:Dealer, players:List(Player), bull_points:List(Int), cards_per_game:Int)->Void:
+    def __init__(self, players, bull_points, cards_per_game):
         """
         :param deck: [Card ...]
         :param players: [Player ...]
@@ -24,7 +23,7 @@ class Dealer:
         self.bull_points = bull_points
         self.cards_per_game = cards_per_game
 
-    def simulate_game(self:Dealer)->List(Tuple(Int, Int)):
+    def simulate_game(self):
         """
         Similulates a game and returns the players' scores
         :return: [Tuple ...]
@@ -52,7 +51,7 @@ class Dealer:
 
 
     #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
-    def create_deck(self:Dealer, deck_size, bull_points:Float = .5, order:Float = .5)->List(Tuple(Int, Int)):
+    def create_deck(self, deck_size, bull_points, order):
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points
@@ -70,7 +69,7 @@ class Dealer:
         return cards
 
 
-    def create_stacks(self:Dealer)->(List(List(Tuple(Int, Int)))):
+    def create_stacks(self):
         """
         create 4 new stacks each having 1 card from the deck
         at the start of every round
@@ -82,7 +81,7 @@ class Dealer:
             stacks.append([self.deck.pop()])
         return stacks
 
-    def output_scores(self:Dealer)->List(Tuple(Int, Int)):
+    def output_scores(self):
         """
         Outputs the names of the winning and losing players
         :param players: [Player ...]
@@ -95,8 +94,7 @@ class Dealer:
             res.append((player_name, player_points))
         return res
 
-    def update_game(self:Dealer, player:Player, stack_index:Int, stacks:List(List(Tuple(Int, Int))))->\
-            Tuple(Int, List(List(Tuple(Int, Int)))):
+    def update_game(self, player, stack_index, stacks):
         """
         update playe's bull points based on chosen stack
         :param stack_index: Int
@@ -125,7 +123,7 @@ class Dealer:
                 return 0, new_stacks
 
 
-    def replace_card(self:Dealer, card:Tuple(Int, Int), index:Int, stacks:List(List(Tuple(Int, Int))))->List(List(Tuple(Int, Int))):
+    def replace_card(self, card, index, stacks):
         """
         Replaces stack with card and returns new stack
         :param card: Tuple
