@@ -1,4 +1,3 @@
-#!/usr/bin/env retic
 from Utilities import choose_randomly
 from copy import copy
 
