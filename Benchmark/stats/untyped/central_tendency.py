@@ -8,7 +8,7 @@ from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 #######  CENTRAL TENDENCY  #########
 ####################################
 
-def geometricmean (inlist)->float:
+def geometricmean (inlist):
     """
 Calculates the geometric mean of the values in the passed list.
 That is:  n-th root of (x1 * x2 * ... * xn).  Assumes a '1D' list.
