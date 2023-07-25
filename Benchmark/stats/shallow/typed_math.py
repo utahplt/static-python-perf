@@ -1,5 +1,5 @@
 import math
-
+import __static__
 _pow = pow
 _abs = abs
 _round = round

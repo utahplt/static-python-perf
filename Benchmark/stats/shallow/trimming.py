@@ -1,10 +1,11 @@
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
-
+from typing import List
+import __static__
 ####################################
 #######  TRIMMING FUNCTIONS  #######
 ####################################
 
-def trimboth (l:List(float),proportiontocut:float)->List(float):
+def trimboth (l:List[float],proportiontocut:float)->List[float]:
     """
 Slices off the passed proportion of items from BOTH ends of the passed
 list (i.e., with proportiontocut=0.1, slices 'leftmost' 10% AND 'rightmost'
@@ -20,7 +21,7 @@ Returns: trimmed version of list l
     return l[lowercut:uppercut]
 
 
-def trim1 (l:List(float),proportiontocut:float)->List(float):
+def trim1 (l:List[float],proportiontocut:float)->List[float]:
     """
 Slices off the passed proportion of items from ONE end of the passed
 list (i.e., if proportiontocut=0.1, slices off 'leftmost' or 'rightmost'
