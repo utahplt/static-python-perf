@@ -3,12 +3,13 @@ import support
 import pstat               # required 3rd party module
 import copy  # required python modules
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
-
+import __static__
+from typing import List
 ####################################
 #####  VARIABILITY FUNCTIONS  ######
 ####################################
 
-def obrientransform(args:List(List(float)))->List(List(float)):
+def obrientransform(args:List[List[float]])->List[List[float]]:
     """
 Computes a transform on input data (any number of columns).  Used to
 test for homogeneity of variance prior to running one-way stats.  From
@@ -44,7 +45,7 @@ Returns: transformed data for use in an ANOVA
         return nargs
 
 
-def samplevar (inlist:List(float))->float:
+def samplevar (inlist:List[float])->float:
     """
 Returns the variance of the values in the passed list using
 N for the denominator (i.e., DESCRIBES the sample variance only).
@@ -59,7 +60,7 @@ Usage:   lsamplevar(inlist)
     return support.ss(deviations)/float(n)
 
 
-def samplestdev (inlist:List(float))->float:
+def samplestdev (inlist:List[float])->float:
     """
 Returns the standard deviation of the values in the passed list using
 N for the denominator (i.e., DESCRIBES the sample stdev only).
@@ -69,7 +70,7 @@ Usage:   lsamplestdev(inlist)
     return sqrt(samplevar(inlist))
 
 
-def cov (x:List(float),y:List(float))->float:
+def cov (x:List[float],y:List[float])->float:
     """
 Returns the estimated covariance of the values in the passed
 array (i.e., N-1).  Dimension can equal None (ravel array first), an
@@ -94,7 +95,7 @@ Usage:   lcov(x,y,keepdims=0)
     return ss/float(n-1)
 
 
-def var (inlist:List(float))->float:
+def var (inlist:List[float])->float:
     """
 Returns the variance of the values in the passed list using N-1
 for the denominator (i.e., for estimating population variance).
@@ -110,7 +111,7 @@ Usage:   lvar(inlist)
     return support.ss(deviations)/float(n-1)
 
 
-def stdev (inlist:List(float))->float:
+def stdev (inlist:List[float])->float:
     """
 Returns the standard deviation of the values in the passed list
 using N-1 in the denominator (i.e., to estimate population stdev).
@@ -120,7 +121,7 @@ Usage:   lstdev(inlist)
     return sqrt(var(inlist))
 
 
-def sterr(inlist:List(float))->float:
+def sterr(inlist:List[float])->float:
     """
 Returns the standard error of the values in the passed list using N-1
 in the denominator (i.e., to estimate population standard error).
@@ -130,7 +131,7 @@ Usage:   lsterr(inlist)
     return stdev(inlist) / float(sqrt(len(inlist)))
 
 
-def sem (inlist:List(float))->float:
+def sem (inlist:List[float])->float:
     """
 Returns the estimated standard error of the mean (sx-bar) of the
 values in the passed list.  sem = stdev / sqrt(n)
@@ -142,7 +143,7 @@ Usage:   lsem(inlist)
     return sd/sqrt(n)
 
 
-def z (inlist:List(float), score:float)->float:
+def z (inlist:List[float], score:float)->float:
     """
 Returns the z-score for a given input score, given that score and the
 list from which that score came.  Not appropriate for population calculations.
@@ -153,7 +154,7 @@ Usage:   lz(inlist, score)
     return _z
 
 
-def zs (inlist:List(float))->List(float):
+def zs (inlist:List[float])->List[float]:
     """
 Returns a list of z-scores, one for each score in the passed list.
 
