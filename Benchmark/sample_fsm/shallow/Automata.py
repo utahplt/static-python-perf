@@ -7,7 +7,7 @@ class Automaton:
     PAYOFF_TABLE = [[(3, 3), (0, 4)],
                     [(4, 0), (1, 1)]]
 
-    def __init__(self: Automaton, current: int,
+    def __init__(self, current: int,
                  payoff: float,
                  table: List[List[int]],
                  initial: int) -> None:
@@ -16,7 +16,7 @@ class Automaton:
         self.table = table
         self.initial = initial
 
-    def interact(self: Automaton, other: Automaton, r: int) -> List[Automaton]:
+    def interact(self, other: Automaton, r: int) -> List[Automaton]:
         """
         the sum of pay-offs for the two respective automata over all rounds
         :param other: Automaton
@@ -44,14 +44,14 @@ class Automaton:
         other.payoff = y2
         return [self, other]
 
-    def clone(self: Automaton) -> Automaton:
+    def clone(self) -> Automaton:
         """
         reset payoff and current state to initial strategy
         :return: Automaton
         """
         return Automaton(self.initial, 0, self.table, self.initial)
 
-    def reset(self: Automaton) -> Automaton:
+    def reset(self) -> Automaton:
         """
         reset the historic payoff
         :return: Automation
