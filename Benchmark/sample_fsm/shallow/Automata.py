@@ -1,6 +1,6 @@
 import __static__
 from typing import List
-
+from __future__ import annotations
 
 class Automaton:
     # TODO: Variables cannot be typed in retic
