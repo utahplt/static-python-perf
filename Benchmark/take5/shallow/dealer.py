@@ -3,17 +3,19 @@ from copy import deepcopy
 from player import Player
 from typing import List, Tuple
 import __static__
+
 min_val = 2
 max_val = 7
 turns = 10
 stack_size = 5
+
 
 class Dealer:
     """
     To represent the Dealer for the whole game
     """
 
-    def __init__(self, players:List[Player], bull_points:List[int], cards_per_game:int)->None:
+    def __init__(self, players: List[Player], bull_points: List[int], cards_per_game: int) -> None:
         """
         :param deck: [Card ...]
         :param players: [Player ...]
@@ -24,20 +26,19 @@ class Dealer:
         self.bull_points = bull_points
         self.cards_per_game = cards_per_game
 
-    def simulate_game(self)->List[Tuple[int, int]]:
+    def simulate_game(self) -> List[Tuple[int, int]]:
         """
         Similulates a game and returns the players' scores
         :return: [Tuple ...]
         """
         while not max(self.bull_points) >= 66:
 
-            #hand cards
+            # hand cards
             for i, player in enumerate(self.players):
                 hand = []
                 for i in range(i + 1 * 10):
                     hand.append(self.deck[i])
                 player.cards = hand
-
 
             stacks = self.create_stacks()
             for i in range(turns):
@@ -45,14 +46,12 @@ class Dealer:
                     player = self.players[j]
                     chosen_stack_index = player.choose_correct_stack(stacks)
                     (p, s) = self.update_game(player, chosen_stack_index, stacks)
-                    self.bull_points[j]+=p
+                    self.bull_points[j] += p
                     stacks = s
         return self.output_scores()
 
-
-
-    #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
-    def create_deck(self, deck_size, bull_points:float = .5, order:float = .5)->List[Tuple[int, int]]:
+    # Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
+    def create_deck(self, deck_size, bull_points: float = .5, order: float = .5) -> List[Tuple[int, int]]:
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points
@@ -64,13 +63,12 @@ class Dealer:
         seed(bull_points)
         cards = []
         for i in range(deck_size):
-            cards.append((i+1, randrange(min_val, max_val)))
+            cards.append((i + 1, randrange(min_val, max_val)))
         s = (order or random())
         shuffle(cards, lambda: s)
         return cards
 
-
-    def create_stacks(self)->(List[List[Tuple[int, int]]]):
+    def create_stacks(self) -> (List[List[Tuple[int, int]]]):
         """
         create 4 new stacks each having 1 card from the deck
         at the start of every round
@@ -82,7 +80,7 @@ class Dealer:
             stacks.append([self.deck.pop()])
         return stacks
 
-    def output_scores(self)->List[Tuple[int, int]]:
+    def output_scores(self) -> List[Tuple[int, int]]:
         """
         Outputs the names of the winning and losing players
         :param players: [Player ...]
@@ -95,7 +93,7 @@ class Dealer:
             res.append((player_name, player_points))
         return res
 
-    def update_game(self, player:Player, stack_index:int, stacks:List[List[Tuple[int, int]]])->\
+    def update_game(self, player: Player, stack_index: int, stacks: List[List[Tuple[int, int]]]) -> \
             Tuple[int, List[List[Tuple[int, int]]]]:
         """
         update playe's bull points based on chosen stack
@@ -124,8 +122,8 @@ class Dealer:
 
                 return 0, new_stacks
 
-
-    def replace_card(self, card:Tuple[int, int], index:int, stacks:List[List[Tuple[int, int]]])->List[List[Tuple[int, int]]]:
+    def replace_card(self, card: Tuple[int, int], index: int, stacks: List[List[Tuple[int, int]]]) -> List[
+        List[Tuple[int, int]]]:
         """
         Replaces stack with card and returns new stack
         :param card: Tuple
