@@ -2,11 +2,12 @@ from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 import central_tendency
 import variability
 
+
 ####################################
 ############  MOMENTS  #############
 ####################################
 
-def moment(inlist,moment):
+def moment(inlist, moment):
     """
 Calculates the nth moment about the mean for a sample (defaults to
 the 1st moment).  Used to calculate coefficients of skewness and kurtosis.
@@ -21,8 +22,8 @@ Returns: appropriate moment (r) from ... 1/n * SUM((inlist(i)-mean)**r)
         n = len(inlist)
         s = 0
         for x in inlist:
-            s = s + (x-mn)**moment
-        return s/float(n)
+            s = s + (x - mn) ** moment
+        return s / float(n)
 
 
 def variation(inlist):
@@ -32,7 +33,7 @@ Probability and Statistics, p.6.
 
 Usage:   lvariation(inlist)
 """
-    return 100.0*variability.samplestdev(inlist)/float(central_tendency.mean(inlist))
+    return 100.0 * variability.samplestdev(inlist) / float(central_tendency.mean(inlist))
 
 
 def skew(inlist):
@@ -42,7 +43,7 @@ Recipies (alternate defn in CRC Standard Probability and Statistics, p.6.)
 
 Usage:   lskew(inlist)
 """
-    return moment(inlist,3)/pow(moment(inlist,2),1.5)
+    return moment(inlist, 3) / pow(moment(inlist, 2), 1.5)
 
 
 def kurtosis(inlist):
@@ -52,7 +53,7 @@ Recipies (alternate defn in CRC Standard Probability and Statistics, p.6.)
 
 Usage:   lkurtosis(inlist)
 """
-    return moment(inlist,4)/pow(moment(inlist,2),2.0)
+    return moment(inlist, 4) / pow(moment(inlist, 2), 2.0)
 
 
 def describe(inlist):
@@ -63,10 +64,9 @@ Usage:   ldescribe(inlist)
 Returns: n, mean, standard deviation, skew, kurtosis
 """
     n = len(inlist)
-    mm = (min(inlist),max(inlist))
+    mm = (min(inlist), max(inlist))
     m = central_tendency.mean(inlist)
     sd = variability.stdev(inlist)
     sk = skew(inlist)
     kurt = kurtosis(inlist)
     return n, mm, m, sd, sk, kurt
-

@@ -116,14 +116,15 @@ from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 
 __version__ = 0.4
 
+
 ###===========================  LIST FUNCTIONS  ==========================
 ###
 ### Here are the list functions, DEFINED FOR ALL SYSTEMS.
 ### Array functions (for NumPy-enabled computers) appear below.
 ###
 
-#GN
-def abut (source,tgt):
+# GN
+def abut(source, tgt):
     """
 Like the |Stat abut command.  It concatenates two lists side-by-side
 and returns the result.  '2D' lists are also accomodated for either argument
@@ -136,42 +137,43 @@ Returns: a list of lists as long as the LONGEST list past, source on the
          'left', lists in <args> attached consecutively on the 'right'
 """
 
-    if not any(isinstance(source, t) for t in [list,tuple]):
+    if not any(isinstance(source, t) for t in [list, tuple]):
         source = [source]
-    #bg#for addon in args:
+    # bg#for addon in args:
     addon = tgt
-    if not any(isinstance(addon, t) for t in [list,tuple]):
+    if not any(isinstance(addon, t) for t in [list, tuple]):
         addon = [addon]
-    if len(addon) < len(source):                # is source list longer?
-        if len(source) % len(addon) == 0:        # are they integer multiples?
-            repeats = len(source)/len(addon)    # repeat addon n times
+    if len(addon) < len(source):  # is source list longer?
+        if len(source) % len(addon) == 0:  # are they integer multiples?
+            repeats = len(source) / len(addon)  # repeat addon n times
             origadd = copy.deepcopy(addon)
-            for i in range(repeats-1):
+            for i in range(repeats - 1):
                 addon = addon + origadd
         else:
-            repeats = len(source)/len(addon)+1  # repeat addon x times,
-            origadd = copy.deepcopy(addon)      #    x is NOT an integer
-            for i in range(repeats-1):
+            repeats = len(source) / len(addon) + 1  # repeat addon x times,
+            origadd = copy.deepcopy(addon)  # x is NOT an integer
+            for i in range(repeats - 1):
                 addon = addon + origadd
                 addon = addon[0:len(source)]
-    elif len(source) < len(addon):                # is addon list longer?
-        if len(addon) % len(source) == 0:        # are they integer multiples?
-            repeats = len(addon)/len(source)    # repeat source n times
+    elif len(source) < len(addon):  # is addon list longer?
+        if len(addon) % len(source) == 0:  # are they integer multiples?
+            repeats = len(addon) / len(source)  # repeat source n times
             origsour = copy.deepcopy(source)
-            for i in range(repeats-1):
+            for i in range(repeats - 1):
                 source = source + origsour
         else:
-            repeats = len(addon)/len(source)+1  # repeat source x times,
-            origsour = copy.deepcopy(source)    #   x is NOT an integer
-            for i in range(repeats-1):
+            repeats = len(addon) / len(source) + 1  # repeat source x times,
+            origsour = copy.deepcopy(source)  # x is NOT an integer
+            for i in range(repeats - 1):
                 source = source + origsour
             source = source[0:len(addon)]
 
-    source = simpleabut(source,addon)
+    source = simpleabut(source, addon)
     return source
 
-#GN
-def simpleabut (source, addon):
+
+# GN
+def simpleabut(source, addon):
     """
 Concatenates two lists as columns and returns the result.  '2D' lists
 are also accomodated for either argument (source or addon).  This DOES NOT
@@ -183,31 +185,32 @@ Usage:   simpleabut(source,addon)  where source, addon=list (or list-of-lists)
 Returns: a list of lists as long as source, with source on the 'left' and
                  addon on the 'right'
 """
-    if not any(isinstance(source, t) for t in [list,tuple]):
+    if not any(isinstance(source, t) for t in [list, tuple]):
         source = [source]
-    if not any(isinstance(addon, t) for t in [list,tuple]):
+    if not any(isinstance(addon, t) for t in [list, tuple]):
         addon = [addon]
-    minlen = min(len(source),len(addon))
-    _list = copy.deepcopy(source)                # start abut process
-    if not any(isinstance(source[0], t) for t in [list,tuple]):
-        if not any(isinstance(addon[0], t) for t in [list,tuple]):
+    minlen = min(len(source), len(addon))
+    _list = copy.deepcopy(source)  # start abut process
+    if not any(isinstance(source[0], t) for t in [list, tuple]):
+        if not any(isinstance(addon[0], t) for t in [list, tuple]):
             for i in range(minlen):
-                _list[i] = [source[i]] + [addon[i]]        # source/addon = column
+                _list[i] = [source[i]] + [addon[i]]  # source/addon = column
         else:
             for i in range(minlen):
-                _list[i] = [source[i]] + addon[i]        # addon=list-of-lists
+                _list[i] = [source[i]] + addon[i]  # addon=list-of-lists
     else:
-        if not any(isinstance(addon[0], t) for t in [list,tuple]):
+        if not any(isinstance(addon[0], t) for t in [list, tuple]):
             for i in range(minlen):
-                _list[i] = source[i] + [addon[i]]        # source=list-of-lists
+                _list[i] = source[i] + [addon[i]]  # source=list-of-lists
         else:
             for i in range(minlen):
-                _list[i] = source[i] + addon[i]        # source/addon = list-of-lists
+                _list[i] = source[i] + addon[i]  # source/addon = list-of-lists
     source = _list
     return source
 
-#GM
-def colex (listoflists, cnums):
+
+# GM
+def colex(listoflists, cnums):
     """
 Extracts from listoflists the columns specified in the list 'cnums'
 (cnums can be an integer, a sequence of integers, or a string-expression that
@@ -220,24 +223,23 @@ Returns: a list-of-lists corresponding to the columns from listoflists
 """
     global index
     column = 0
-    if type(cnums) in [list,tuple]:   # if multiple columns to get
+    if type(cnums) in [list, tuple]:  # if multiple columns to get
         index = cnums[0]
         column = [x[index] for x in listoflists]
         for col in cnums[1:]:
             index = col
-            column = abut(column,[x[index] for x in listoflists])
-    elif type(cnums) == str:              # if an 'x[3:]' type expr.
-        evalstring = 'map(lambda x: x'+cnums+', listoflists)'
+            column = abut(column, [x[index] for x in listoflists])
+    elif type(cnums) == str:  # if an 'x[3:]' type expr.
+        evalstring = 'map(lambda x: x' + cnums + ', listoflists)'
         column = eval(evalstring)
-    else:                                     # else it's just 1 col to get
+    else:  # else it's just 1 col to get
         index = cnums
         column = [x[index] for x in listoflists]
     return column
 
 
-
-#GN
-def linexand (listoflists,columnlist,valuelist):
+# GN
+def linexand(listoflists, columnlist, valuelist):
     """
 Returns the rows of a list of lists where col (from columnlist) = val
 (from valuelist) for EVERY pair of values (columnlist[i],valuelists[i]).
@@ -246,24 +248,25 @@ len(columnlist) must equal len(valuelist).
 Usage:   linexand (listoflists,columnlist,valuelist)
 Returns: the rows of listoflists where columnlist[i]=valuelist[i] for ALL i
 """
-    if type(columnlist) not in [list,tuple]:
+    if type(columnlist) not in [list, tuple]:
         columnlist = [columnlist]
-    if type(valuelist) not in [list,tuple]:
+    if type(valuelist) not in [list, tuple]:
         valuelist = [valuelist]
     criterion = ''
     for i in range(len(columnlist)):
-        if type(valuelist[i])==str:
+        if type(valuelist[i]) == str:
             critval = '\'' + valuelist[i] + '\''
         else:
             critval = str(valuelist[i])
-        criterion = criterion + ' x['+str(columnlist[i])+']=='+critval+' and'
-    criterion = criterion[0:-3]         # remove the "and" after the last crit
-    function = 'filter(lambda x: '+criterion+',listoflists)'
+        criterion = criterion + ' x[' + str(columnlist[i]) + ']==' + critval + ' and'
+    criterion = criterion[0:-3]  # remove the "and" after the last crit
+    function = 'filter(lambda x: ' + criterion + ',listoflists)'
     lines = list(eval(str(function)))
     return lines
 
-#GM
-def recode (inlist,listmap,cols):
+
+# GM
+def recode(inlist, listmap, cols):
     """
 Changes the values in a list to a new set of values (useful when
 you need to recode data from (e.g.) strings to numbers.  cols defaults
@@ -274,12 +277,12 @@ Returns: inlist with the appropriate values replaced with new ones
 """
     lst = copy.deepcopy(inlist)
     if cols != None:
-        if type(cols) not in [list,tuple]:
+        if type(cols) not in [list, tuple]:
             cols = [cols]
         for col in cols:
             for row in range(len(lst)):
                 try:
-                    idx = colex(listmap,0).index(lst[row][col])
+                    idx = colex(listmap, 0).index(lst[row][col])
                     lst[row][col] = listmap[idx][1]
                 except ValueError:
                     pass
@@ -287,14 +290,15 @@ Returns: inlist with the appropriate values replaced with new ones
         for row in range(len(lst)):
             for col in range(len(lst)):
                 try:
-                    idx = colex(listmap,0).index(lst[row][col])
+                    idx = colex(listmap, 0).index(lst[row][col])
                     lst[row][col] = listmap[idx][1]
                 except ValueError:
                     pass
     return lst
 
-#GY
-def unique (inlist):
+
+# GY
+def unique(inlist):
     """
 Returns all unique items in the passed list.  If the a list-of-lists
 is passed, unique LISTS are found (i.e., items in the first dimension are
