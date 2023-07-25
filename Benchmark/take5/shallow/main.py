@@ -1,7 +1,5 @@
-from retic import Void,List,Int
 from player import Player
 from dealer import Dealer
-from Timer import Timer
 
 def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
     """
@@ -39,8 +37,6 @@ def main()->Void:
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
-t = Timer()
-with t:
-  for i in range(500):
-    main()
 
+    for i in range(500):
+        main()
