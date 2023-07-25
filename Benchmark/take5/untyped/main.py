@@ -1,6 +1,7 @@
 from player import Player
 from dealer import Dealer
 
+
 def generate_dealer(players, cards_per_game):
     """
     Instantiates the dealer which will take over the game
@@ -8,6 +9,7 @@ def generate_dealer(players, cards_per_game):
     """
     points = [0 for i in range(len(players))]
     return Dealer(players, points, cards_per_game)
+
 
 def generate_players(num_players):
     """
@@ -20,16 +22,16 @@ def generate_players(num_players):
         players.append(Player(i, []))
     return players
 
-def main():
 
-    num = 3 #number of players
+def main():
+    num = 3  # number of players
     cards_per_player = 10
     cards_per_game = 210
 
     if num < 2:
         print('Too few players!')
 
-    if cards_per_game/cards_per_player < num:
+    if cards_per_game / cards_per_player < num:
         print("Too many players!")
         exit()
 
@@ -37,7 +39,5 @@ def main():
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
-
     for i in range(500):
         main()
-

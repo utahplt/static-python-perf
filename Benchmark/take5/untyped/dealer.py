@@ -7,6 +7,7 @@ max_val = 7
 turns = 10
 stack_size = 5
 
+
 class Dealer:
     """
     To represent the Dealer for the whole game
@@ -30,13 +31,12 @@ class Dealer:
         """
         while not max(self.bull_points) >= 66:
 
-            #hand cards
+            # hand cards
             for i, player in enumerate(self.players):
                 hand = []
                 for i in range(i + 1 * 10):
                     hand.append(self.deck[i])
                 player.cards = hand
-
 
             stacks = self.create_stacks()
             for i in range(turns):
@@ -44,13 +44,11 @@ class Dealer:
                     player = self.players[j]
                     chosen_stack_index = player.choose_correct_stack(stacks)
                     (p, s) = self.update_game(player, chosen_stack_index, stacks)
-                    self.bull_points[j]+=p
+                    self.bull_points[j] += p
                     stacks = s
         return self.output_scores()
 
-
-
-    #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
+    # Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
     def create_deck(self, deck_size, bull_points, order):
         """
         :param deck_size: Int, number of cards in deck
@@ -63,11 +61,10 @@ class Dealer:
         seed(bull_points)
         cards = []
         for i in range(deck_size):
-            cards.append((i+1, randrange(min_val, max_val)))
+            cards.append((i + 1, randrange(min_val, max_val)))
         s = (order or random())
         shuffle(cards, lambda: s)
         return cards
-
 
     def create_stacks(self):
         """
@@ -121,7 +118,6 @@ class Dealer:
                 new_stacks[stack_index].append(discarded)
 
                 return 0, new_stacks
-
 
     def replace_card(self, card, index, stacks):
         """

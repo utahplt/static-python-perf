@@ -2,6 +2,7 @@ class Player:
     """
     To represent a player in the game
     """
+
     def __init__(self, name, cards):
         """
         :param name: Int
@@ -37,12 +38,10 @@ class Player:
                 bull_points = list(map(lambda card: card[1], stack))
                 sums.append(sum(bull_points))
 
-
             return sums.index(min(sums))
 
         else:
             return self.get_index_of_closest_stack(top_cards, discarded)
-
 
     def get_index_of_closest_stack(self, cards, card):
         """
