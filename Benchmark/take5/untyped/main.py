@@ -38,6 +38,6 @@ def main():
     dealer.simulate_game()
 
 
-for i in range(500):
-    main()
+    for i in range(500):
+        main()
 
