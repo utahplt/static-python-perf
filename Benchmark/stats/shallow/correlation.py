@@ -9,7 +9,7 @@ from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 #####  CORRELATION FUNCTIONS  ######
 ####################################
 
-def pearsonr(x:List(float),y:List(float))->(float,float):
+def pearsonr(x,y):
     """
 Calculates a Pearson correlation coefficient and the associated
 probability value.  Taken from Heiman's Basic Statistics for the Behav.
@@ -35,7 +35,7 @@ Returns: Pearson's r value, two-tailed p-value
     return r, prob
 
 
-def lincc(x:float,y:float)->float:
+def lincc(x,y):
     """
 Calculates Lin's concordance correlation coefficient.
 
@@ -49,7 +49,7 @@ Returns: Lin's CC
     return _lincc
 
 
-def spearmanr(x:List(float),y:List(float))->(float,float):
+def spearmanr(x,y):
     """
 Calculates a Spearman rank-order correlation coefficient.  Taken
 from Heiman's Basic Statistics for the Behav. Sci (1st), p.192.
@@ -73,7 +73,7 @@ Returns: Spearman's r, two-tailed p-value
     return rs, probrs
 
 
-def pointbiserialr(x:List(float),y:List(float))->(float,float):
+def pointbiserialr(x,y):
     """
 Calculates a point-biserial correlation coefficient and the associated
 probability value.  Taken from Heiman's Basic Statistics for the Behav.
@@ -105,7 +105,7 @@ Returns: Point-biserial r, two-tailed p-value
         return rpb, prob
 
 
-def kendalltau(x:List(float),y:List(float))->(float,float):
+def kendalltau(x,y):
     """
 Calculates Kendall's tau ... correlation of ordinal data.  Adapted
 from function kendl1 in Numerical Recipies.  Needs good test-routine.@@@
@@ -140,7 +140,7 @@ Returns: Kendall's tau, two-tailed p-value
     return tau, prob
 
 
-def linregress(x:List(float),y:List(float))->(float,float,float,float,float):
+def linregress(x,y):
     """
 Calculates a regression line on x,y pairs.
 
