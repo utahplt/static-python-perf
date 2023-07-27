@@ -19,7 +19,7 @@ class Dealer:
         :param players: [Player ...]
         :param bull_points: [Int ...]
         """
-        self.deck = self.create_deck(cards_per_game)
+        self.deck = self.create_deck(cards_per_game, bull_points, 0.5)
         self.players = players
         self.bull_points = bull_points
         self.cards_per_game = cards_per_game
@@ -58,7 +58,7 @@ class Dealer:
         :param order: float, order of cards parametrization
         :return: [Card ...]
         """
-        seed(bull_points)
+        seed(deck_size)
         cards = []
         for i in range(deck_size):
             cards.append((i + 1, randrange(min_val, max_val)))

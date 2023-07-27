@@ -39,5 +39,5 @@ def main():
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
-    for i in range(500):
-        main()
+for i in range(500):
+    main()
