@@ -24,16 +24,16 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, float64, inline
-from typing import final
+from __static__ import int64, float64, inline, Array
+from typing import final, List, Iterator
 import random
+
+ArrayI64 = Array[int64]
 
 random.seed(1234)
 ITERATIONS = 1
 import math
 
-
-@fields({'x': float64, 'y': float64, 'z': float64})
 @final
 class GVector(object):
     def __init__(self, x: int64, y: int64, z: int64) -> None:
@@ -83,12 +83,11 @@ class GVector(object):
 #    knots += [len(points) - degree] * degree
 #    return knots
 
-@fields({'knots': List(int), 'points': List(GVector), 'degree': int64})
 @final
 class Spline(object):
     """Class for representing B-Splines and NURBS of arbitrary degree"""
 
-    def __init__(self, points: List(GVector), degree: int64, knots: List(int)) -> None:
+    def __init__(self, points: List[GVector], degree: int64, knots: Iterator[ArrayI64]) -> None:
         """Creates a Spline. points is a list of GVector, degree is the
 degree of the Spline."""
         if knots == None:
@@ -157,13 +156,9 @@ degree of the Spline."""
     #         I = dom[1] - 1
     #    return I
 
-
-@fields({'thickness': float64, 'splines': List(Spline), 'minx': float64,
-         'miny': float64, 'maxx': float64, 'maxy': float64, 'width': float64, 'height': float64,
-         'num_trafos': List(int), 'num_total': int64})
 @final
 class Chaosgame(object):
-    def __init__(self, splines: List(Spline), thickness: float64, w: int64, h: int64, n: int64) -> None:
+    def __init__(self, splines: List[Spline], thickness: float64, w: int64, h: int64, n: int64) -> None:
         self.splines = splines
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
