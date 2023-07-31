@@ -1,5 +1,3 @@
-from Timer import Timer
-
 """Microbenchmark for function call overhead.
 
 This measures simple function calls that are not methods, do not use varargs or
@@ -12,8 +10,12 @@ bg:
 - fixed num iterations (see bottom of file)
 - removed command-line parsing
 """
+from __future__ import annotations
+import __static__
+from __static__ import int64, inline
 
-def foo(a:int, b:int, c:int, d:int)->Void:
+
+def foo(a: int64, b: int64, c: int64, d: int64) -> None:
     # 20 calls
     bar(a, b, c)
     bar(a, b, c)
@@ -37,7 +39,7 @@ def foo(a:int, b:int, c:int, d:int)->Void:
     bar(a, b, c)
 
 
-def bar(a:int, b:int, c:int)->Void:
+def bar(a: int64, b: int64, c: int64) -> None:
     # 20 calls
     baz(a, b)
     baz(a, b)
@@ -61,7 +63,7 @@ def bar(a:int, b:int, c:int)->Void:
     baz(a, b)
 
 
-def baz(a:int, b:int)->Void:
+def baz(a: int64, b: int64) -> None:
     # 20 calls
     quux(a)
     quux(a)
@@ -85,7 +87,7 @@ def baz(a:int, b:int)->Void:
     quux(a)
 
 
-def quux(a:int)->Void:
+def quux(a: int64) -> None:
     # 20 calls
     qux()
     qux()
@@ -109,11 +111,12 @@ def quux(a:int)->Void:
     qux()
 
 
-def qux()->Void:
+@inline
+def qux() -> None:
     pass
 
 
-def test_calls()->Void:
+def test_calls() -> None:
     # 20 calls
     foo(1, 2, 3, 4)
     foo(1, 2, 3, 4)
@@ -139,6 +142,4 @@ def test_calls()->Void:
 
 
 if __name__ == "__main__":
-    t = Timer()
-    with t:
-        test_calls()
+    test_calls()
