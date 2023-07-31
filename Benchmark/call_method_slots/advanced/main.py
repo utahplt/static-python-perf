@@ -1,5 +1,3 @@
-from Timer import Timer
-
 """Microbenchmark for method call overhead on types that define __slots__.
 
 This measures simple method calls for objects with no dicts that are
@@ -17,7 +15,7 @@ class Foo(object):
 
     __slots__ = ()
 
-    def foo(self:Foo, a:int, b:int, c:int, d:int)->Void:
+    def foo(self, a:int, b:int, c:int, d:int)->None:
         # 20 calls
         self.bar(a, b, c)
         self.bar(a, b, c)
@@ -40,7 +38,7 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
 
-    def bar(self:Foo, a:int, b:int, c:int)->Void:
+    def bar(self, a:int, b:int, c:int)->None:
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -63,7 +61,7 @@ class Foo(object):
         self.baz(a, b)
         self.baz(a, b)
 
-    def baz(self:Foo, a:int, b:int)->Void:
+    def baz(self, a:int, b:int)->None:
         # 20 calls
         self.quux(a)
         self.quux(a)
@@ -86,7 +84,7 @@ class Foo(object):
         self.quux(a)
         self.quux(a)
 
-    def quux(self:Foo, a:int)->Void:
+    def quux(self, a:int)->None:
         # 20 calls
         self.qux()
         self.qux()
@@ -109,11 +107,11 @@ class Foo(object):
         self.qux()
         self.qux()
 
-    def qux(self:Foo)->Void:
+    def qux(self)->None:
         pass
 
 
-def test_calls()->Void:
+def test_calls()->None:
     f = Foo()
     # 20 calls
     f.foo(1, 2, 3, 4)
@@ -140,6 +138,4 @@ def test_calls()->Void:
 
 
 if __name__ == "__main__":
-    t = Timer()
-    with t:
-        test_calls()
+    test_calls()
