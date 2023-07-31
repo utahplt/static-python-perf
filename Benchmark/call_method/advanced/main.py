@@ -8,7 +8,7 @@ bg:
 - using Timer
 - removed command-line parsing
 """
-
+from __future__ import annotations
 import __static__
 from __static__ import int64, inline
 from typing import final

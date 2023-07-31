@@ -10,12 +10,16 @@ bg:
 - using Timer
 - removed command-line parsing
 """
-
+from __future__ import annotations
+import __static__
+from __static__ import int64, inline
+from typing import final
+@final
 class Foo(object):
 
     __slots__ = ()
 
-    def foo(self, a:int, b:int, c:int, d:int)->None:
+    def foo(self, a:int64, b:int64, c:int64, d:int64)->None:
         # 20 calls
         self.bar(a, b, c)
         self.bar(a, b, c)
@@ -38,7 +42,7 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
 
-    def bar(self, a:int, b:int, c:int)->None:
+    def bar(self, a:int64, b:int64, c:int64)->None:
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -61,7 +65,7 @@ class Foo(object):
         self.baz(a, b)
         self.baz(a, b)
 
-    def baz(self, a:int, b:int)->None:
+    def baz(self, a:int64, b:int64)->None:
         # 20 calls
         self.quux(a)
         self.quux(a)
@@ -84,7 +88,7 @@ class Foo(object):
         self.quux(a)
         self.quux(a)
 
-    def quux(self, a:int)->None:
+    def quux(self, a:int64)->None:
         # 20 calls
         self.qux()
         self.qux()
@@ -106,7 +110,7 @@ class Foo(object):
         self.qux()
         self.qux()
         self.qux()
-
+    @inline
     def qux(self)->None:
         pass
 
