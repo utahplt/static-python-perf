@@ -8,13 +8,16 @@ bg:
 - using Timer
 - removed command-line parsing
 """
+
 import __static__
-from __static__ import int64
+from __static__ import int64, inline
+from typing import final
+
 
 @final
 class Foo(object):
 
-    def foo(self, a:int64, b:int64, c:int64, d:int64)->None:
+    def foo(self, a: int64, b: int64, c: int64, d: int64) -> None:
         # 20 calls
         self.bar(a, b, c)
         self.bar(a, b, c)
@@ -36,8 +39,8 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
         self.bar(a, b, c)
-    @inline
-    def bar(self, a:int64, b:int64, c:int64)->None:
+
+    def bar(self, a: int64, b: int64, c: int64) -> None:
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -59,8 +62,8 @@ class Foo(object):
         self.baz(a, b)
         self.baz(a, b)
         self.baz(a, b)
-    @inline
-    def baz(self, a:int64, b:int64)->None:
+
+    def baz(self, a: int64, b: int64) -> None:
         # 20 calls
         self.quux(a)
         self.quux(a)
@@ -83,8 +86,7 @@ class Foo(object):
         self.quux(a)
         self.quux(a)
 
-    @inline
-    def quux(self, a:int64)->None:
+    def quux(self, a: int64) -> None:
         # 20 calls
         self.qux()
         self.qux()
@@ -106,12 +108,13 @@ class Foo(object):
         self.qux()
         self.qux()
         self.qux()
+
     @inline
-    def qux(self)->None:
+    def qux(self) -> None:
         pass
 
-@inline
-def test_calls()->None:
+
+def test_calls() -> None:
     f = Foo()
     f.foo(1, 2, 3, 4)
     f.foo(1, 2, 3, 4)
