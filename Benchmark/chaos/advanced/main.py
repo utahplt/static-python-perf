@@ -22,6 +22,10 @@ bg:
   - inlined create_image_chaos
   - inlined GetKnots
 """
+from __future__ import annotations
+import __static__
+from __static__ import int64, float64, inline
+from typing import final
 import random
 
 random.seed(1234)
@@ -29,37 +33,44 @@ ITERATIONS = 1
 import math
 
 
-@fields({'x': float, 'y': float, 'z': float})
+@fields({'x': float64, 'y': float64, 'z': float64})
+@final
 class GVector(object):
-    def __init__(self, x: int, y: int, z: int) -> None:
+    def __init__(self, x: int64, y: int64, z: int64) -> None:
         self.x = x
         self.y = y
         self.z = z
 
-    def Mag(self) -> float:
+    @inline
+    def Mag(self) -> float64:
         return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
-    def dist(self, other: GVector) -> float:
+    @inline
+    def dist(self, other: GVector) -> float64:
         return math.sqrt((self.x - other.x) ** 2 +
                          (self.y - other.y) ** 2 +
                          (self.z - other.z) ** 2)
 
+    @inline
     def __add__(self, other: GVector) -> GVector:
         if not isinstance(other, GVector):
             raise ValueError("Can't add GVector to " + str(type(other)))
         v = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
         return v
 
+    @inline
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
-    def __mul__(self, other: float) -> GVector:
+    @inline
+    def __mul__(self, other: float64) -> GVector:
         v = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
-    def linear_combination(self, other: GVector, l1: float, l2: float) -> GVector:
+    @inline
+    def linear_combination(self, other: GVector, l1: float64, l2: float64) -> GVector:
         v = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
                     self.z * l1 + other.z * l2)
@@ -72,11 +83,12 @@ class GVector(object):
 #    knots += [len(points) - degree] * degree
 #    return knots
 
-@fields({'knots': List(int), 'points': List(GVector), 'degree': int})
+@fields({'knots': List(int), 'points': List(GVector), 'degree': int64})
+@final
 class Spline(object):
     """Class for representing B-Splines and NURBS of arbitrary degree"""
 
-    def __init__(self, points: List(GVector), degree: int, knots: List(int)) -> Void:
+    def __init__(self, points: List(GVector), degree: int64, knots: List(int)) -> None:
         """Creates a Spline. points is a list of GVector, degree is the
 degree of the Spline."""
         if knots == None:
@@ -98,12 +110,13 @@ degree of the Spline."""
         self.points = points
         self.degree = degree
 
-    def GetDomain(self) -> (int, int):
+    @inline
+    def GetDomain(self) -> (int64, int64):
         """Returns the domain of the B-Spline"""
         return (self.knots[self.degree - 1],
                 self.knots[len(self.knots) - self.degree])
 
-    def __call__(self, u: float) -> GVector:
+    def __call__(self, u: float64) -> GVector:
         """Calculates a point of the B-Spline using de Boors Algorithm"""
         dom = self.GetDomain()
         if u < dom[0] or u > dom[1]:
@@ -145,11 +158,12 @@ degree of the Spline."""
     #    return I
 
 
-@fields({'thickness': float, 'splines': List(Spline), 'minx': float,
-         'miny': float, 'maxx': float, 'maxy': float, 'width': float, 'height': float,
-         'num_trafos': List(int), 'num_total': int})
+@fields({'thickness': float64, 'splines': List(Spline), 'minx': float64,
+         'miny': float64, 'maxx': float64, 'maxy': float64, 'width': float64, 'height': float64,
+         'num_trafos': List(int), 'num_total': int64})
+@final
 class Chaosgame(object):
-    def __init__(self, splines: List(Spline), thickness: float, w: int, h: int, n: int) -> Void:
+    def __init__(self, splines: List(Spline), thickness: float64, w: int64, h: int64, n: int64) -> None:
         self.splines = splines
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
@@ -168,7 +182,7 @@ class Chaosgame(object):
                 t = 1 / 999 * i
                 curr = spl(t)
                 length += curr.dist(last)
-            self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
+            self.num_trafos.append(max(1, int64(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
         # def create_image_chaos(self:Chaosgame, w:int, h:int, n:int)->Void:
         im = [[1] * h for i in range(w)]
@@ -181,8 +195,8 @@ class Chaosgame(object):
                 point = self.transform_point(point)
                 x = (point.x - self.minx) / self.width * w
                 y = (point.y - self.miny) / self.height * h
-                x = int(x)
-                y = int(y)
+                x = int64(x)
+                y = int64(y)
                 if x == w:
                     x -= 1
                 if y == h:
@@ -202,7 +216,7 @@ class Chaosgame(object):
     def transform_point(self, point: GVector) -> GVector:
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
-        rrr = random.randrange(int(self.num_total) + 1)
+        rrr = random.randrange(int64(self.num_total) + 1)
         lll = 0
         for iii in range(len(self.num_trafos)):
             if rrr >= lll and rrr < lll + self.num_trafos[iii]:
