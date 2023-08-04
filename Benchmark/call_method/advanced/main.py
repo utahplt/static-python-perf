@@ -8,13 +8,10 @@ bg:
 - using Timer
 - removed command-line parsing
 """
-from __future__ import annotations
 import __static__
 from __static__ import int64, inline
-from typing import final
 
 
-@final
 class Foo(object):
 
     def foo(self, a: int64, b: int64, c: int64, d: int64) -> None:
