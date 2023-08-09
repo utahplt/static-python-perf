@@ -24,7 +24,7 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, float64, inline, Array
+from __static__ import int64, float64, Array
 from typing import final, List, Iterator
 import random
 
@@ -40,35 +40,29 @@ class GVector(object):
         self.y = y
         self.z = z
 
-    @inline
     def Mag(self) -> float64:
         return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
-    @inline
     def dist(self, other: GVector) -> float64:
         return math.sqrt((self.x - other.x) ** 2 +
                          (self.y - other.y) ** 2 +
                          (self.z - other.z) ** 2)
 
-    @inline
     def __add__(self, other: GVector) -> GVector:
         if not isinstance(other, GVector):
             raise ValueError("Can't add GVector to " + str(type(other)))
         v = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
         return v
 
-    @inline
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
-    @inline
     def __mul__(self, other: float64) -> GVector:
         v = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
-    @inline
     def linear_combination(self, other: GVector, l1: float64, l2: float64) -> GVector:
         v = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
@@ -82,7 +76,6 @@ class GVector(object):
 #    knots += [len(points) - degree] * degree
 #    return knots
 
-@final
 class Spline(object):
     """Class for representing B-Splines and NURBS of arbitrary degree"""
 
@@ -108,7 +101,6 @@ degree of the Spline."""
         self.points = points
         self.degree = degree
 
-    @inline
     def GetDomain(self) -> (int64, int64):
         """Returns the domain of the B-Spline"""
         return (self.knots[self.degree - 1],
@@ -155,7 +147,6 @@ degree of the Spline."""
     #         I = dom[1] - 1
     #    return I
 
-@final
 class Chaosgame(object):
     def __init__(self, splines: List[Spline], thickness: float64, w: int64, h: int64, n: int64) -> None:
         self.splines = splines
