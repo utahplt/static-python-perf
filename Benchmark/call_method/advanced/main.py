@@ -1,5 +1,5 @@
 import __static__
-from typing import final, inline
+from typing_extensions import final, inline
 
 """Microbenchmark for method call overhead.
 
