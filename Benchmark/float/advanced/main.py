@@ -32,7 +32,7 @@ def maximize(points: List[Point]) -> Point:
     return next_point
 
 def benchmark(n: int64) -> Point:
-    points = [Point(i) for i in range(n)]
+    points = [Point(float(i)) for i in range(n)]  # Ensure i is cast to float
     for p in points:
         p.normalize()
     return maximize(points)
