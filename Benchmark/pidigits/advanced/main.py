@@ -11,7 +11,7 @@ bg
 
 # import itertools
 import __static__
-from __static__ import int64, Array
+from __static__ import int64, Array, dynamic
 
 NDIGITS = 5000
 
