@@ -24,7 +24,6 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import inline
 from typing import final, List, Iterator
 import random
 
@@ -67,7 +66,6 @@ class GVector(object):
                     self.z * l1 + other.z * l2)
         return v
 
-@final
 class Spline(object):
     def __init__(self, points: List[GVector], degree: int, knots: List[int]) -> None:
         if knots == None:
@@ -161,7 +159,7 @@ class Chaosgame(object):
                     y -= 1
                 im[x][h - y - 1] = 0
 
-    @inline
+
     def transform_point(self, point: GVector) -> GVector:
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
