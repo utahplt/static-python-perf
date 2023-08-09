@@ -10,10 +10,8 @@ bg:
 - fixed num iterations (see bottom of file)
 - removed command-line parsing
 """
-from __future__ import annotations
 import __static__
 from __static__ import int64, inline
-
 
 def foo(a: int64, b: int64, c: int64, d: int64) -> None:
     # 20 calls
@@ -37,7 +35,6 @@ def foo(a: int64, b: int64, c: int64, d: int64) -> None:
     bar(a, b, c)
     bar(a, b, c)
     bar(a, b, c)
-
 
 def bar(a: int64, b: int64, c: int64) -> None:
     # 20 calls
@@ -86,7 +83,6 @@ def baz(a: int64, b: int64) -> None:
     quux(a)
     quux(a)
 
-
 def quux(a: int64) -> None:
     # 20 calls
     qux()
@@ -109,8 +105,6 @@ def quux(a: int64) -> None:
     qux()
     qux()
     qux()
-
-
 @inline
 def qux() -> None:
     pass
