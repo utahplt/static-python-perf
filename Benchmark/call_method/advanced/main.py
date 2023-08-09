@@ -1,5 +1,5 @@
 import __static__
-
+from __static__ import int64
 """Microbenchmark for method call overhead.
 
 This measures simple method calls that are predictable, do not use varargs or
@@ -13,7 +13,7 @@ bg:
 
 class Foo(object):
 
-    def foo(self: 'Foo', a: int, b: int, c: int, d: int) -> None:
+    def foo(self: 'Foo', a: int64, b: int64, c: int64, d: int64) -> None:
         # 20 calls
         self.bar(a, b, c)
         self.bar(a, b, c)
@@ -36,7 +36,7 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
 
-    def bar(self: 'Foo', a: int, b: int, c: int) -> None:
+    def bar(self: 'Foo', a: int64, b: int64, c: int64) -> None:
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -59,7 +59,7 @@ class Foo(object):
         self.baz(a, b)
         self.baz(a, b)
 
-    def baz(self: 'Foo', a: int, b: int) -> None:
+    def baz(self: 'Foo', a: int64, b: int64) -> None:
         # 20 calls
         self.quux(a)
         self.quux(a)
@@ -82,7 +82,7 @@ class Foo(object):
         self.quux(a)
         self.quux(a)
 
-    def quux(self: 'Foo', a: int) -> None:
+    def quux(self: 'Foo', a: int64) -> None:
         # 20 calls
         self.qux()
         self.qux()
