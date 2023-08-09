@@ -1,4 +1,3 @@
-from Timer import Timer
 """
 bg:
 - add `ITERATIONS` constant
@@ -7,18 +6,19 @@ bg:
 - replace `xrange` with `range`
 - remove unused imports
 """
-
+from __future__ import annotations
+import __static__
+from __static__ import int64, float64
 from math import sin, cos, sqrt
+from typing import List
 
-@fields({'x':float, 'y':float, 'z':float})
 class Point(object):
-
-    def __init__(self:Point, i:float)->Void:
+    def __init__(self, i: float64) -> None:
         self.x = x = sin(i)
         self.y = cos(i) * 3
         self.z = (x * x) / 2
 
-    def normalize(self:Point)->Void:
+    def normalize(self) -> None:
         x = self.x
         y = self.y
         z = self.z
@@ -27,20 +27,19 @@ class Point(object):
         self.y /= norm
         self.z /= norm
 
-    def maximize(self:Point, other:Point)->Point:
+    def maximize(self, other: Point) -> Point:
         self.x = self.x if self.x > other.x else other.x
         self.y = self.y if self.y > other.y else other.y
         self.z = self.z if self.z > other.z else other.z
         return self
 
-
-def maximize(points:List(Point))->Point:
-    next = points[0]
+def maximize(points: List[Point]) -> Point:
+    next_point = points[0]
     for p in points[1:]:
-        next = next.maximize(p)
-    return next
+        next_point = next_point.maximize(p)
+    return next_point
 
-def benchmark(n:int)->Point:
+def benchmark(n: int64) -> Point:
     points = [Point(i) for i in range(n)]
     for p in points:
         p.normalize()
@@ -49,6 +48,4 @@ def benchmark(n:int)->Point:
 POINTS = 200000
 
 if __name__ == "__main__":
-    t = Timer()
-    with t:
-        benchmark(POINTS)
+    benchmark(POINTS)
