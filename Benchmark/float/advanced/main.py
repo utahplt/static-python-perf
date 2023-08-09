@@ -1,6 +1,5 @@
 from __future__ import annotations
 import __static__
-from __static__ import int64
 from math import sin, cos, sqrt
 from typing import List
 
@@ -31,13 +30,13 @@ def maximize(points: List[Point]) -> Point:
         next_point = next_point.maximize(p)
     return next_point
 
-def benchmark(n: int64) -> Point:
+def benchmark(n: int) -> Point:
     points = [Point(float(i)) for i in range(n)]  # Ensure i is cast to float
     for p in points:
         p.normalize()
     return maximize(points)
 
-POINTS: int64 = 200000
+POINTS = 200000
 
 if __name__ == "__main__":
     benchmark(POINTS)
