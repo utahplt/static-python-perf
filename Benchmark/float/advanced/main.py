@@ -1,11 +1,3 @@
-"""
-bg:
-- add `ITERATIONS` constant
-- remove `main` function
-- add missing type annotations
-- replace `xrange` with `range`
-- remove unused imports
-"""
 from __future__ import annotations
 import __static__
 from __static__ import int64
@@ -45,7 +37,7 @@ def benchmark(n: int64) -> Point:
         p.normalize()
     return maximize(points)
 
-POINTS = 200000
+POINTS: int64 = 200000
 
 if __name__ == "__main__":
     benchmark(POINTS)
