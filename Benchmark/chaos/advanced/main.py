@@ -24,73 +24,51 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, float64, inline, Array
 from typing import final, List, Iterator
 import random
-
-ArrayI64 = Array[int64]
 
 random.seed(1234)
 ITERATIONS = 1
 import math
 
 class GVector(object):
-    def __init__(self, x: int64, y: int64, z: int64) -> None:
+    def __init__(self, x: int, y: int, z: int) -> None:
         self.x = x
         self.y = y
         self.z = z
 
-    @inline
-    def Mag(self) -> float64:
+    def Mag(self) -> float:
         return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
-    @inline
-    def dist(self, other: GVector) -> float64:
+    def dist(self, other: GVector) -> float:
         return math.sqrt((self.x - other.x) ** 2 +
                          (self.y - other.y) ** 2 +
                          (self.z - other.z) ** 2)
 
-    @inline
     def __add__(self, other: GVector) -> GVector:
         if not isinstance(other, GVector):
             raise ValueError("Can't add GVector to " + str(type(other)))
         v = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
         return v
 
-    @inline
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
-    @inline
-    def __mul__(self, other: float64) -> GVector:
+    def __mul__(self, other: float) -> GVector:
         v = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
-    @inline
-    def linear_combination(self, other: GVector, l1: float64, l2: float64) -> GVector:
+    def linear_combination(self, other: GVector, l1: float, l2: float) -> GVector:
         v = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
                     self.z * l1 + other.z * l2)
         return v
 
-
-# bg: inlined
-# def GetKnots(points:List(Dyn), degree:int)->List(int):
-#    knots = [0] * degree + range(1, len(points) - degree)
-#    knots += [len(points) - degree] * degree
-#    return knots
-
-@final
 class Spline(object):
-    """Class for representing B-Splines and NURBS of arbitrary degree"""
-
-    def __init__(self, points: List[GVector], degree: int64, knots: Iterator[ArrayI64]) -> None:
-        """Creates a Spline. points is a list of GVector, degree is the
-degree of the Spline."""
+    def __init__(self, points: List[GVector], degree: int, knots: List[int]) -> None:
         if knots == None:
-            # bg: inlined : self.knots = GetKnots(points, degree)
             knots = [0] * degree + range(1, len(points) - degree)
             knots += [len(points) - degree] * degree
             self.knots = knots
@@ -108,14 +86,11 @@ degree of the Spline."""
         self.points = points
         self.degree = degree
 
-    @inline
-    def GetDomain(self) -> (int64, int64):
-        """Returns the domain of the B-Spline"""
+    def GetDomain(self) -> (int, int):
         return (self.knots[self.degree - 1],
                 self.knots[len(self.knots) - self.degree])
 
-    def __call__(self, u: float64) -> GVector:
-        """Calculates a point of the B-Spline using de Boors Algorithm"""
+    def __call__(self, u: float) -> GVector:
         dom = self.GetDomain()
         if u < dom[0] or u > dom[1]:
             raise ValueError("Function value not in domain")
@@ -123,7 +98,7 @@ degree of the Spline."""
             return self.points[0]
         if u == dom[1]:
             return self.points[-1]
-        I = None  # bg:inlined self.GetIndex(u)
+        I = None
         GetIndexdom = self.GetDomain()
         for ii in range(self.degree - 1, len(self.knots) - self.degree):
             if u >= self.knots[ii] and u < self.knots[ii + 1]:
@@ -144,20 +119,8 @@ degree of the Spline."""
                 d[index] = d[index].linear_combination(d[index + 1], co1, co2)
         return d[0]
 
-    # bg: inlined
-    # def GetIndex(self:Spline, u:float)->int:
-    #    dom = self.GetDomain()
-    #    for ii in range(self.degree - 1, len(self.knots) - self.degree):
-    #        if u >= self.knots[ii] and u < self.knots[ii + 1]:
-    #            I = ii
-    #            break
-    #    else:
-    #         I = dom[1] - 1
-    #    return I
-
-@final
 class Chaosgame(object):
-    def __init__(self, splines: List[Spline], thickness: float64, w: int64, h: int64, n: int64) -> None:
+    def __init__(self, splines: List[Spline], thickness: float, w: int, h: int, n: int) -> None:
         self.splines = splines
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
@@ -176,9 +139,8 @@ class Chaosgame(object):
                 t = 1 / 999 * i
                 curr = spl(t)
                 length += curr.dist(last)
-            self.num_trafos.append(max(1, int64(length / maxlength * 1.5)))
+            self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
-        # def create_image_chaos(self:Chaosgame, w:int, h:int, n:int)->Void:
         im = [[1] * h for i in range(w)]
         point = GVector((self.maxx + self.minx) / 2,
                         (self.maxy + self.miny) / 2,
@@ -189,35 +151,25 @@ class Chaosgame(object):
                 point = self.transform_point(point)
                 x = (point.x - self.minx) / self.width * w
                 y = (point.y - self.miny) / self.height * h
-                x = int64(x)
-                y = int64(y)
+                x = int(x)
+                y = int(y)
                 if x == w:
                     x -= 1
                 if y == h:
                     y -= 1
                 im[x][h - y - 1] = 0
 
-    # bg: inlined
-    # def get_random_trafo(self:Chaosgame)->(int,int):
-    #    r = random.randrange(int(self.num_total) + 1)
-    #    l = 0
-    #    for i in range(len(self.num_trafos)):
-    #        if r >= l and r < l + self.num_trafos[i]:
-    #            return i, random.randrange(self.num_trafos[i])
-    #        l += self.num_trafos[i]
-    #    return len(self.num_trafos) - 1, random.randrange(self.num_trafos[-1])
 
     def transform_point(self, point: GVector) -> GVector:
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
-        rrr = random.randrange(int64(self.num_total) + 1)
+        rrr = random.randrange(int(self.num_total) + 1)
         lll = 0
         for iii in range(len(self.num_trafos)):
             if rrr >= lll and rrr < lll + self.num_trafos[iii]:
                 trafo = iii, random.randrange(self.num_trafos[iii])
             lll += self.num_trafos[iii]
         trafo = len(self.num_trafos) - 1, random.randrange(self.num_trafos[-1])
-        # bg: inlined above `trafo = self.get_random_trafo()`
         start, end = self.splines[trafo[0]].GetDomain()
         length = end - start
         seg_length = length / self.num_trafos[trafo[0]]
@@ -236,8 +188,8 @@ class Chaosgame(object):
                            self.thickness
         else:
             print("r", end='')
-        # bg: inlined
-        ##self.truncate(basepoint)
+            # bg: inlined
+            ##self.truncate(basepoint)
         if basepoint.x >= self.maxx:
             basepoint.x = self.maxx
         if basepoint.y >= self.maxy:
@@ -247,39 +199,6 @@ class Chaosgame(object):
         if basepoint.y < self.miny:
             basepoint.y = self.miny
         return basepoint
-
-    # bg: inlined
-    # def truncate(self:Chaosgame, point:GVector)->Void:
-    #    if point.x >= self.maxx:
-    #        point.x = self.maxx
-    #    if point.y >= self.maxy:
-    #        point.y = self.maxy
-    #    if point.x < self.minx:
-    #        point.x = self.minx
-    #    if point.y < self.miny:
-    #        point.y = self.miny
-
-    # bg: inlined
-    # def create_image_chaos(self:Chaosgame, w:int, h:int, n:int)->Void:
-    #    im = [[1] * h for i in range(w)]
-    #    point = GVector((self.maxx + self.minx) / 2,
-    #                    (self.maxy + self.miny) / 2,
-    #                    0)
-    #    colored = 0
-    #    for _ in range(n):
-    #        for i in range(5000):
-    #            point = self.transform_point(point)
-    #            x = (point.x - self.minx) / self.width * w
-    #            y = (point.y - self.miny) / self.height * h
-    #            x = int(x)
-    #            y = int(y)
-    #            if x == w:
-    #                x -= 1
-    #            if y == h:
-    #                y -= 1
-    #            im[x][h - y - 1] = 0
-    #    return
-
 
 if __name__ == "__main__":
     splines = [

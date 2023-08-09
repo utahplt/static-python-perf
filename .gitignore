@@ -2,3 +2,4 @@ __pycache__
 *.swn
 *.swo
 *.swp
+.DS_Store

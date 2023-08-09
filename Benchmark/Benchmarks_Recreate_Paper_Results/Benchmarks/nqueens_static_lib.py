@@ -1,11 +1,13 @@
 """
 Simple, brute-force N-Queens solver. Using static python
-Made by sebastiancr@fb.com(Sebastian Chaves) based on main.py made by collinwinter@google.com (Collin Winter)
+Made by sebastiancr@fb.com(Sebastian Chaves) based on nqueens.py made by collinwinter@google.com (Collin Winter)
 """
 from __future__ import annotations
 import __static__
 from __static__ import int64, box, Array, cbool, clen
 from typing import List, Generator, Iterator
+
+ArrayI64 = Array[int64]
 
 
 def static_abs(v: int64) -> int64:
@@ -14,7 +16,7 @@ def static_abs(v: int64) -> int64:
     return v
 
 
-def create_array(start: int64, end: int64, step: int64) -> Array[int64]:
+def create_array(start: int64, end: int64, step: int64) -> ArrayI64:
     """
     Function that creates an array that contains elements from start (inclusive) to end (non-inclusve) increasing the given steps
     Note: if It is not possible to go from start to end, an empty array will be returned.
@@ -23,9 +25,9 @@ def create_array(start: int64, end: int64, step: int64) -> Array[int64]:
     c: int64 = start
     i: int64 = 0
     if (end - start) * step <= 0:
-        return Array[int64](0)
+        return ArrayI64(0)
     size: int64 = int64((static_abs(end - start) - 1) / static_abs(step) + 1)
-    a: Array[int64] = Array[int64](box(size))
+    a: ArrayI64 = ArrayI64(box(size))
     while i < size:
         a[i] = c
         c = c + step
@@ -33,14 +35,14 @@ def create_array(start: int64, end: int64, step: int64) -> Array[int64]:
     return a
 
 
-def permutations(pool: Array[int64], r: int64 = -1) -> Iterator[Array[int64]]:
+def permutations(pool: ArrayI64, r: int64 = -1) -> Iterator[ArrayI64]:
     n = clen(pool)
     if r == -1:
         r = n
     rb = box(r)
-    indices: Array[int64] = create_array(0, n, 1)
-    cycles: Array[int64] = create_array(n, n - r, -1)
-    per: Array[int64] = Array[int64](rb)
+    indices: ArrayI64 = create_array(0, n, 1)
+    cycles: ArrayI64 = create_array(n, n - r, -1)
+    per: ArrayI64 = ArrayI64(rb)
     idx: int64 = 0
     while idx < r:
         per[idx] = pool[indices[idx]]
@@ -52,11 +54,7 @@ def permutations(pool: Array[int64], r: int64 = -1) -> Iterator[Array[int64]]:
         while i >= 0:
             cycles[i] -= 1
             if cycles[i] == 0:
-                # rotate # indices[i:] = Array[int64](indices[i + 1 :] + indices[i : i + 1])
-                lastN:int64 = indices[i]
-                for ii in range(i+1, len(indices)):
-                  indices[ii-1] = indices[ii]
-                indices[len(indices)-1] = lastN
+                indices[i:] = ArrayI64(indices[i + 1 :] + indices[i : i + 1])
                 cycles[i] = n - int64(i)
             else:
                 j = cycles[i]
@@ -74,7 +72,7 @@ def permutations(pool: Array[int64], r: int64 = -1) -> Iterator[Array[int64]]:
             return
 
 
-def solve(queen_count: int) -> Iterator[Array[int64]]:
+def solve(queen_count: int) -> Iterator[ArrayI64]:
     """N-Queens solver.
 
     Args:
@@ -89,7 +87,7 @@ def solve(queen_count: int) -> Iterator[Array[int64]]:
 
     # The generator is still needed as it is being used to check if it is a valid configuration using sets
     cols: Iterator[int] = range(queen_count)
-    static_cols: Array[int64] = create_array(0, int64(queen_count), 1)
+    static_cols: ArrayI64 = create_array(0, int64(queen_count), 1)
     for vec in permutations(static_cols):
         if (
             queen_count
@@ -99,7 +97,7 @@ def solve(queen_count: int) -> Iterator[Array[int64]]:
             yield vec
 
 
-def bench_n_queens(queen_count: int) -> List[Array[int64]]:
+def bench_n_queens(queen_count: int) -> List[ArrayI64]:
 
     """
     Return all the possible valid configurations of the queens
@@ -107,16 +105,3 @@ def bench_n_queens(queen_count: int) -> List[Array[int64]]:
     See solve method to understand it better
     """
     return list(solve(queen_count))
-
-if __name__ == "__main__":
-    import sys
-
-    num_iterations = 1
-    if len(sys.argv) > 1:
-        num_iterations = int(sys.argv[1])
-
-    queen_count = 8
-    for _ in range(num_iterations):
-        res = bench_n_queens(queen_count)
-        assert len(res) == 92
-

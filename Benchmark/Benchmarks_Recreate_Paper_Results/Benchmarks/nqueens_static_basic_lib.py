@@ -1,12 +1,11 @@
 # Copyright (c) Facebook, Inc. and its affiliates. (http://www.facebook.com)
 """
     Simple, brute-force N-Queens solver. Using typing python
-    Made by sebastiancr@fb.com(Sebastian Chaves) based on main.py made by collinwinter@google.com (Collin Winter)
+    Made by sebastiancr@fb.com(Sebastian Chaves) based on nqueens.py made by collinwinter@google.com (Collin Winter)
 """
 from __future__ import annotations
 import __static__
-from typing import Generator, Tuple, Iterator, List
-
+from typing import Generator, Tuple, Iterator
 
 # Pure-Python implementation of itertools.permutations().
 def permutations(iterable: Iterator[int], r: int = -1) -> Iterator[List[int]]:
@@ -22,7 +21,7 @@ def permutations(iterable: Iterator[int], r: int = -1) -> Iterator[List[int]]:
         for i in reversed(range(r)):
             cycles[i] -= 1
             if cycles[i] == 0:
-                indices[i:] = indices[i + 1:] + indices[i: i + 1]
+                indices[i:] = indices[i + 1 :] + indices[i : i + 1]
                 cycles[i] = n - i
             else:
                 j = cycles[i]
@@ -49,25 +48,12 @@ def n_queens(queen_count: int) -> Iterator[List[int]]:
     cols: Iterator[int] = range(queen_count)
     for vec in permutations(cols):
         if (
-                queen_count
-                == len(set(vec[i] + i for i in cols))  # noqa: C401
-                == len(set(vec[i] - i for i in cols))  # noqa: C401
+            queen_count
+            == len(set(vec[i] + i for i in cols))  # noqa: C401
+            == len(set(vec[i] - i for i in cols))  # noqa: C401
         ):
             yield vec
 
 
 def bench_n_queens(queen_count: int) -> List[List[int]]:
     return list(n_queens(queen_count))
-
-
-if __name__ == "__main__":
-    import sys
-
-    num_iterations = 1
-    if len(sys.argv) > 1:
-        num_iterations = int(sys.argv[1])
-
-    queen_count = 8
-    for _ in range(num_iterations):
-        res = bench_n_queens(queen_count)
-        assert len(res) == 92
