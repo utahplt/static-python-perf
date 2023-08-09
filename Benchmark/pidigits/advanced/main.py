@@ -11,7 +11,8 @@ bg
 
 # import itertools
 import __static__
-from __static__ import int64, Array, dynamic
+from __static__ import int64
+from typing import List
 
 NDIGITS = 5000
 
@@ -35,7 +36,7 @@ def extract(z: (int64, int64, int64, int64), j: int64) -> int64:
     return (q * j + r) // (s * j + t)
 
 
-def pi_digits(limit: int64) -> Array[int64]:
+def pi_digits(limit: int64) -> List[int64]:
     z = (1, 0, 0, 1)
     x = 1
     result = []
@@ -50,7 +51,7 @@ def pi_digits(limit: int64) -> Array[int64]:
     return result
 
 
-def calc_ndigits(n: int64) -> Array[int64]:
+def calc_ndigits(n: int64) -> List[int64]:
     return pi_digits(n)
 
 
