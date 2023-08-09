@@ -5,7 +5,7 @@
 """
 from __future__ import annotations
 import __static__
-from typing import Generator, Tuple, Iterator
+from typing import Generator, Tuple, Iterator, List
 
 
 # Pure-Python implementation of itertools.permutations().
