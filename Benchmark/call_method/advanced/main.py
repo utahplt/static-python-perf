@@ -1,5 +1,4 @@
 import __static__
-from typing_extensions import final, inline
 
 """Microbenchmark for method call overhead.
 
@@ -12,8 +11,6 @@ bg:
 - removed command-line parsing
 """
 
-
-@final
 class Foo(object):
 
     def foo(self: 'Foo', a: int, b: int, c: int, d: int) -> None:
@@ -108,7 +105,6 @@ class Foo(object):
         self.qux()
         self.qux()
 
-    @inline
     def qux(self: 'Foo') -> None:
         pass
 
