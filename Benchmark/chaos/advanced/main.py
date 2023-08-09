@@ -24,11 +24,8 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import Array
 from typing import final, List, Iterator
 import random
-
-ArrayI64 = Array[int64]
 
 random.seed(1234)
 ITERATIONS = 1
@@ -71,7 +68,7 @@ class GVector(object):
 
 @final
 class Spline(object):
-    def __init__(self, points: List[GVector], degree: int, knots: Iterator[ArrayI64]) -> None:
+    def __init__(self, points: List[GVector], degree: int, knots: List[int]) -> None:
         if knots == None:
             knots = [0] * degree + range(1, len(points) - degree)
             knots += [len(points) - degree] * degree
