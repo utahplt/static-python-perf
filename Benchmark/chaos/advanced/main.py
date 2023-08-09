@@ -24,7 +24,7 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, Array
+from __static__ import Array
 from typing import final, List, Iterator
 import random
 
@@ -35,7 +35,7 @@ ITERATIONS = 1
 import math
 
 class GVector(object):
-    def __init__(self, x: int64, y: int64, z: int64) -> None:
+    def __init__(self, x: int, y: int, z: int) -> None:
         self.x = x
         self.y = y
         self.z = z
@@ -71,7 +71,7 @@ class GVector(object):
 
 @final
 class Spline(object):
-    def __init__(self, points: List[GVector], degree: int64, knots: Iterator[ArrayI64]) -> None:
+    def __init__(self, points: List[GVector], degree: int, knots: Iterator[ArrayI64]) -> None:
         if knots == None:
             knots = [0] * degree + range(1, len(points) - degree)
             knots += [len(points) - degree] * degree
@@ -90,7 +90,7 @@ class Spline(object):
         self.points = points
         self.degree = degree
 
-    def GetDomain(self) -> (int64, int64):
+    def GetDomain(self) -> (int, int):
         return (self.knots[self.degree - 1],
                 self.knots[len(self.knots) - self.degree])
 
@@ -124,7 +124,7 @@ class Spline(object):
         return d[0]
 
 class Chaosgame(object):
-    def __init__(self, splines: List[Spline], thickness: float, w: int64, h: int64, n: int64) -> None:
+    def __init__(self, splines: List[Spline], thickness: float, w: int, h: int, n: int) -> None:
         self.splines = splines
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
@@ -143,7 +143,7 @@ class Chaosgame(object):
                 t = 1 / 999 * i
                 curr = spl(t)
                 length += curr.dist(last)
-            self.num_trafos.append(max(1, int64(length / maxlength * 1.5)))
+            self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
         im = [[1] * h for i in range(w)]
         point = GVector((self.maxx + self.minx) / 2,
@@ -155,8 +155,8 @@ class Chaosgame(object):
                 point = self.transform_point(point)
                 x = (point.x - self.minx) / self.width * w
                 y = (point.y - self.miny) / self.height * h
-                x = int64(x)
-                y = int64(y)
+                x = int(x)
+                y = int(y)
                 if x == w:
                     x -= 1
                 if y == h:
@@ -167,7 +167,7 @@ class Chaosgame(object):
     def transform_point(self, point: GVector) -> GVector:
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
-        rrr = random.randrange(int64(self.num_total) + 1)
+        rrr = random.randrange(int(self.num_total) + 1)
         lll = 0
         for iii in range(len(self.num_trafos)):
             if rrr >= lll and rrr < lll + self.num_trafos[iii]:
