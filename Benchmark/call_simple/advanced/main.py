@@ -11,7 +11,7 @@ bg:
 - removed command-line parsing
 """
 import __static__
-from __static__ import int64, inline
+from __static__ import int64
 
 def foo(a: int64, b: int64, c: int64, d: int64) -> None:
     # 20 calls
@@ -105,7 +105,7 @@ def quux(a: int64) -> None:
     qux()
     qux()
     qux()
-@inline
+    
 def qux() -> None:
     pass
 
