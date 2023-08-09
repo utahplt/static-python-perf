@@ -24,7 +24,7 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, float64, Array
+from __static__ import int64, Array
 from typing import final, List, Iterator
 import random
 
@@ -40,10 +40,10 @@ class GVector(object):
         self.y = y
         self.z = z
 
-    def Mag(self) -> float64:
+    def Mag(self) -> float:
         return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
-    def dist(self, other: GVector) -> float64:
+    def dist(self, other: GVector) -> float:
         return math.sqrt((self.x - other.x) ** 2 +
                          (self.y - other.y) ** 2 +
                          (self.z - other.z) ** 2)
@@ -57,13 +57,13 @@ class GVector(object):
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
-    def __mul__(self, other: float64) -> GVector:
+    def __mul__(self, other: float) -> GVector:
         v = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
-    def linear_combination(self, other: GVector, l1: float64, l2: float64) -> GVector:
+    def linear_combination(self, other: GVector, l1: float, l2: float) -> GVector:
         v = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
                     self.z * l1 + other.z * l2)
@@ -106,7 +106,7 @@ degree of the Spline."""
         return (self.knots[self.degree - 1],
                 self.knots[len(self.knots) - self.degree])
 
-    def __call__(self, u: float64) -> GVector:
+    def __call__(self, u: float) -> GVector:
         """Calculates a point of the B-Spline using de Boors Algorithm"""
         dom = self.GetDomain()
         if u < dom[0] or u > dom[1]:
@@ -148,7 +148,7 @@ degree of the Spline."""
     #    return I
 
 class Chaosgame(object):
-    def __init__(self, splines: List[Spline], thickness: float64, w: int64, h: int64, n: int64) -> None:
+    def __init__(self, splines: List[Spline], thickness: float, w: int64, h: int64, n: int64) -> None:
         self.splines = splines
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
