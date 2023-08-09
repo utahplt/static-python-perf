@@ -8,12 +8,12 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, float64
+from __static__ import int64
 from math import sin, cos, sqrt
 from typing import List
 
 class Point(object):
-    def __init__(self, i: float64) -> None:
+    def __init__(self, i: float) -> None:
         self.x = x = sin(i)
         self.y = cos(i) * 3
         self.z = (x * x) / 2
