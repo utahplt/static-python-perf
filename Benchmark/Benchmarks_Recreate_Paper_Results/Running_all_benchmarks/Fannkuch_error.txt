@@ -1,0 +1,7 @@
+Running Tools/benchmarks/fannkuch_static.py...
+Traceback (most recent call last):
+  File "/vol/cinder/Tools/benchmarks/fannkuch_static.py", line 12, in <module>
+    res = fannkuch(DEFAULT_ARG)
+  File "/vol/cinder/Tools/benchmarks/fannkuch_static_lib.py", line 19, in fannkuch
+    count: ArrayI64 = ArrayI64(range(1, nb + 1))
+TypeError: an integer is required

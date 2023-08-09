@@ -1,0 +1,11 @@
+Running Tools/benchmarks/nqueens_static.py...
+Traceback (most recent call last):
+  File "/vol/cinder/Tools/benchmarks/nqueens_static.py", line 11, in <module>
+    res = bench_n_queens(queen_count)
+  File "/vol/cinder/Tools/benchmarks/nqueens_static_lib.py", line 107, in bench_n_queens
+    return list(solve(queen_count))
+  File "/vol/cinder/Tools/benchmarks/nqueens_static_lib.py", line 91, in solve
+    for vec in permutations(static_cols):
+  File "/vol/cinder/Tools/benchmarks/nqueens_static_lib.py", line 57, in permutations
+    indices[i:] = ArrayI64(indices[i + 1 :] + indices[i : i + 1])
+TypeError: sequence index must be integer, not 'slice'
