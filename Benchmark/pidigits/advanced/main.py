@@ -36,7 +36,7 @@ def extract(z: (int64, int64, int64, int64), j: int64) -> int64:
     return (q * j + r) // (s * j + t)
 
 
-def pi_digits(limit: int64) -> List[int64]:
+def pi_digits(limit: int64) -> List[int]:
     z = (1, 0, 0, 1)
     x = 1
     result = []
@@ -51,7 +51,7 @@ def pi_digits(limit: int64) -> List[int64]:
     return result
 
 
-def calc_ndigits(n: int64) -> List[int64]:
+def calc_ndigits(n: int64) -> List[int]:
     return pi_digits(n)
 
 
