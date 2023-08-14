@@ -2,7 +2,7 @@ import csv
 import subprocess
 import time
 import os
-
+import sys
 
 """
     Run benchmark commands and record runtimes in a CSV file.
@@ -27,7 +27,7 @@ def run_commands_and_record_runtimes(benchmark_name, commands, metric_name, num_
     # Open the CSV file and write the header
     with open(csv_filename, "w", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
-        
+
         # Determine the header based on the metric_name
         if metric_name == "tmax":
             header = ["Iteration"] + ["T-Max (SP JIT SF)","T-Max (SP JIT)","T-Max (SP)","T-Max (JIT SF)","T-Max (JIT)","T-Max ()" ]
@@ -42,21 +42,32 @@ def run_commands_and_record_runtimes(benchmark_name, commands, metric_name, num_
         # Run the benchmark commands and record runtimes
         for run in range(num_runs):
             runtimes = [f"Iteration {run+1}"]
+            error_detected = False  # Flag to detect if an error occurred
 
             for command in commands:
                 command_with_name = command.format(benchmark_name=benchmark_name,final_itr_arg = final_itr_arg)
 
                 start_time = time.time()
                 process = subprocess.Popen(command_with_name, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                process.communicate()
+                
+                _, stderr_output = process.communicate()  # Capture stderr output
                 end_time = time.time()
 
                 runtime = round(end_time - start_time,3)
                 runtimes.append(runtime)
 
-            # Write the runtimes row to the CSV file
-            csv_writer.writerow(runtimes)
+                if process.returncode != 0:
+                    error_detected = True
+                    print(f"Error in benchmark: {benchmark_name}")
+                    print(f"Command: {command_with_name}")
+                    print("Error Output:")
+                    print(stderr_output.decode("utf-8"))
+                    sys.exit(1)  # Exit the program if an error occurs
 
+            # Write the runtimes row to the CSV file
+            if not error_detected:
+                csv_writer.writerow(runtimes)
+        
     print(f"Command runtimes recorded in {csv_filename}")
 
 """
@@ -108,7 +119,7 @@ if __name__ == "__main__":
     # Taking benchmark name as input from user
     while True:
         benchmark_name = input("Enter the name of the benchmark: ")
-        if benchmark_name not in ["richards", "deltablue", "nbody", "fannkuch"]:
+        if benchmark_name not in ["richards", "deltablue", "nbody", "fannkuch", "nqueens", "pystone"]:
             print("Invalid benchmark name! Please choose 'richards', 'deltablue', 'fannkuch' or 'nbody'.")
         else:
             break
@@ -132,7 +143,7 @@ if __name__ == "__main__":
 
     # Normalizing option
     print("We are normalizing the table by dividing every row by the first value in that row")
-    normalize_option = input("Do you want to normalize the CSV file later? (y/n): ").lower()
+    normalize_option = input("Do you also want a normalized version of the runtimes later? (y/n): ").lower()
     print("Generating runtime records...")
 
     # Final iteration count variable(refer SP paper commands pg 32,33)
