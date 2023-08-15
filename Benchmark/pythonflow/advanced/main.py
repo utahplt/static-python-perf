@@ -6,7 +6,7 @@
 
 """
 import __static__
-import os
+from __static__ import int64, Array
 from typing import List
 
 class PythonFlow:
@@ -31,7 +31,7 @@ class PythonFlow:
         # total flow which can be retrieved
         self.total_flow = 0
         # file name
-        self.file_name = os.path.join(os.path.dirname(__file__), "graph2.txt")
+        self.file_name = "graph2.txt"
 
         """  -- testing --
         n = 20
@@ -64,12 +64,12 @@ class PythonFlow:
             for char in line:
                 if char == "\n":
                     counter_col += 1
-                    row.append(int(number.strip()))
+                    row.append(int64(number.strip()))
                     self.graph.append(row)
                     row = []
                     number = ""
                 elif char == " ":
-                    row.append(int(number.strip()))
+                    row.append(int64(number.strip()))
                     number = ""
                 elif char != " ":
                     number += char
@@ -103,7 +103,7 @@ class PythonFlow:
             self.update_residual()
             best_path = self.find_best_path()
 
-    def apply_path(self, path: List(Int)) -> None:
+    def apply_path(self, path: Array[int64]) -> None:
         cost = self.get_minimum_cost_flow(path)
         #		print "applying cost:",cost
         self.total_flow += cost
@@ -113,7 +113,7 @@ class PythonFlow:
             source = x
         self.update_residual()
 
-    def find_best_path(self) -> List(Int):
+    def find_best_path(self) -> Array[int64]:
         # best path is obtained by doing bfs to reveal all available paths and greedy to choose the best path
         # assume that there is no antiparallel edges
         # this method chooses the best path from options
@@ -136,7 +136,7 @@ class PythonFlow:
 
         # find the minimum cost flow from augmenting paths
 
-    def get_minimum_cost_flow(self, path: List(Int)) -> Int:
+    def get_minimum_cost_flow(self, path: Array[int64]) -> int64:
         source = 0
         min = 9999
         for x in path:
@@ -146,7 +146,7 @@ class PythonFlow:
         return min
 
     # get list of available paths from particular vertex
-    def get_path(self, vertex: Int, paths: List(Int)) -> None:
+    def get_path(self, vertex: int64, paths: Array[int64]) -> None:
         options = self.get_options(vertex)
         sink_index = len(self.graph[0]) - 1
         if vertex == sink_index and len(options) == 0:
@@ -168,7 +168,7 @@ class PythonFlow:
 
                 # permute available vertices to generate path
 
-    def get_options(self, initial_vertex: Int) -> List(Int):
+    def get_options(self, initial_vertex: int64) -> Array[int64]:
         retval = []
         index = 0
         for x in self.graph[initial_vertex]:
@@ -178,7 +178,7 @@ class PythonFlow:
         return retval
 
     # print graph
-    def print_graph(self, graph: List(List(Int))) -> None:
+    def print_graph(self, graph: Array[Array[int64]]) -> None:
         for x in range(len(graph)):
             print(graph[x])
 
