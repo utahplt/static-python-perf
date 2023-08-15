@@ -21,8 +21,9 @@ bg:
 """
 from __future__ import annotations
 import __static__
-from __static__ import int64, ArrayI64, CheckedList, CheckedDict
+from __static__ import int64, CheckedList, CheckedDict, Array
 from typing import List
+from bisect import bisect
 
 w, h = 20, 40
 dir_no = 6
@@ -32,17 +33,17 @@ SW = SE - E
 W, NW, NE = -E, -SE, -SW
 
 
-def rotate(ido: ArrayI64) -> CheckedList[float]:
+def rotate(ido: Array[int64]) -> CheckedList[float]:
     rd = {E: NE, NE: NW, NW: W, W: SW, SW: SE, SE: E}
     return [rd[o] for o in ido]
 
 
-def flip(ido: ArrayI64) -> CheckedList[float]:
+def flip(ido: Array[int64]) -> CheckedList[float]:
     fd = {E: E, NE: SE, NW: SW, W: W, SW: NW, SE: NE}
     return [fd[o] for o in ido]
 
 
-def permute(ido: ArrayI64, r_ido: ArrayI64) -> CheckedList[float]:
+def permute(ido: Array[int64], r_ido: Array[int64]) -> CheckedList[float]:
     ps = [ido]
     for r in range(dir_no - 1):
         ps.append(rotate(ps[-1]))
@@ -62,7 +63,7 @@ def convert(ido: CheckedList[float]) -> CheckedList[float]:
 
 
 def get_footprints(board: CheckedList[float], cti: CheckedDict[float, int], pieces: CheckedList[CheckedList[CheckedList[float]]]) -> \
-        CheckedList[CheckedList[CheckedList[Set[ArrayI64]]]]:
+        CheckedList[CheckedList[CheckedList[Set[Array[int64]]]]]:
     fps = [[[] for p in range(len(pieces))] for ci in range(len(board))]
     for c in board:
         for pi, p in enumerate(pieces):
@@ -73,7 +74,7 @@ def get_footprints(board: CheckedList[float], cti: CheckedDict[float, int], piec
     return fps
 
 
-def get_senh(board: CheckedList[float], cti: CheckedDict[float, int]) -> List[Set[ArrayI64]]:
+def get_senh(board: CheckedList[float], cti: CheckedDict[float, int]) -> List[Set[Array[int64]]]:
     '''-> south-east neighborhood'''
     se_nh = []
     nh = [E, SW, SE]
@@ -102,8 +103,8 @@ def get_puzzle() -> (CheckedList[float], CheckedDict(float, int), CheckedList[Ch
     return (board, cti, pieces)
 
 
-def solve(n: int, i_min: int, free: List(int), curr_board: List(int), pieces_left: List(int),
-          solutions: List(int)) -> None:
+def solve(n: int, i_min: int, free: Array[int64], curr_board: Array[int64], pieces_left: Array[int64],
+          solutions: Array[int64]) -> None:
     fp_i_cands = fps[i_min]
     for p in pieces_left:
         fp_cands = fp_i_cands[p]
