@@ -64,12 +64,12 @@ class PythonFlow:
             for char in line:
                 if char == "\n":
                     counter_col += 1
-                    row.append(int64(number.strip()))
+                    row.append(int(number.strip()))
                     self.graph.append(row)
                     row = []
                     number = ""
                 elif char == " ":
-                    row.append(int64(number.strip()))
+                    row.append(int(number.strip()))
                     number = ""
                 elif char != " ":
                     number += char
