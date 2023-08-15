@@ -103,7 +103,7 @@ class PythonFlow:
             self.update_residual()
             best_path = self.find_best_path()
 
-    def apply_path(self, path: Array[int64]) -> None:
+    def apply_path(self, path: List[int]) -> None:
         cost = self.get_minimum_cost_flow(path)
         #		print "applying cost:",cost
         self.total_flow += cost
