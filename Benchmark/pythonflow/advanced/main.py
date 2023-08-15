@@ -5,12 +5,10 @@
 	description: PythonFlow class is an implementation of Ford-Fulkerson algorithm which is found in Introduction to Algorithm 3rd Edition. There are several ways of modification to build the program as my thought.
 
 """
-
+import __static__
 import os
-from Timer import Timer
-from retic import fields, Void, String, Int, List
+from typing import List
 
-@fields({'graph': List(List(Int)), 'flow': List(List(Int)), 'residual': List(List(Int)), 'total_flow': Int, 'file_name': String})
 class PythonFlow:
     # PythonFlow implement Ford-Fulkerson method to maximize flow on graph problems.
     # example of input text:
@@ -23,7 +21,7 @@ class PythonFlow:
     # 0 0 0 0 0 0
     #
     # (do not forget to put last enter)
-    def __init__(self:PythonFlow)->Void:
+    def __init__(self) -> None:
         # graph G network
         self.graph = []
         # flow f network
@@ -55,7 +53,7 @@ class PythonFlow:
         self.update_residual()
 
     # input graph from specified file
-    def load_file(self:PythonFlow)->Void:
+    def load_file(self) -> None:
         counter_row = 0
         counter_col = 0
         row = []
@@ -78,7 +76,7 @@ class PythonFlow:
 
                     # initializing flow network
 
-    def init_flow(self:PythonFlow)->Void:
+    def init_flow(self) -> None:
         number = []
         for element in self.graph:
             for value in element:
@@ -88,7 +86,7 @@ class PythonFlow:
 
             # update residual network value based on current flow
 
-    def update_residual(self:PythonFlow)->Void:
+    def update_residual(self) -> None:
         number = []
         self.residual = []
         for x in range(len(self.graph)):
@@ -97,7 +95,7 @@ class PythonFlow:
             self.residual.append(number)
             number = []
 
-    def main_algorithm(self:PythonFlow)->Void:
+    def main_algorithm(self) -> None:
         best_path = self.find_best_path()
         # iterate until no augmenting paths exist, it gives sign for maximum flow f
         while len(best_path) != 0:
@@ -105,7 +103,7 @@ class PythonFlow:
             self.update_residual()
             best_path = self.find_best_path()
 
-    def apply_path(self:PythonFlow, path:List(Int))->Void:
+    def apply_path(self, path: List(Int)) -> None:
         cost = self.get_minimum_cost_flow(path)
         #		print "applying cost:",cost
         self.total_flow += cost
@@ -115,7 +113,7 @@ class PythonFlow:
             source = x
         self.update_residual()
 
-    def find_best_path(self:PythonFlow)->List(Int):
+    def find_best_path(self) -> List(Int):
         # best path is obtained by doing bfs to reveal all available paths and greedy to choose the best path
         # assume that there is no antiparallel edges
         # this method chooses the best path from options
@@ -138,7 +136,7 @@ class PythonFlow:
 
         # find the minimum cost flow from augmenting paths
 
-    def get_minimum_cost_flow(self:PythonFlow, path:List(Int))->Int:
+    def get_minimum_cost_flow(self, path: List(Int)) -> Int:
         source = 0
         min = 9999
         for x in path:
@@ -148,7 +146,7 @@ class PythonFlow:
         return min
 
     # get list of available paths from particular vertex
-    def get_path(self:PythonFlow, vertex:Int, paths:List(Int))->Void:
+    def get_path(self, vertex: Int, paths: List(Int)) -> None:
         options = self.get_options(vertex)
         sink_index = len(self.graph[0]) - 1
         if vertex == sink_index and len(options) == 0:
@@ -170,7 +168,7 @@ class PythonFlow:
 
                 # permute available vertices to generate path
 
-    def get_options(self:PythonFlow, initial_vertex:Int)->List(Int):
+    def get_options(self, initial_vertex: Int) -> List(Int):
         retval = []
         index = 0
         for x in self.graph[initial_vertex]:
@@ -180,14 +178,11 @@ class PythonFlow:
         return retval
 
     # print graph
-    def print_graph(self:PythonFlow, graph:List(List(Int)))->Void:
+    def print_graph(self, graph: List(List(Int))) -> None:
         for x in range(len(graph)):
             print(graph[x])
 
+
 # # example of usage
 flow = PythonFlow()
-
-
-t = Timer()
-with t:
-    flow.main_algorithm()
+flow.main_algorithm()
