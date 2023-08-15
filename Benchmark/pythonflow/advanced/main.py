@@ -113,7 +113,7 @@ class PythonFlow:
             source = x
         self.update_residual()
 
-    def find_best_path(self) -> List[int64]:
+    def find_best_path(self) -> List[int]:
         # best path is obtained by doing bfs to reveal all available paths and greedy to choose the best path
         # assume that there is no antiparallel edges
         # this method chooses the best path from options
