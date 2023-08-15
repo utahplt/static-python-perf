@@ -41,11 +41,7 @@ def compose(a: Tuple[int64, int64, int64, int64], b: Tuple[int64, int64, int64, 
 
 def extract(z: Tuple[int64, int64, int64, int64], j: int64) -> int64:
     q, r, s, t = z
-    q_int64: int64 = q
-    r_int64: int64 = r
-    s_int64: int64 = s
-    t_int64: int64 = t  
-    return (q_int64 * j + r_int64) // (s_int64 * j + t_int64)
+    return (q * j + r) // (s * j + t)
 
 
 def pi_digits(limit: int64) -> List[int64]:
