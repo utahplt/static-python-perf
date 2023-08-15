@@ -1,22 +1,34 @@
+"""Calculating (some of) the digits of pi.  This stresses big integer
+arithmetic."""
+
 """
-Calculating (some of) the digits of pi. This stresses big integer arithmetic.
+bg
+- remove toplevel function, add `ITERATIONS` constant
+- replace `timer` with `Timer`
+- replaced iterators with lists
+- increased NDIGITS to `5000`
 """
 
+# import itertools
+import __static__
 from __static__ import int64, Array
 from typing import List, Tuple
 
-NDIGITS: int = 5000
-ITERATIONS: int = 1000  # Adjust the number of iterations as needed
+NDIGITS = 5000
 
-def gen_x(k: int64) -> Array[int64]:
+
+# Adapted from code on http://shootout.alioth.debian.org/
+def gen_x(k: int64) -> (Array[int64]):
     test: Array[int64] = Array[int64](4)
     test[0] = k
     test[1] = 4 * k + 2
     test[2] = 0
     test[3] = 2 * k + 1
-    return test
+    return (test)
 
-def compose(a: Tuple[int64, int64, int64, int64], b: Tuple[int64, int64, int64, int64]) -> Tuple[int64, int64, int64, int64]:
+
+def compose(a: Tuple[int64, int64, int64, int64], b: Tuple[int64, int64, int64, int64]) -> Tuple[
+    int64, int64, int64, int64]:
     aq, ar, as_, at = a
     bq, br, bs, bt = b
     return (
@@ -26,9 +38,11 @@ def compose(a: Tuple[int64, int64, int64, int64], b: Tuple[int64, int64, int64, 
         as_ * br + at * bt
     )
 
+
 def extract(z: Tuple[int64, int64, int64, int64], j: int64) -> int64:
     q, r, s, t = z
     return (q * j + r) // (s * j + t)
+
 
 def pi_digits(limit: int64) -> List[int64]:
     z = (1, 0, 0, 1)
@@ -44,9 +58,11 @@ def pi_digits(limit: int64) -> List[int64]:
         result.append(y)
     return result
 
+
 def calc_ndigits(n: int) -> List[int64]:
     return pi_digits(n)
 
+
 if __name__ == "__main__":
     result = calc_ndigits(NDIGITS)
-    print(result) 
+    print(result)
