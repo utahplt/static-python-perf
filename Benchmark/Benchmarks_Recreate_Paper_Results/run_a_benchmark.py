@@ -164,7 +164,10 @@ if __name__ == "__main__":
         "./python.exe -X jit -X jit-list-file=Tools/benchmarks/jitlist_{benchmark_name}_static.txt -X jit-enable-jit-list-wildcards Tools/benchmarks/{benchmark_name}_static.py {final_itr_arg}",
         "./python.exe Tools/benchmarks/{benchmark_name}_static.py {final_itr_arg}"
     ]
-
+# There are hardcoded paths (Tools/benchmarks/{benchmark_name}_static_basic.py)
+# take input form console? Run all benchmarks one at a time.
+# take path from console and then run that benchmark only.
+# hardcode my sp path on top to run all benchmakrs for advanced, untyped
     t_min_commands = [
         "./python.exe -X jit -X jit-list-file=Tools/benchmarks/jitlist_{benchmark_name}_static_basic.txt -X jit-enable-jit-list-wildcards -X jit-shadow-frame -X install-strict-loader Tools/benchmarks/{benchmark_name}_static_basic.py {final_itr_arg}",
         "./python.exe -X jit -X jit-list-file=Tools/benchmarks/jitlist_{benchmark_name}_static_basic.txt -X jit-enable-jit-list-wildcards -X install-strict-loader Tools/benchmarks/{benchmark_name}_static_basic.py {final_itr_arg}",

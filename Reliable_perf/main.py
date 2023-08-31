@@ -1,12 +1,14 @@
 import numpy as np
 
-np.random.seed(42)
+np.random.seed(420)
+
 mean = 10
 std_dev = 1
 sample_size = 8
 normal_sample = np.random.normal(mean, std_dev, sample_size)
 uniform_sample = np.random.uniform(0, 20, sample_size)
 
+# explain this
 def bootstrap_confidence_interval(data, alpha=0.95, num_resamples=10000):
     resamples = np.random.choice(data, size=(num_resamples, len(data)), replace=True)
     sample_means = np.mean(resamples, axis=1)
@@ -15,6 +17,10 @@ def bootstrap_confidence_interval(data, alpha=0.95, num_resamples=10000):
     lower_bound = np.percentile(sample_means, lower_percentile * 100)
     upper_bound = np.percentile(sample_means, upper_percentile * 100)
     return lower_bound, upper_bound
+
+# add signed rank interval calc too
+# Add a driver function. Driver takes in random number generator to get first 8 values, and if it does not converge, it will get 8 more values and so on.
+# Make it repead 20 times.
 
 # Normal
 conf_interval_normal = bootstrap_confidence_interval(normal_sample)
