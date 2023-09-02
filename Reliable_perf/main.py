@@ -60,14 +60,13 @@ def driver(random_number_generator, max_iterations=20):
                     sample_mean_10_percent_interval[0] <= conf_interval[0]
                     and sample_mean_10_percent_interval[1] >= conf_interval[1]
             )
-            # Calculate a signed rank confidence interval for the current data
+            # calc the signed rank interval
             signed_rank_conf_interval = signed_rank_confidence_interval(data)
-
-            # If the bootstrap and signed rank intervals are within the 10% mean interval, consider it converged
+            # If the bootstrap and signed rank intervals are within the 10% mean interval data converges
             if ci_within_10_percent_interval:
                 converged = True
             else:
-                # If not converged, increment the iteration count and get 8 more values
+                # If not converged, increment the iteration count and get 8 more values. Ideally wouldnt work for uniform?
                 iteration += 1
                 data = random_number_generator()  # Get 8 more values
 
@@ -87,7 +86,7 @@ def random_number_generator_normal():
 def random_number_generator_uniform():
     return np.random.uniform(0, 20, sample_size)
 
-# Call the driver function with your random number generator functions
+# Call the driver function for both distributions
 print("Results for Normal Distribution:")
 driver(random_number_generator_normal)
 
