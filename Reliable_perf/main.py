@@ -21,7 +21,7 @@ def bootstrap_confidence_interval(data, alpha=0.95, num_resamples=10000):
     # confidence interval
     return lower_bound, upper_bound
 
-
+# this entire process was in the book i meantioend in the meeting.
 def signed_rank_confidence_interval(data, alpha=0.95):
     # data in ascending order
     np.sort(data)
@@ -35,9 +35,8 @@ def signed_rank_confidence_interval(data, alpha=0.95):
     np.sum(signed_ranks)
     # error just in case
     se = np.sqrt((len(data) * (len(data) + 1) * (2 * len(data) + 1)) / 6)
-    # random sample of 10,000 standard normal values and find the |alpha/2| percentile
+    #  sample standard values
     z_alpha = np.abs(np.percentile(np.random.normal(0, 1, 10000), (1 - alpha / 2) * 100))
-
     # Calculate the upper and lower bound
     lower_bound = sample_mean - (z_alpha * se / np.sqrt(24))
     upper_bound = sample_mean + (z_alpha * se / np.sqrt(24))
@@ -46,24 +45,29 @@ def signed_rank_confidence_interval(data, alpha=0.95):
 
 def driver(random_number_generator, max_iterations=20):
     for _ in range(max_iterations):
-        data = random_number_generator()
+        data = random_number_generator() # init data
+        # Initialize
         converged = False
         iteration = 1
-
         while not converged:
+            # Calculate a bootstrap interval
             conf_interval = bootstrap_confidence_interval(data)
             sample_mean = np.mean(data)
+            # 10% interval around the mean
             sample_mean_10_percent_interval = [sample_mean - 0.1 * sample_mean, sample_mean + 0.1 * sample_mean]
+            # Check if the bootstrap interval is within the 10% mean interval. Mentioned in meeting?
             ci_within_10_percent_interval = (
-                sample_mean_10_percent_interval[0] <= conf_interval[0]
-                and sample_mean_10_percent_interval[1] >= conf_interval[1]
+                    sample_mean_10_percent_interval[0] <= conf_interval[0]
+                    and sample_mean_10_percent_interval[1] >= conf_interval[1]
             )
-
+            # Calculate a signed rank confidence interval for the current data
             signed_rank_conf_interval = signed_rank_confidence_interval(data)
 
+            # If the bootstrap and signed rank intervals are within the 10% mean interval, consider it converged
             if ci_within_10_percent_interval:
                 converged = True
             else:
+                # If not converged, increment the iteration count and get 8 more values
                 iteration += 1
                 data = random_number_generator()  # Get 8 more values
 
