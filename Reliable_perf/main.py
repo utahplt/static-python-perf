@@ -6,7 +6,8 @@ mean = 10
 std_dev = 1
 sample_size = 8
 
-
+# calcualtes the bootstrap confidence interval by generaating values with replacement from the data, calculating means and percentiles
+# and then calculating the lower and upper bounds of the confidence interval
 def bootstrap_confidence_interval(data, alpha=0.95, num_resamples=10000):
     # Generate values with replacement from the data
     resamples = np.random.choice(data, size=(num_resamples, len(data)), replace=True)
@@ -21,10 +22,13 @@ def bootstrap_confidence_interval(data, alpha=0.95, num_resamples=10000):
     # confidence interval
     return lower_bound, upper_bound
 
-# this entire process was in the book i meantioend in the meeting.
+
+# this entire process was in the book I mentioned in the meeting.
+"""The book is called Design of Observational Studies by Paul R. Rosenbaum."""
+# the processes are explained step by step as from the book
 def signed_rank_confidence_interval(data, alpha=0.95):
     # data in ascending order
-    np.sort(data)
+    data = np.sort(data)
     # Calculate ranks (mentioned in the book)
     ranks = np.arange(1, len(data) + 1)
     # signed ranks based on the median
@@ -32,7 +36,7 @@ def signed_rank_confidence_interval(data, alpha=0.95):
     # find the means
     sample_mean = np.mean(data)
     # sum up ranks
-    np.sum(signed_ranks)
+    sum_ranks = np.sum(signed_ranks)
     # error just in case
     se = np.sqrt((len(data) * (len(data) + 1) * (2 * len(data) + 1)) / 6)
     #  sample standard values
@@ -42,10 +46,11 @@ def signed_rank_confidence_interval(data, alpha=0.95):
     upper_bound = sample_mean + (z_alpha * se / np.sqrt(24))
     return lower_bound, upper_bound
 
-
+# driver function
 def driver(random_number_generator, max_iterations=20):
     for _ in range(max_iterations):
-        data = random_number_generator() # init data
+        data = random_number_generator()  # init data
+        old_data = data.copy()  # Save the old data
         # Initialize
         converged = False
         iteration = 1
@@ -66,9 +71,11 @@ def driver(random_number_generator, max_iterations=20):
             if ci_within_10_percent_interval:
                 converged = True
             else:
-                # If not converged, increment the iteration count and get 8 more values. Ideally wouldnt work for uniform?
+                # If not converged, increment the iteration count and add 8 more values to the old data
                 iteration += 1
-                data = random_number_generator()  # Get 8 more values
+                additional_data = random_number_generator()  # Get 8 more values
+                old_data = np.concatenate((old_data, additional_data))
+                data = old_data  # Use the extended data
 
         print(f"Iteration {iteration}:")
         print("Sample:", data)
@@ -79,7 +86,7 @@ def driver(random_number_generator, max_iterations=20):
         print("Signed Rank 95% Confidence Interval:", signed_rank_conf_interval)
         print("")
 
-# random number generator functions
+# random number generator functions for normal and uniform distributions
 def random_number_generator_normal():
     return np.random.normal(mean, std_dev, sample_size)
 
