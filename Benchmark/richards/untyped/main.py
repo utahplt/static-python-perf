@@ -10,6 +10,7 @@ based on a Java version:
  Outer loop added by Alex Jacoby
 """
 import sys
+import time
 
 # Task IDs
 I_IDLE = 1
@@ -416,4 +417,16 @@ if __name__ == "__main__":
     num_iterations = 1
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
-    Richards().run(num_iterations)
+
+    total_runtime = 0
+
+    for i in range(num_iterations):
+        start_time = time.time()
+        Richards().run(1)
+        end_time = time.time()
+        runtime = end_time - start_time
+        print(f"Iteration {i + 1}: Runtime = {runtime} seconds")
+        total_runtime += runtime
+
+    average_runtime = total_runtime / num_iterations
+    print(f"Average Runtime over {num_iterations} iterations = {average_runtime} seconds")
