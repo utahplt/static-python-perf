@@ -184,12 +184,12 @@ taskWorkArea: TaskWorkArea = TaskWorkArea()
 
 class Task(TaskState):
     def __init__(
-        self,
-        i: int64,
-        p: int64,
-        w: Optional[Packet],
-        initialState: TaskState,
-        r: TaskRec,
+            self,
+            i: int64,
+            p: int64,
+            w: Optional[Packet],
+            initialState: TaskState,
+            r: TaskRec,
     ) -> None:
         wa: TaskWorkArea = taskWorkArea
         self.link: Optional[Task] = wa.taskList
@@ -267,7 +267,7 @@ class Task(TaskState):
 
 class DeviceTask(Task):
     def __init__(
-        self, i: int64, p: int64, w: Optional[Packet], s: TaskState, r: DeviceTaskRec
+            self, i: int64, p: int64, w: Optional[Packet], s: TaskState, r: DeviceTaskRec
     ) -> None:
         Task.__init__(self, i, p, w, s, r)
 
@@ -289,7 +289,7 @@ class DeviceTask(Task):
 
 class HandlerTask(Task):
     def __init__(
-        self, i: int64, p: int64, w: Packet, s: TaskState, r: HandlerTaskRec
+            self, i: int64, p: int64, w: Packet, s: TaskState, r: HandlerTaskRec
     ) -> None:
         Task.__init__(self, i, p, w, s, r)
 
@@ -323,7 +323,7 @@ class HandlerTask(Task):
 
 class IdleTask(Task):
     def __init__(
-        self, i: int64, p: int64, w: int, s: TaskState, r: IdleTaskRec
+            self, i: int64, p: int64, w: int, s: TaskState, r: IdleTaskRec
     ) -> None:
         Task.__init__(self, i, 0, None, s, r)
 
@@ -350,7 +350,7 @@ A: Final[int] = 65  # ord('A')
 
 class WorkTask(Task):
     def __init__(
-        self, i: int64, p: int64, w: Packet, s: TaskState, r: WorkerTaskRec
+            self, i: int64, p: int64, w: Packet, s: TaskState, r: WorkerTaskRec
     ) -> None:
         Task.__init__(self, i, p, w, s, r)
 
@@ -447,8 +447,14 @@ class Richards(object):
                 return False
         return True
 
+
 if __name__ == "__main__":
-    num_iterations = 1
+    num_iterations = 8
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+
+    start_time = time.time()
     Richards().run(num_iterations)
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

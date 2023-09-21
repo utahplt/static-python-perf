@@ -53,6 +53,7 @@ class Packet(object):
             p.link = self
             return lst
 
+
 # Task Records
 
 
@@ -93,6 +94,8 @@ class WorkerTaskRec(TaskRec):
     def __init__(self):
         self.destination = I_HANDLERA
         self.count = 0
+
+
 # Task
 
 
@@ -300,6 +303,7 @@ class HandlerTask(Task):
         work.datum = count + 1
         return self.qpkt(dev)
 
+
 # IdleTask
 
 
@@ -414,19 +418,12 @@ class Richards(object):
 
 
 if __name__ == "__main__":
-    num_iterations = 1
+    num_iterations = 8
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
 
-    total_runtime = 0
-
-    for i in range(num_iterations):
-        start_time = time.time()
-        Richards().run(1)
-        end_time = time.time()
-        runtime = end_time - start_time
-        print(f"Iteration {i + 1}: Runtime = {runtime} seconds")
-        total_runtime += runtime
-
-    average_runtime = total_runtime / num_iterations
-    print(f"Average Runtime over {num_iterations} iterations = {average_runtime} seconds")
+    start_time = time.time()
+    Richards().run(num_iterations)
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

@@ -56,6 +56,7 @@ class Packet(object):
             p.link = self
             return lst
 
+
 # Task Records
 
 
@@ -96,6 +97,8 @@ class WorkerTaskRec(TaskRec):
     def __init__(self) -> None:
         self.destination: int = I_HANDLERA
         self.count: int = 0
+
+
 # Task
 
 
@@ -303,6 +306,7 @@ class HandlerTask(Task):
         work.datum = count + 1
         return self.qpkt(dev)
 
+
 # IdleTask
 
 
@@ -327,7 +331,7 @@ class IdleTask(Task):
 # WorkTask
 
 
-A: Final[int] = 65 # ord('A')
+A: Final[int] = 65  # ord('A')
 
 
 class WorkTask(Task):
@@ -417,7 +421,12 @@ class Richards(object):
 
 
 if __name__ == "__main__":
-    num_iterations = 1
+    num_iterations = 8
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+
+    start_time = time.time()
     Richards().run(num_iterations)
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
