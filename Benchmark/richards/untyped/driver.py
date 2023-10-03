@@ -1,6 +1,7 @@
 import os
 import statistics
 from scipy import stats
+import numpy as np
 
 
 # Execute Python file and collect its output as a list of runtimes.
@@ -19,37 +20,93 @@ def run_many(file_name, num_iterations):
 
 
 def check_stability(file_name, num_iterations, max_attempts=3):
-    for attempt in range(max_attempts):
-        runtimes = run_many(file_name, num_iterations)
+    def gen():
+        return run_many(file_name, num_iterations)
 
-        print(f"Attempt {attempt + 1}:")
-        for i, runtime in enumerate(runtimes):
-            print(f"Run {i + 1}: {runtime} seconds")
+    return driver(gen, bootstrap_confidence_interval, max_attempts)
 
-        mean_runtime = statistics.mean(runtimes)
 
-        std_dev = statistics.stdev(runtimes)
-        confidence_interval = stats.t.interval(0.95, len(runtimes) - 1, loc=mean_runtime,
-                                               scale=std_dev / (len(runtimes) ** 0.5))
-
-        """Stability check to see where the interval is within 10 percent of the sample mean"""
-        lower_bound, upper_bound = confidence_interval
-        acceptable_range = mean_runtime * 0.1
-
-        if lower_bound <= mean_runtime - acceptable_range or upper_bound >= mean_runtime + acceptable_range:
-            print("Unstable")
+def driver(random_number_generator, ci_builder, max_iterations=20):
+    data = random_number_generator()  # init data
+    old_data = data.copy()  # Save the old data
+    # Initialize
+    converged = False
+    iteration = 1
+    while (not converged) and (iteration <= max_iterations):
+        # Calculate a confidence interval using the provided ci_builder function
+        conf_interval = ci_builder(data)
+        sample_mean = np.mean(data)
+        # 10% interval around the mean
+        sample_mean_10_percent_interval = [sample_mean - 0.1 * sample_mean, sample_mean + 0.1 * sample_mean]
+        # Check if the confidence interval is within the 10% mean interval. Mentioned in meeting?
+        ci_within_10_percent_interval = (
+                sample_mean_10_percent_interval[0] <= conf_interval[0]
+                and sample_mean_10_percent_interval[1] >= conf_interval[1]
+        )
+        # If the confidence interval is within the 10% mean interval, data converges
+        if ci_within_10_percent_interval:
+            converged = True
         else:
-            print("Stable")
+            # If not converged, increment the iteration count and add 8 more values to the old data
+            iteration += 1
+            additional_data = random_number_generator()  # Get 8 more values
+            old_data = np.concatenate((old_data, additional_data))
+            data = old_data  # Use the extended data
 
-        # Print the mean and confidence interval
-        print(f"Mean Runtime: {mean_runtime} seconds")
-        print(f"Confidence Interval: {confidence_interval}")
+    print(f"Iteration {iteration}:")
+    print("Sample:", data)
+    print("Confidence Interval:", conf_interval)
+    print("Sample Mean:", sample_mean)
+    print("10% Mean Interval:", sample_mean_10_percent_interval)
+    print("CI Interval within 10% Interval:", ci_within_10_percent_interval)
+    print("")
+    return data
 
-        if attempt < max_attempts - 1 and (lower_bound <= mean_runtime - acceptable_range or upper_bound >= mean_runtime + acceptable_range):
-            # If it's unstable and there are more attempts remaining, try again.
-            print("Retrying")
-        else:
-            break
+
+# calcualtes the bootstrap confidence interval by generaating values with replacement from the data, calculating means and percentiles
+# and then calculating the lower and upper bounds of the confidence interval
+def bootstrap_confidence_interval(data, alpha=0.05, num_resamples=10000):
+    # Generate values with replacement from the data
+    resamples = np.random.choice(data, size=(num_resamples, len(data)), replace=True)
+    # Calculate the means
+    sample_means = np.mean(resamples, axis=1)
+    #  the lower and upper percentiles for the confidence interval
+    lower_percentile = (1 - alpha) / 2
+    upper_percentile = 1 - lower_percentile
+    # Calculate the lower and upper bounds of the confidence interval
+    lower_bound = np.percentile(sample_means, lower_percentile * 100)
+    upper_bound = np.percentile(sample_means, upper_percentile * 100)
+    # confidence interval
+    return lower_bound, upper_bound
+
+
+# this entire process was in the book I mentioned in the meeting.
+"""The book is called Design of Observational Studies by Paul R. Rosenbaum."""
+
+
+# the processes are explained step by step as from the book
+def signed_rank_confidence_interval(data, alpha=0.05):
+    # data in ascending order
+    data = np.sort(data)
+    # Calculate ranks (mentioned in the book)
+    ranks = np.arange(1, len(data) + 1)
+    # signed ranks based on the median
+    signed_ranks = np.where(data > np.median(data), ranks, -ranks)
+    # find the means
+    sample_mean = np.mean(data)
+    # sum up ranks
+    sum_ranks = np.sum(signed_ranks)
+    # error just in case
+    se = np.sqrt((len(data) * (len(data) + 1) * (2 * len(data) + 1)) / 6)
+    #  sample standard values
+    z_alpha = np.abs(np.percentile(np.random.normal(0, 1, 10000), (1 - alpha / 2) * 100))
+    # Calculate the upper and lower bound
+    lower_bound = sample_mean - (z_alpha * se / np.sqrt(24))
+    upper_bound = sample_mean + (z_alpha * se / np.sqrt(24))
+    return lower_bound, upper_bound
+
+
+## new driver function to run 2 files untyped
 
 
 if __name__ == "__main__":
@@ -58,8 +115,3 @@ if __name__ == "__main__":
     max_attempts = 3  # Maximum number of attempts to stabilize
     check_stability(file_name, num_iterations, max_attempts)
 
-
-###### Goals for this ########
-# 1. call run many and check for stability by generating runtiem values by calling run many (confirm stability)
-# 2. print out all the runtimes, and the average runtime
-# all this stuff in a new function here
