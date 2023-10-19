@@ -41,8 +41,9 @@ Version History:
                 making the benchmark an integer benchmark again.
 
 """
-LOOPS = 50000
+import time
 
+LOOPS = 50000
 
 __version__ = "1.2"
 
@@ -270,5 +271,9 @@ if __name__ == "__main__":
     num_iterations = 2
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+    start_time = time.time()
     for _ in range(num_iterations):
         run()
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
