@@ -85,6 +85,8 @@ if __name__ == "__main__":
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/untyped/main.py",
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/untyped/main.py",
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
+
 
     ]
     num_iterations = 8
