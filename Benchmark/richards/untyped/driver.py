@@ -3,6 +3,7 @@ import statistics
 from scipy import stats
 import numpy as np
 
+
 # Execute Python file and collect its output as a list of runtimes.
 def run_once(file_name):
     try:
@@ -14,14 +15,17 @@ def run_once(file_name):
         print(f"Error: Failed to convert output to float for {file_name}")
         return None
 
+
 def run_many(file_name, num_iterations):
     return [run_once(file_name) for _ in range(num_iterations)]
+
 
 def check_stability(file_name, num_iterations, max_attempts=3):
     def gen():
         return run_many(file_name, num_iterations)
 
     return driver(gen, bootstrap_confidence_interval, max_attempts)
+
 
 def driver(random_number_generator, ci_builder, max_iterations=20):
     data = random_number_generator()
@@ -58,6 +62,7 @@ def driver(random_number_generator, ci_builder, max_iterations=20):
     print("CI Interval within 10% Interval:", ci_within_10_percent_interval)
     print("")
 
+
 def bootstrap_confidence_interval(data, alpha=0.05, num_resamples=10000):
     resamples = np.random.choice(data, size=(num_resamples, len(data)), replace=True)
     sample_means = np.mean(resamples, axis=1)
@@ -66,6 +71,7 @@ def bootstrap_confidence_interval(data, alpha=0.05, num_resamples=10000):
     lower_bound = np.percentile(sample_means, lower_percentile * 100)
     upper_bound = np.percentile(sample_means, upper_percentile * 100)
     return lower_bound, upper_bound
+
 
 def signed_rank_confidence_interval(data, alpha=0.05):
     data = np.sort(data)
@@ -79,6 +85,7 @@ def signed_rank_confidence_interval(data, alpha=0.05):
     upper_bound = sample_mean + (z_alpha * se / np.sqrt(24))
     return lower_bound, upper_bound
 
+
 if __name__ == "__main__":
     file_paths = [
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
@@ -86,7 +93,7 @@ if __name__ == "__main__":
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/untyped/main.py",
         "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
-
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
 
     ]
     num_iterations = 8

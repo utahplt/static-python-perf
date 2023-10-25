@@ -10,6 +10,8 @@ bg:
 - fixed num iterations (see bottom of file)
 - removed command-line parsing
 """
+import time
+
 
 def foo(a, b, c, d):
     # 20 calls
@@ -137,4 +139,8 @@ def test_calls():
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     test_calls()
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
