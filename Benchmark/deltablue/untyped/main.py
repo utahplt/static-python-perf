@@ -18,11 +18,14 @@ the layout & logic from the original. (Ugh.)
 
 .. _`V8's source code`: (https://github.com/v8/v8/blob/master/benchmarks/deltablue.js)
 """
+import time
+
 
 # The JS variant implements "OrderedCollection", which basically completely
 # overlaps with ``list``. So we'll cheat. :D
 class OrderedCollection(list):
     pass
+
 
 class Strength(object):
     REQUIRED = None
@@ -145,7 +148,7 @@ class UrnaryConstraint(Constraint):
 
     def choose_method(self, mark):
         if self.my_output.mark != mark and \
-           Strength.stronger(self.strength, self.my_output.walk_strength):
+                Strength.stronger(self.strength, self.my_output.walk_strength):
             self.satisfied = True
         else:
             self.satisfied = False
@@ -326,7 +329,7 @@ class ScaleConstraint(BinaryConstraint):
             self.v2.value = self.v1.value * self.scale.value + self.offset.value
         else:
             self.v1.value = (
-                self.v2.value - self.offset.value) / self.scale.value
+                                    self.v2.value - self.offset.value) / self.scale.value
 
     def recalculate(self):
         ihn = self.input()
@@ -675,6 +678,10 @@ def delta_blue(n):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     n = 10000
     delta_blue(n)
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
     # print(n) #test
