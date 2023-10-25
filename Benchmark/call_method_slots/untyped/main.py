@@ -10,6 +10,7 @@ bg:
 - using Timer
 - removed command-line parsing
 """
+import time
 
 
 class Foo(object):
@@ -138,4 +139,9 @@ def test_calls():
 
 
 if __name__ == "__main__":
-    print(test_calls())
+    start_time = time.time()
+    test_calls()
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
+
