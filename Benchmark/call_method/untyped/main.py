@@ -8,6 +8,7 @@ bg:
 - using Timer
 - removed command-line parsing
 """
+import time
 
 
 class Foo(object):
@@ -35,7 +36,7 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
 
-    def bar(self, a, b, c ):
+    def bar(self, a, b, c):
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -134,4 +135,8 @@ def test_calls():
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     test_calls()
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
