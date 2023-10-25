@@ -23,6 +23,7 @@ bg:
   - inlined GetKnots
 """
 import random
+import time
 
 random.seed(1234)
 ITERATIONS = 1
@@ -291,5 +292,11 @@ if __name__ == "__main__":
             GVector(2.366800, 3.233460, 0.000000)],
             3, [0, 0, 0, 1, 1, 1])
     ]
+    start_time = time.time()
     c = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
-    print(c)
+    end_time = time.time()
+    # print(c) this causes type error, so i figuted to comment it out to get runtime and then use it for tests
+    runtime = end_time - start_time
+    print(runtime)
+
+
