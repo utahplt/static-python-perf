@@ -5,6 +5,8 @@ The Computer Language Benchmarks Game
 http://benchmarksgame.alioth.debian.org/
 Contributed by Sokolov Yura, modified by Tupteq.
 """
+import time
+
 DEFAULT_ARG = 9
 
 
@@ -45,12 +47,18 @@ def fannkuch(n):
             return max_flips
     return 0
 
+
 if __name__ == "__main__":
     import sys
 
     num_iterations = 1
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+
+    start_time = time.time()
     for _ in range(num_iterations):
         res = fannkuch(DEFAULT_ARG)
         assert res == 30
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

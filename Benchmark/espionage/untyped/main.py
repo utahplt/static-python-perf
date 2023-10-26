@@ -1,4 +1,5 @@
 import os
+import time
 from operator import itemgetter
 
 from union_find import UnionFind
@@ -80,5 +81,8 @@ def kruskal(nodes, edges, edges_to_check):
 fname = "../us-input.txt"
 with open(fname, "r") as f:
     in_lines = f.readlines()
+    start_time = time.time()
     main(in_lines)
-
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
