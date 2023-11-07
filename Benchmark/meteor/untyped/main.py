@@ -19,6 +19,7 @@ bg:
 - increased size of board to `20 x 40`
 - time `get_puzzle()`, `get_footprints()` `get_senh()` calls
 """
+import time
 from bisect import bisect
 
 w, h = 20, 40
@@ -117,7 +118,8 @@ def solve(n, i_min, free, curr_board, pieces_left, fps, se_nh, solutions):
                               n_pieces_left, fps, se_nh, solutions)
                 else:
                     s = ''.join(map(str, n_curr_board))
-                    solutions.insert(bisect(solutions, s), s)  # bisect is not supposed to be here no method! but program still runs?
+                    solutions.insert(bisect(solutions, s),
+                                     s)  # bisect is not supposed to be here no method! but program still runs?
                     rs = s[::-1]
                     solutions.insert(bisect(solutions, rs), rs)
                     if len(solutions) >= n:
@@ -137,5 +139,10 @@ if __name__ == "__main__":
     curr_board = [-1] * len(board)
     pieces_left = list(range(len(pieces)))
     solutions = []
+    start_time = time.time()
+
     solve(SOLVE_ARG, 0, free, curr_board, pieces_left, fps, se_nh, solutions)
 
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

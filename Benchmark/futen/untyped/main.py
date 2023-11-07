@@ -1,5 +1,7 @@
+import time
 from os import path
 from futen import get_netlocs, execute
+
 
 def main(n):
     testfile = '../ssh.config.dat'
@@ -26,4 +28,9 @@ def main(n):
             raise ValueError("'%s' is not equal to '%s'" % (expect, result))
     return
 
+
+start_time = time.time()
 main(1900)
+end_time = time.time()
+runtime = end_time - start_time
+print(runtime)

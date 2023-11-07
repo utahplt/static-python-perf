@@ -1,5 +1,7 @@
 import random
 import math
+import time
+
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 
@@ -368,8 +370,13 @@ ITERATIONS = 2
 
 if __name__ == "__main__":
 
+    start_time  = time.time()
     for i in range(ITERATIONS):
         random.seed(1)
         board = Board()
         pos = computer_move(board)
         #print(pos)
+
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

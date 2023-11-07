@@ -3,6 +3,8 @@
 """Simple, brute-force N-Queens solver."""
 __author__ = "collinwinter@google.com (Collin Winter)"
 
+import time
+
 
 # Pure-Python implementation of itertools.permutations().
 def permutations(iterable, r=None):
@@ -69,6 +71,12 @@ if __name__ == "__main__":
         num_iterations = int(sys.argv[1])
 
     queen_count = 8
+    start_time = time.time()
+
     for _ in range(num_iterations):
         res = bench_n_queens(queen_count)
         assert len(res) == 92
+
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

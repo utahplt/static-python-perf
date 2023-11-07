@@ -88,17 +88,30 @@ def signed_rank_confidence_interval(data, alpha=0.05):
 
 if __name__ == "__main__":
     file_paths = [
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/espionage/untyped/main.py",
-        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py", 
-
+        # help with evolution
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/fannkuch/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/float/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/futen/untyped/main.py", error here, datafile import error
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/go/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/http2/untyped/main.py", error here, datafile import error
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/meteor/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nbody/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nqueens/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
+        # pythonflow has same file thing
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
+        # sample_fsm file thing
+        # same with slowsha
+        # where is the function call for spectralnorm?
+        # how should i approach stats
+        # take5 problem
     ]
     num_iterations = 8
     max_attempts = 3

@@ -8,7 +8,7 @@ bg:
 - replace `xrange` with `range`
 - remove unused imports
 """
-
+import time
 from math import sin, cos, sqrt
 
 
@@ -55,5 +55,9 @@ POINTS = 200000
 if __name__ == "__main__":
     # t = Timer()
     # with t:
+    start_time = time.time()
     benchmark(POINTS)
-    print("hello world")
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
+    # print("hello world")

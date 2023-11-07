@@ -1,3 +1,5 @@
+import time
+
 from iri2uri import Iri2Uri
 import os
 
@@ -47,5 +49,9 @@ def main():
     # indent change fixed the file not running
 
 
+start_time = time.time()
 for i in range(10):
     main()
+end_time = time.time()
+runtime = end_time - start_time
+print(runtime)

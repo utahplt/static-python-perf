@@ -16,6 +16,9 @@ Contributed by Kevin Carson.
 Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 __contact__ = "collinwinter@google.com (Collin Winter)"
+
+import time
+
 DEFAULT_ITERATIONS = 20000
 DEFAULT_REFERENCE = "sun"
 
@@ -145,4 +148,8 @@ if __name__ == "__main__":
 #    if len(sys.argv) > 1:
 #        num_loops = int(sys.argv[1])
 
+    start_time  = time.time()
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

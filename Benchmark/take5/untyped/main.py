@@ -1,3 +1,5 @@
+import time
+
 from player import Player
 from dealer import Dealer
 
@@ -39,5 +41,9 @@ def main():
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
+start_time = time.time()
 for i in range(500):
     main()
+end_time = time.time()
+runtime = end_time - start_time
+print(runtime)
