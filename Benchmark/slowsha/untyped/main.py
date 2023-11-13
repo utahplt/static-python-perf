@@ -71,6 +71,7 @@ def sha512(message):
 
 from sha1 import SHA1
 from sha512 import SHA512
+import time
 
 
 def main():
@@ -86,4 +87,8 @@ def main():
     return None
 
 
+start_time = time.time()
 main()
+end_time = time.time()
+run_time = end_time - start_time
+print(run_time)

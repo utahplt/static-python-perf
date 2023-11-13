@@ -12,15 +12,18 @@ bg:
 
 note, I don't see any concurrency in this code
 """
+import time
 
 
-def eval_A(i:float, j:float) -> float:
+def eval_A(i: float, j: float) -> float:
     return 1.0 / ((i + j) * (i + j + 1) // 2 + i + 1)
+
 
 # def eval_times_u(func:Function([Tuple(float, List(float))], float), u:List(float)) -> List(float):
 #     return [func((i,u)) for i in range(len(list(u)))]
 def eval_times_u(func, u):
     return [func((i, u)) for i in range(len(list(u)))]
+
 
 # def eval_AtA_times_u(u:List(float))->List(float):
 #     return eval_times_u(part_At_times_u, eval_times_u(part_A_times_u, u))
@@ -42,6 +45,7 @@ def part_A_times_u(i_u):
         partial_sum += eval_A(i, j) * u_j
     return partial_sum
 
+
 # def part_At_times_u(i_u:(float, List(float)))->float:
 #     i, u = i_u
 #     partial_sum = 0
@@ -56,17 +60,23 @@ def part_At_times_u(i_u):
         partial_sum += eval_A(j, i) * u_j
     return partial_sum
 
+
 DEFAULT_N = 130
 
 if __name__ == "__main__":
-  u = [1] * DEFAULT_N
+    u = [1] * DEFAULT_N
 
-  for dummy in range(10):
-      v = eval_AtA_times_u(u)
-      u = eval_AtA_times_u(v)
+start_time = time.time()
+for dummy in range(10):
+    v = eval_AtA_times_u(u)
+    u = eval_AtA_times_u(v)
 
-  vBv = vv = 0
+vBv = vv = 0
 
-  for ue, ve in zip(u, v):
-      vBv += ue * ve
-      vv  += ve * ve
+for ue, ve in zip(u, v):
+    vBv += ue * ve
+    vv += ve * ve
+
+end_time = time.time()
+run_time = end_time - start_time
+print(run_time)

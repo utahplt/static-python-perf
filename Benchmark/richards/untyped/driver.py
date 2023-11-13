@@ -104,14 +104,14 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nbody/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nqueens/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py", split directory into string and change directory using os to the file name
         # pythonflow has same file thing
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
         # sample_fsm file thing
-        # same with slowsha
-        # where is the function call for spectralnorm?
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py" error file thing
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
         # how should i approach stats
-        # take5 problem
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py"
     ]
     num_iterations = 8
     max_attempts = 3
