@@ -5,6 +5,8 @@
 	description: PythonFlow class is an implementation of Ford-Fulkerson algorithm which is found in Introduction to Algorithm 3rd Edition. There are several ways of modification to build the program as my thought.
 
 """
+import time
+
 
 class PythonFlow:
     # PythonFlow implement Ford-Fulkerson method to maximize flow on graph problems.
@@ -184,5 +186,10 @@ class PythonFlow:
 # # example of usage
 flow = PythonFlow()
 
+start_time = time.time()
 
 flow.main_algorithm()
+
+end_time = time.time()
+runtime = end_time - start_time
+print(runtime)

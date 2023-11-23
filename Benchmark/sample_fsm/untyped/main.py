@@ -1,3 +1,5 @@
+import time
+
 from Utilities import relative_average
 from Other import build_random_population
 
@@ -40,6 +42,11 @@ def simulation_to_lines(data):
     return result
 
     #print(str(result))
+start_time = time.time()
 
 for i in range(100):
     run()
+
+end_time = time.time()
+runtime = end_time - start_time
+print(runtime)

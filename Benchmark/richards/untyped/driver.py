@@ -20,9 +20,25 @@ def run_many(file_name, num_iterations):
     return [run_once(file_name) for _ in range(num_iterations)]
 
 
+# def check_stability(file_name, num_iterations, max_attempts=3):
+#     def gen():
+#         return run_many(file_name, num_iterations)
+#
+#     return driver(gen, bootstrap_confidence_interval, max_attempts)
+
+
 def check_stability(file_name, num_iterations, max_attempts=3):
     def gen():
         return run_many(file_name, num_iterations)
+
+    # Split the file path by '/'
+    path_parts = file_name.split('/')
+
+    # Join the path parts excluding the last one (file name) to get the directory path
+    directory_path = '/'.join(path_parts[:-1])
+
+    # Change the current working directory to the directory containing the Python file
+    os.chdir(directory_path)
 
     return driver(gen, bootstrap_confidence_interval, max_attempts)
 
@@ -94,24 +110,24 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/espionage/untyped/main.py",
-        # help with evolution
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/evolution/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/fannkuch/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/float/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/futen/untyped/main.py", error here, datafile import error
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/futen/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/go/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/http2/untyped/main.py", error here, datafile import error
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/http2/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/meteor/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nbody/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nqueens/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py", split directory into string and change directory using os to the file name
-        # pythonflow has same file thing
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pythonflow/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
-        # sample_fsm file thing
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py" error file thing
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/sample_fsm/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
-        # how should i approach stats
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py"
+        # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/untyped/main.py", path problem
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
     ]
     num_iterations = 8
     max_attempts = 3
