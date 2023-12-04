@@ -1,5 +1,6 @@
 import __static__
 from __static__ import int64
+
 """Microbenchmark for method call overhead.
 
 This measures simple method calls that are predictable, do not use varargs or
@@ -10,6 +11,7 @@ bg:
 - using Timer
 - removed command-line parsing
 """
+
 
 class Foo(object):
 

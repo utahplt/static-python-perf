@@ -1,8 +1,7 @@
 import os
-import statistics
-from scipy import stats
 import numpy as np
 from scipy.stats import norm
+from prettytable import PrettyTable
 
 
 def count_lines(file_name):
@@ -15,7 +14,6 @@ def count_lines(file_name):
         return None
 
 
-# Execute Python file and collect its output as a list of runtimes.
 def run_once(file_name):
     try:
         command = f"python3 {file_name}"
@@ -31,71 +29,18 @@ def run_many(file_name, num_iterations):
     return [run_once(file_name) for _ in range(num_iterations)]
 
 
-# def check_stability(file_name, num_iterations, max_attempts=3):
-#     def gen():
-#         return run_many(file_name, num_iterations)
-#
-#     return driver(gen, bootstrap_confidence_interval, max_attempts)
-
-
 def check_stability(file_name, num_iterations, max_attempts=3):
     def gen():
         return run_many(file_name, num_iterations)
 
-    # Split the file path by '/'
     path_parts = file_name.split('/')
-
-    # Join the path parts excluding the last one (file name) to get the directory path
     directory_path = '/'.join(path_parts[:-1])
-
-    # Change the current working directory to the directory containing the Python file
     os.chdir(directory_path)
 
-    # Get the number of lines in the file
     num_lines = count_lines(file_name)
 
-    # return driver(gen, bootstrap_confidence_interval, max_attempts, num_lines)
     return driver(gen, bootstrap_confidence_interval, signed_rank_confidence_interval, max_attempts, num_lines)
 
-# def driver(random_number_generator, ci_builder, max_iterations=20, num_lines=None):
-#     data = random_number_generator()
-#     data = [x for x in data if x is not None]  # Remove None values
-#     if not data:
-#         print("All iterations failed, cannot calculate confidence interval.")
-#         return
-#
-#     old_data = data.copy()
-#     converged = False
-#     iteration = 1
-#     while (not converged) and (iteration <= max_iterations):
-#         conf_interval = ci_builder(data)
-#         sample_mean = np.mean(data)
-#         sample_mean_10_percent_interval = [sample_mean - 0.1 * sample_mean, sample_mean + 0.1 * sample_mean]
-#         ci_within_10_percent_interval = (
-#                 sample_mean_10_percent_interval[0] <= conf_interval[0]
-#                 and sample_mean_10_percent_interval[1] >= conf_interval[1]
-#         )
-#         if ci_within_10_percent_interval:
-#             converged = True
-#         else:
-#             iteration += 1
-#             additional_data = random_number_generator()
-#             additional_data = [x for x in additional_data if x is not None]  # Remove None values
-#             old_data = np.concatenate((old_data, additional_data))
-#             data = old_data
-#
-#     print(f"Iteration {iteration}:")
-#     print("Sample:", data)
-#     print("Confidence Interval:", conf_interval)
-#     print("Sample Mean:", sample_mean)
-#     print("10% Mean Interval:", sample_mean_10_percent_interval)
-#     print("CI Interval within 10% Interval:", ci_within_10_percent_interval)
-#
-#     # Print the number of lines in the file
-#     if num_lines is not None:
-#         print(f"Number of Lines in the File: {num_lines}")
-#
-#     print("")
 
 def driver(random_number_generator, bootstrap_ci_builder, signed_rank_ci_builder, max_iterations=20, num_lines=None):
     data = random_number_generator()
@@ -135,19 +80,23 @@ def driver(random_number_generator, bootstrap_ci_builder, signed_rank_ci_builder
             old_data = np.concatenate((old_data, additional_data))
             data = old_data
 
-    print(f"Iteration {iteration}:")
-    print("Sample:", data)
-    print("Bootstrap Confidence Interval:", bootstrap_conf_interval)
-    print("Signed Rank Confidence Interval:", signed_rank_conf_interval)
-    print("Sample Mean:", sample_mean)
-    print("10% Mean Interval:", sample_mean_10_percent_interval)
-    print("Bootstrap CI Interval within 10% Interval:", bootstrap_ci_within_10_percent_interval)
-    print("Signed Rank CI Interval within 10% Interval:", signed_rank_ci_within_10_percent_interval)
+    # Create a PrettyTable for better output formatting
+    table = PrettyTable()
+    table.field_names = ["Metric", "Value"]
+    table.add_row(["Iteration", iteration])
+    table.add_row(["Sample", data])
+    table.add_row(["Bootstrap Confidence Interval", bootstrap_conf_interval])
+    table.add_row(["Signed Rank Confidence Interval", signed_rank_conf_interval])
+    table.add_row(["Sample Mean", sample_mean])
+    table.add_row(["10% Mean Interval", sample_mean_10_percent_interval])
+    table.add_row(["Bootstrap CI Interval within 10% Interval", bootstrap_ci_within_10_percent_interval])
+    table.add_row(["Signed Rank CI Interval within 10% Interval", signed_rank_ci_within_10_percent_interval])
 
     # Print the number of lines in the file
     if num_lines is not None:
-        print(f"Number of Lines in the File: {num_lines}")
+        table.add_row(["Number of Lines in the File", num_lines])
 
+    print(table)
     print("")
 
 
@@ -182,7 +131,7 @@ def signed_rank_confidence_interval(data, alpha=0.05):
 
 if __name__ == "__main__":
     file_paths = [
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/untyped/main.py",
+        ### Untyped Files ###
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
@@ -205,11 +154,77 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
         # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/untyped/main.py", path problem
-        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
     ]
+
+    static_files = [
+        ### Shallow Files ####
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/espionage/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/evolution/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/fannkuch/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/float/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/futen/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/go/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/http2/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/meteor/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nbody/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nqueens/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pythonflow/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/sample_fsm/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/shallow/main.py",
+        # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/shallow/main.py", path problem
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/shallow/main.py",
+
+        ### advanced files ### !! Some don't work due to lack of advanced files.
+
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/espionage/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/evolution/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/fannkuch/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/float/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/futen/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/go/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/http2/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/meteor/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nbody/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/nqueens/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pidigits/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pystone/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pythonflow/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/sample_fsm/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/advanced/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/advanced/main.py",
+        # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/advanced/main.py", path problem
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/advanced/main.py",
+
+    ]
+
     num_iterations = 8
     max_attempts = 3
 
     for file_path in file_paths:
         print(f"Running benchmark: {file_path}")
         check_stability(file_path, num_iterations, max_attempts)
+
+    print("\nNumber of lines in the files:")
+    table_lines = PrettyTable()
+    table_lines.field_names = ["File", "Number of Lines"]
+    for static_file in static_files:
+        num_lines = count_lines(static_file)
+        table_lines.add_row([static_file, num_lines])
+
+    print(table_lines)
