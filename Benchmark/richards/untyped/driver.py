@@ -2,6 +2,17 @@ import os
 import statistics
 from scipy import stats
 import numpy as np
+from scipy.stats import norm
+
+
+def count_lines(file_name):
+    try:
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+            return len(lines)
+    except Exception as e:
+        print(f"Error: Failed to read file {file_name}. {str(e)}")
+        return None
 
 
 # Execute Python file and collect its output as a list of runtimes.
@@ -40,10 +51,53 @@ def check_stability(file_name, num_iterations, max_attempts=3):
     # Change the current working directory to the directory containing the Python file
     os.chdir(directory_path)
 
-    return driver(gen, bootstrap_confidence_interval, max_attempts)
+    # Get the number of lines in the file
+    num_lines = count_lines(file_name)
 
+    # return driver(gen, bootstrap_confidence_interval, max_attempts, num_lines)
+    return driver(gen, bootstrap_confidence_interval, signed_rank_confidence_interval, max_attempts, num_lines)
 
-def driver(random_number_generator, ci_builder, max_iterations=20):
+# def driver(random_number_generator, ci_builder, max_iterations=20, num_lines=None):
+#     data = random_number_generator()
+#     data = [x for x in data if x is not None]  # Remove None values
+#     if not data:
+#         print("All iterations failed, cannot calculate confidence interval.")
+#         return
+#
+#     old_data = data.copy()
+#     converged = False
+#     iteration = 1
+#     while (not converged) and (iteration <= max_iterations):
+#         conf_interval = ci_builder(data)
+#         sample_mean = np.mean(data)
+#         sample_mean_10_percent_interval = [sample_mean - 0.1 * sample_mean, sample_mean + 0.1 * sample_mean]
+#         ci_within_10_percent_interval = (
+#                 sample_mean_10_percent_interval[0] <= conf_interval[0]
+#                 and sample_mean_10_percent_interval[1] >= conf_interval[1]
+#         )
+#         if ci_within_10_percent_interval:
+#             converged = True
+#         else:
+#             iteration += 1
+#             additional_data = random_number_generator()
+#             additional_data = [x for x in additional_data if x is not None]  # Remove None values
+#             old_data = np.concatenate((old_data, additional_data))
+#             data = old_data
+#
+#     print(f"Iteration {iteration}:")
+#     print("Sample:", data)
+#     print("Confidence Interval:", conf_interval)
+#     print("Sample Mean:", sample_mean)
+#     print("10% Mean Interval:", sample_mean_10_percent_interval)
+#     print("CI Interval within 10% Interval:", ci_within_10_percent_interval)
+#
+#     # Print the number of lines in the file
+#     if num_lines is not None:
+#         print(f"Number of Lines in the File: {num_lines}")
+#
+#     print("")
+
+def driver(random_number_generator, bootstrap_ci_builder, signed_rank_ci_builder, max_iterations=20, num_lines=None):
     data = random_number_generator()
     data = [x for x in data if x is not None]  # Remove None values
     if not data:
@@ -54,14 +108,25 @@ def driver(random_number_generator, ci_builder, max_iterations=20):
     converged = False
     iteration = 1
     while (not converged) and (iteration <= max_iterations):
-        conf_interval = ci_builder(data)
+        bootstrap_conf_interval = bootstrap_ci_builder(data)
+        signed_rank_conf_interval = signed_rank_ci_builder(data)
+
         sample_mean = np.mean(data)
         sample_mean_10_percent_interval = [sample_mean - 0.1 * sample_mean, sample_mean + 0.1 * sample_mean]
-        ci_within_10_percent_interval = (
-                sample_mean_10_percent_interval[0] <= conf_interval[0]
-                and sample_mean_10_percent_interval[1] >= conf_interval[1]
+
+        # Check bootstrap confidence interval
+        bootstrap_ci_within_10_percent_interval = (
+                sample_mean_10_percent_interval[0] <= bootstrap_conf_interval[0]
+                and sample_mean_10_percent_interval[1] >= bootstrap_conf_interval[1]
         )
-        if ci_within_10_percent_interval:
+
+        # Check signed rank confidence interval
+        signed_rank_ci_within_10_percent_interval = (
+                sample_mean_10_percent_interval[0] <= signed_rank_conf_interval[0]
+                and sample_mean_10_percent_interval[1] >= signed_rank_conf_interval[1]
+        )
+
+        if bootstrap_ci_within_10_percent_interval or signed_rank_ci_within_10_percent_interval:
             converged = True
         else:
             iteration += 1
@@ -72,10 +137,17 @@ def driver(random_number_generator, ci_builder, max_iterations=20):
 
     print(f"Iteration {iteration}:")
     print("Sample:", data)
-    print("Confidence Interval:", conf_interval)
+    print("Bootstrap Confidence Interval:", bootstrap_conf_interval)
+    print("Signed Rank Confidence Interval:", signed_rank_conf_interval)
     print("Sample Mean:", sample_mean)
     print("10% Mean Interval:", sample_mean_10_percent_interval)
-    print("CI Interval within 10% Interval:", ci_within_10_percent_interval)
+    print("Bootstrap CI Interval within 10% Interval:", bootstrap_ci_within_10_percent_interval)
+    print("Signed Rank CI Interval within 10% Interval:", signed_rank_ci_within_10_percent_interval)
+
+    # Print the number of lines in the file
+    if num_lines is not None:
+        print(f"Number of Lines in the File: {num_lines}")
+
     print("")
 
 
@@ -91,14 +163,20 @@ def bootstrap_confidence_interval(data, alpha=0.05, num_resamples=10000):
 
 def signed_rank_confidence_interval(data, alpha=0.05):
     data = np.sort(data)
-    ranks = np.arange(1, len(data) + 1)
+    ranks = np.abs(np.arange(1, len(data) + 1))
     signed_ranks = np.where(data > np.median(data), ranks, -ranks)
     sample_mean = np.mean(data)
-    sum_ranks = np.sum(signed_ranks)
-    se = np.sqrt((len(data) * (len(data) + 1) * (2 * len(data) + 1)) / 6)
-    z_alpha = np.abs(np.percentile(np.random.normal(0, 1, 10000), (1 - alpha / 2) * 100))
-    lower_bound = sample_mean - (z_alpha * se / np.sqrt(24))
-    upper_bound = sample_mean + (z_alpha * se / np.sqrt(24))
+
+    sum_ranks = np.sum(np.abs(signed_ranks))
+
+    # problem is maybe because of this
+    se = np.sqrt((np.sum(signed_ranks ** 2) - len(data) * (len(data) + 1) ** 2 / 4) / (len(data) * (len(data) - 1)))
+
+    z_alpha = norm.ppf(1 - alpha / 2)
+
+    lower_bound = sample_mean - (z_alpha * se / np.sqrt(len(data)))
+    upper_bound = sample_mean + (z_alpha * se / np.sqrt(len(data)))
+
     return lower_bound, upper_bound
 
 
@@ -127,7 +205,7 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
         # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/untyped/main.py", path problem
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
     ]
     num_iterations = 8
     max_attempts = 3
