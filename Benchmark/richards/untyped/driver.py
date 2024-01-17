@@ -18,10 +18,19 @@ def run_once(file_name):
     try:
         command = f"python3 {file_name}"
         stream = os.popen(command)
-        output = stream.read()
-        return float(output)
-    except ValueError:
-        print(f"Error: Failed to convert output to float for {file_name}")
+        output = stream.read().strip()
+        return float(output) if output else 0.0
+
+    #    output = stream.read()
+    #     return float(output)
+    # except ValueError:
+    #     print(f"Error: Failed to convert output to float for {file_name}")
+
+    except ValueError as ve:
+        print(f"Error: Failed to convert output to float for {file_name}. Error: {ve}")
+        return None
+    except Exception as e:
+        print(f"Error: An unexpected error occurred while running {file_name}. {str(e)}")
         return None
 
 
@@ -151,7 +160,7 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pythonflow/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/sample_fsm/untyped/main.py",
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
         # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/untyped/main.py", path problem
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
@@ -159,7 +168,8 @@ if __name__ == "__main__":
 
     static_files = [
         ### Shallow Files ####
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/shallow/main.py",
+
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/shallow/main.py",
@@ -217,14 +227,66 @@ if __name__ == "__main__":
     max_attempts = 3
 
     for file_path in file_paths:
-        print(f"Running benchmark: {file_path}")
-        check_stability(file_path, num_iterations, max_attempts)
+        print(f"Running benchmarks in directory: {file_path}")
+        # Get the directory path from the file_path
+        directory_path = '/'.join(file_path.split('/')[:-1])
+        for file_name in os.listdir(directory_path):
+            if file_name.endswith(".py"):
+                full_file_path = os.path.join(directory_path, file_name)
+                print(f"  Running benchmark: {full_file_path}")
+                check_stability(full_file_path, num_iterations, max_attempts)
+
+    # print("\nNumber of lines in the files:")
+    # table_lines = PrettyTable()
+    # table_lines.field_names = ["File", "Number of Lines"]
+    #
+    # for static_file in static_files:
+    #     num_lines = count_lines(static_file)
+    #     table_lines.add_row([static_file, num_lines])
+    #
+    # print(table_lines)
+
+
+    print("Line Count Calculator")
 
     print("\nNumber of lines in the files:")
     table_lines = PrettyTable()
     table_lines.field_names = ["File", "Number of Lines"]
-    for static_file in static_files:
-        num_lines = count_lines(static_file)
-        table_lines.add_row([static_file, num_lines])
+
+    for file_path in file_paths:
+        # print(f"Running benchmarks in directory: {file_path}")
+        directory_path = '/'.join(file_path.split('/')[:-1])
+
+        # Iterate over all .py files in the directory
+        for file_name in os.listdir(directory_path):
+            if file_name.endswith(".py"):
+                full_file_path = os.path.join(directory_path, file_name)
+                # print(f"  Running benchmark: {full_file_path}")
+
+                # Get the number of lines for the file
+                num_lines = count_lines(full_file_path)
+
+                # Add to the table
+                table_lines.add_row([full_file_path, num_lines])
 
     print(table_lines)
+
+# for file_path in file_paths:
+#     print(f"Running benchmarks in directory: {file_path}")
+#     # Get the directory path from the file_path
+#     directory_path = '/'.join(file_path.split('/')[:-1])
+#     for file_name in os.listdir(directory_path):
+#         if file_name.endswith(".py"):
+#             full_file_path = os.path.join(directory_path, file_name)
+#             print(f"  Running benchmark: {full_file_path}")
+#             check_stability(full_file_path, num_iterations, max_attempts)
+#
+# print("\nNumber of lines in the files:")
+# table_lines = PrettyTable()
+# table_lines.field_names = ["File", "Number of Lines"]
+#
+# for static_file in static_files:
+#     num_lines = count_lines(static_file)
+#     table_lines.add_row([static_file, num_lines])
+#
+# print(table_lines)
