@@ -271,22 +271,10 @@ if __name__ == "__main__":
 
     print(table_lines)
 
-# for file_path in file_paths:
-#     print(f"Running benchmarks in directory: {file_path}")
-#     # Get the directory path from the file_path
-#     directory_path = '/'.join(file_path.split('/')[:-1])
-#     for file_name in os.listdir(directory_path):
-#         if file_name.endswith(".py"):
-#             full_file_path = os.path.join(directory_path, file_name)
-#             print(f"  Running benchmark: {full_file_path}")
-#             check_stability(full_file_path, num_iterations, max_attempts)
-#
-# print("\nNumber of lines in the files:")
-# table_lines = PrettyTable()
-# table_lines.field_names = ["File", "Number of Lines"]
-#
-# for static_file in static_files:
-#     num_lines = count_lines(static_file)
-#     table_lines.add_row([static_file, num_lines])
-#
-# print(table_lines)
+"""
+1. Run 3 for each benchmark: Untyped, Shallow, advanced; essentially running the main file for all 3
+2. figure out how we can implement a randomized type system for all the code
+3. make a plan!
+
+
+"""
