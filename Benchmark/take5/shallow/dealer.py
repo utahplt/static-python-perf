@@ -1,4 +1,4 @@
-from random import randrange, randint, shuffle, random, seed
+from random import randint, shuffle, random, seed
 from copy import deepcopy
 from player import Player
 from typing import List, Tuple
