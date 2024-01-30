@@ -1,0 +1,80 @@
+[
+    [
+        [
+            [
+                ["id", 1],
+                ["species", [
+                    [
+                        ["food", 0],
+                        ["body", 3],
+                        ["population", 1],
+                        ["traits", ["fat-tissue", "carnivore"]],
+                        ["fat-food", 2]
+                    ]
+                ]],
+                ["bag", 2],
+                ["cards", [
+                    [1, "long-neck"],
+                    [5, "carnivore"],
+                    [3, "scavenger"]
+                ]]
+            ],
+            [
+                ["id", 2],
+                ["species", [
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", ["climbing"]]
+                    ]
+                ]],
+                ["bag", 3],
+                ["cards", [
+                    [1, "fertile"]
+                ]]
+            ],
+            [
+                ["id", 3],
+                ["species", [
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", ["carnivore", "climbing"]]
+                    ]
+                ]],
+                ["bag", 1],
+                ["cards", [
+                    [0, "fat-tissue"]
+                ]]
+            ]
+        ], 10, [
+            [1, "foraging"],
+            [-2, "fertile"],
+            [-1, "long-neck"],
+            [5, "carnivore"],
+            [3, "herding"],
+            [2, "fat-tissue"],
+            [0, "ambush"]
+        ]
+
+    ],
+    [
+        [1, [],
+            [],
+            [],
+            [[0,0,2], [0,1,0]]
+        ],
+        [0, [],
+            [],
+            [],
+            []
+        ],
+        [0, [],
+            [],
+            [],
+            []
+        ]
+    ]
+]

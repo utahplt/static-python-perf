@@ -1,0 +1,16 @@
+[
+    [
+        [
+            [["id", 1], ["species", [[["food", 1], ["body", 1], ["population", 3], ["traits", ["foraging"]]]]], ["bag", 3], ["cards", [[-2, "carnivore"], [4, "carnivore"]]]],
+            [["id", 2], ["species", [[["food", 1], ["body", 1], ["population", 3], ["traits", ["foraging", "long-neck"]]]]], ["bag", 5], ["cards", [[3, "carnivore"]]]],
+            [["id", 3], ["species", []], ["bag", 8], ["cards", [[5, "carnivore"]]]]
+        ],
+        10,
+        [[3, "carnivore"]]
+    ],
+    [
+        [1, [["population", 0, 0]], [], [], []],
+        [0, [], [], [], []],
+        [0, [], [], [], []]
+    ]
+]

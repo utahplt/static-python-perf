@@ -1,0 +1,65 @@
+[
+  [
+    [
+      [
+        ["id",1],
+        ["species",[
+          [
+            ["food",0],
+            ["body",3],
+            ["population",2],
+            ["traits",["long-neck"]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",3],
+            ["traits",["fertile"]]]]],
+        ["bag",0],
+        ["cards", [[3, "foraging"]]]
+      ],
+      [
+        ["id",2],
+        ["species",[
+          [
+            ["food",0],
+            ["body",2],
+            ["population",1],
+            ["traits",["symbiosis"]]],
+          [
+            ["food",0],
+            ["body",3],
+            ["population",3],
+            ["traits",["long-neck", "carnivore", "fat-tissue"]],
+            ["fat-food", 3]]]],
+        ["bag",0],
+        ["cards", [[2, "warning-call"]]]
+      ],
+      [
+        ["id",3],
+        ["species",[
+          [
+            ["food",0],
+            ["body",5],
+            ["population",2],
+            ["traits",["herding", "fertile", "fat-tissue"]],
+            ["fat-food", 5]]]],
+        ["bag",0],
+        ["cards", [[-7, "carnivore"]]]
+      ]
+    ],
+    0,
+    [[-3, "ambush"],
+      [0, "fertile"],
+      [-6, "carnivore"],
+      [0, "cooperation"],
+      [2, "hard-shell"],
+      [-3, "scavenger"],
+      [1, "scavenger"]
+    ]
+  ],
+  [
+    [0, [], [], [], []],
+    [0, [], [], [], []],
+    [0, [], [], [], []]
+  ]
+]

@@ -3,7 +3,6 @@ import numpy as np
 from scipy.stats import norm
 from prettytable import PrettyTable
 
-
 def count_lines(file_name):
     try:
         with open(file_name, 'r') as file:

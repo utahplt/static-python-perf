@@ -1,0 +1,31 @@
+[
+  [
+    ["id",1],
+    ["species",[
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]]]],
+    ["bag",0],
+    ["cards", [[-4, "carnivore"], [2, "cooperation"], [-3, "foraging"], [-1, "cooperation"]]]],
+  [],
+  [
+    [
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]
+      ]
+    ],
+    [
+      [
+        ["food",0],
+        ["body",0],
+        ["population",1],
+        ["traits",[]]
+      ]
+    ]
+  ]
+]

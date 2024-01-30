@@ -1,0 +1,64 @@
+[
+  [
+    [
+      ["id",1],
+      ["species",[
+        [
+          ["food",2],
+          ["body",3],
+          ["population",2],
+          ["traits",["long-neck", "foraging", "cooperation"]]],
+        [
+          ["food",2],
+          ["body",3],
+          ["population",6],
+          ["traits",["cooperation"]]],
+        [
+          ["food",1],
+          ["body",2],
+          ["population",2],
+          ["traits",[]]],
+        [
+          ["food",2],
+          ["body",2],
+          ["population",2],
+          ["traits",["fat-tissue"]]]
+      ]],
+      ["bag",0]
+    ],
+    [
+      ["id",2],
+      ["species",[
+        [
+          ["food",7],
+          ["body",7],
+          ["population",7],
+          ["traits",["long-neck", "cooperation", "fat-tissue"]]],
+        [
+          ["food",0],
+          ["body",2],
+          ["population",7],
+          ["traits",["fertile"]]]]],
+      ["bag",0]
+    ],
+    [
+      ["id",3],
+      ["species",[
+        [
+          ["food",0],
+          ["body",5],
+          ["population",3],
+          ["traits",["herding", "fertile"]]]]],
+      ["bag",0]
+    ]
+  ],
+  0,
+  [[-3, "ambush"],
+    [0, "fertile"],
+    [-6, "carnivore"],
+    [0, "cooperation"],
+    [2, "hard-shell"],
+    [-3, "scavenger"],
+    [1, "scavenger"]
+  ]
+]

@@ -1,0 +1,117 @@
+[
+    [
+        [
+            [
+                ["id", 1],
+                ["species", [
+                    [
+                        ["food", 1],
+                        ["body", 1],
+                        ["population", 1],
+                        ["traits", ["carnivore"]]
+                    ],
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 6],
+                        ["traits", ["carnivore", "cooperation"]]
+                    ],
+                    [
+                        ["food", 2],
+                        ["body", 4],
+                        ["population", 5],
+                        ["traits", ["carnivore", "cooperation"]]
+                    ],
+                    [
+                        ["food", 2],
+                        ["body", 4],
+                        ["population", 5],
+                        ["traits", ["carnivore", "cooperation"]]
+                    ]
+                ]],
+                ["bag", 2],
+                ["cards", [
+                    [1, "scavenger"],
+                    [-2, "long-neck"],
+                    [-1, "carnivore"]
+                ]]
+            ],
+            [
+                ["id", 2],
+                ["species", [
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", []]
+                    ],
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", []]
+                    ],
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", []]
+                    ]
+                ]],
+                ["bag", 3],
+                ["cards", [
+                    [1, "fertile"],
+                    [-2, "carnivore"],
+                    [-1, "cooperation"]
+                ]]
+            ],
+            [
+                ["id", 3],
+                ["species", [
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", ["carnivore"]]
+                    ],
+                    [
+                        ["food", 1],
+                        ["body", 2],
+                        ["population", 1],
+                        ["traits", ["carnivore"]]
+                    ]
+                ]],
+                ["bag", 1],
+                ["cards", [
+                    [1, "pack-hunting"],
+                    [-2, "hard-shell"],
+                    [-1, "burrowing"]
+                ]]
+            ]
+        ], 10, [
+            [1, "foraging"],
+            [-2, "fertile"],
+            [-1, "long-neck"],
+            [5, "carnivore"],
+            [3, "herding"],
+            [2, "fat-tissue"],
+            [0, "ambush"]
+        ]
+    
+], [
+    [1, [],
+        [],
+        [],
+        [[2,0,0]]
+    ],
+    [0, [["population",2,2]],
+        [],
+        [],
+        []
+    ],
+    [2, [],
+        [],
+        [[0,1]],
+        []
+    ]
+]]

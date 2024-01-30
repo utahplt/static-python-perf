@@ -1,0 +1,14 @@
+[[["id", 1],
+  ["species", [[["food", 0], ["body", 0], ["population", 1], ["traits", []]]]],
+  ["bag", 1],
+  ["cards",
+   [[1, "carnivore"],
+    [1, "symbiosis"],
+    [1, "fat-tissue"],
+    [1, "foraging"],
+    [1, "horns"],
+    [1, "warning-call"],
+    [1, "climbing"]]]],
+ [[[["food", 0], ["body", 0], ["population", 1], ["traits", []]]]],
+ [[[["food", 0], ["body", 0], ["population", 1], ["traits", []]]]]
+]

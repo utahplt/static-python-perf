@@ -1,0 +1,26 @@
+[
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", ["climbing"]]
+	],
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", ["carnivore", "climbing"]]
+	],
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", []]
+	],
+	[
+		["food", 1],
+		["body", 2],
+		["population", 3],
+		["traits", []]
+	]
+]

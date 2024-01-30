@@ -1,0 +1,41 @@
+[
+  [
+    [
+      ["id", 4],
+      ["species", [
+         [["food", 0],
+           ["body", 7],
+           ["population", 1],
+           ["traits", ["cooperation", "fat-tissue", "carnivore"]],
+           ["fat-food", 5]]
+      ]],
+      ["bag", 0]
+    ],
+    [
+      ["id", 13],
+      ["species", [
+         [["food", 0],
+           ["body", 0],
+           ["population", 1],
+           ["traits", ["foraging"]]]
+      ]],
+      ["bag", 0]
+    ],
+
+       [
+      ["id", 2],
+      ["species", [
+         [["food", 0],
+           ["body", 7],
+           ["population", 1],
+           ["traits", ["cooperation", "fat-tissue"]],
+           ["fat-food", 7]]
+      ]],
+      ["bag", 0],
+      ["cards", [[1, "carnivore"]]]
+    ]
+
+  ],
+  0,
+  []
+]

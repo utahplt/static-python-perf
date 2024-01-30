@@ -1,0 +1,40 @@
+[
+  [
+    [
+      [
+        ["id",1],
+        ["species",
+          [
+            [["food",0],["body",3],["population",1],["traits",["carnivore"]]],
+            [["food",1],["body",3],["population",1],["traits",[]]]
+          ]
+        ],
+        ["bag",0],
+        ["cards", [[3, "carnivore"], [3, "ambush"], [2, "burrowing"]]]
+      ],
+      [
+        ["id",2],
+        ["species",
+          [
+            [["food",0],["body",3],["population",1],["traits",["climbing"]]]
+          ]
+        ],
+        ["bag",0],
+        ["cards", [[2, "carnivore"], [2, "ambush"]]]
+      ],
+      [
+        ["id",3],
+        ["species",[]],
+        ["bag",0],
+        ["cards", [[1, "carnivore"]]]
+      ]
+    ],
+    1,
+    []
+  ],
+  [
+    [0, [], [], [[1],[2]], []],
+    [0, [], [], [], []],
+    [0, [], [], [], []]
+  ]
+]

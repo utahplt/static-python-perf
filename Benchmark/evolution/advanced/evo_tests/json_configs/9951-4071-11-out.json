@@ -1,0 +1,99 @@
+[
+  [
+    [
+      ["id", 1],
+      ["species",
+        [
+          [
+            ["food", 0],
+            ["body", 3],
+            ["population", 7],
+            ["traits", ["carnivore","cooperation"]]
+          ],
+          [
+            ["food", 1],
+            ["body", 3],
+            ["population", 7],
+            ["traits", ["cooperation"]]
+          ],
+          [
+            ["food", 7],
+            ["body", 3],
+            ["population", 7],
+            ["traits", ["cooperation"]]
+          ],
+          [
+            ["food", 0],
+            ["body", 3],
+            ["population", 7],
+            ["traits", []]
+          ]
+
+        ]
+      ],
+      ["bag", 0],
+      ["cards",
+        [
+          [1, "carnivore"],
+          [2, "ambush"]
+        ]
+      ]
+    ],
+    [
+      ["id", 2],
+      ["species",
+        [
+          [
+            ["food", 1],
+            ["body", 3],
+            ["population", 3],
+            ["traits",[]]
+          ],
+          [
+            ["food", 0],
+            ["body", 3],
+            ["population", 3],
+            ["traits", []]
+          ]
+        ]
+      ],
+      ["bag", 0],
+      ["cards",
+        [
+          [3, "carnivore"],
+          [-2, "ambush"]
+        ]
+      ]
+    ],
+    [
+      ["id", 3],
+      ["species",
+        [
+          [
+            ["food", 1],
+            ["body", 3],
+            ["population", 5],
+            ["traits",[]]
+          ],
+          [
+            ["food", 0],
+            ["body", 3],
+            ["population", 5],
+            ["traits", []]
+          ]
+        ]
+      ],
+      ["bag", 0]
+    ]
+  ],
+  14,
+  [
+    [-3, "burrowing"],
+    [-2, "burrowing"],
+    [-1, "burrowing"],
+    [0, "burrowing"],
+    [1, "burrowing"],
+    [2, "burrowing"],
+    [3, "burrowing"]
+  ]
+]

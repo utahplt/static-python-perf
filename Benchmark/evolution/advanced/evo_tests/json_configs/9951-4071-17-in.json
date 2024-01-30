@@ -1,0 +1,47 @@
+[
+  [
+    [
+      ["id", 1],
+      ["species",
+        [
+          [
+            ["food", 0],
+            ["body", 7],
+            ["population", 7],
+            ["traits", ["carnivore", "fat-tissue"]]
+          ]
+        ]
+      ],
+      ["bag", 0]
+    ],
+    [
+      ["id", 2],
+      ["species", []],
+      ["bag", 0]
+    ],
+    [
+      ["id", 3],
+      ["species", []],
+      ["bag", 0]
+    ]
+  ],
+  100,
+  [
+    [-8, "carnivore"],
+    [-7, "carnivore"],
+    [-6, "carnivore"],
+    [-5, "carnivore"],
+    [-4, "carnivore"],
+    [-3, "carnivore"],
+    [-2, "carnivore"],
+    [-1, "carnivore"],
+    [1, "carnivore"],
+    [2, "carnivore"],
+    [3, "carnivore"],
+    [4, "carnivore"],
+    [5, "carnivore"],
+    [6, "carnivore"],
+    [7, "carnivore"],
+    [8, "carnivore"]
+  ]
+]
