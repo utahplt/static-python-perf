@@ -140,7 +140,7 @@ def signed_rank_confidence_interval(data, alpha=0.05):
 if __name__ == "__main__":
     file_paths = [
         ### Untyped Files ###
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/untyped/main.py",
@@ -246,30 +246,52 @@ if __name__ == "__main__":
     # print(table_lines)
 
 
+    # print("Line Count Calculator")
+    #
+    # print("\nNumber of lines in the files:")
+    # table_lines = PrettyTable()
+    # table_lines.field_names = ["File", "Number of Lines"]
+    #
+    # for file_path in file_paths:
+    #     # print(f"Running benchmarks in directory: {file_path}")
+    #     directory_path = '/'.join(file_path.split('/')[:-1])
+    #
+    #     # Iterate over all .py files in the directory
+    #     for file_name in os.listdir(directory_path):
+    #         if file_name.endswith(".py"):
+    #             full_file_path = os.path.join(directory_path, file_name)
+    #             # print(f"  Running benchmark: {full_file_path}")
+    #
+    #             # Get the number of lines for the file
+    #             num_lines = count_lines(full_file_path)
+    #
+    #             # Add to the table
+    #             table_lines.add_row([full_file_path, num_lines])
+    #
+    # print(table_lines)
     print("Line Count Calculator")
 
     print("\nNumber of lines in the files:")
     table_lines = PrettyTable()
-    table_lines.field_names = ["File", "Number of Lines"]
+    table_lines.field_names = ["Directory", "Number of Lines"]
 
     for file_path in file_paths:
-        # print(f"Running benchmarks in directory: {file_path}")
+        total_lines_for_directory = 0
+
         directory_path = '/'.join(file_path.split('/')[:-1])
 
-        # Iterate over all .py files in the directory
         for file_name in os.listdir(directory_path):
             if file_name.endswith(".py"):
                 full_file_path = os.path.join(directory_path, file_name)
-                # print(f"  Running benchmark: {full_file_path}")
 
-                # Get the number of lines for the file
                 num_lines = count_lines(full_file_path)
 
-                # Add to the table
-                table_lines.add_row([full_file_path, num_lines])
+                if num_lines is not None:
+                    total_lines_for_directory += num_lines
+
+        table_lines.add_row([directory_path, total_lines_for_directory])
 
     print(table_lines)
-
 """
 1. Run 3 for each benchmark: Untyped, Shallow, advanced; essentially running the main file for all 3
 2. figure out how we can implement a randomized type system for all the code
