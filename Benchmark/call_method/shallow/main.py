@@ -9,9 +9,10 @@ bg:
 - removed command-line parsing
 """
 
-
 from typing import List
 import __static__
+import time
+
 
 class Foo(object):
 
@@ -137,4 +138,8 @@ def test_calls() -> None:
 
 
 if __name__ == "__main__":
-    test_calls()
+    startTime = time.time()
+    test_calls()  # main func call :)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

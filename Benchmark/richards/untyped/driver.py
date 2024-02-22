@@ -140,7 +140,7 @@ def signed_rank_confidence_interval(data, alpha=0.05):
 if __name__ == "__main__":
     file_paths = [
         ### Untyped Files ###
-        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/untyped/main.py",
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/pythonflow/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/richards/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/sample_fsm/untyped/main.py",
-        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/slowsha/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/spectralnorm/untyped/main.py",
         # # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/stats/untyped/main.py", path problem
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/take5/untyped/main.py",
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     static_files = [
         ### Shallow Files ####
 
-        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/shallow/main.py",
+        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/shallow/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/shallow/main.py",
@@ -292,10 +292,3 @@ if __name__ == "__main__":
         table_lines.add_row([directory_path, total_lines_for_directory])
 
     print(table_lines)
-"""
-1. Run 3 for each benchmark: Untyped, Shallow, advanced; essentially running the main file for all 3
-2. figure out how we can implement a randomized type system for all the code
-3. make a plan!
-
-
-"""
