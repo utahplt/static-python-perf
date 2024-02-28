@@ -1,5 +1,6 @@
 import __static__
 from __static__ import int64
+import time
 
 """Microbenchmark for method call overhead.
 
@@ -137,4 +138,8 @@ def test_calls() -> None:
 
 
 if __name__ == "__main__":
-    test_calls()
+    startTime = time.time()
+    test_calls() # call
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

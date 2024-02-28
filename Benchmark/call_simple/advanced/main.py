@@ -12,7 +12,7 @@ bg:
 """
 import __static__
 from __static__ import int64
-
+import time
 def foo(a: int64, b: int64, c: int64, d: int64) -> None:
     # 20 calls
     bar(a, b, c)
@@ -136,4 +136,8 @@ def test_calls() -> None:
 
 
 if __name__ == "__main__":
-    test_calls()
+    startTime = time.time()
+    test_calls() # call
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

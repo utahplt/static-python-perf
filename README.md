@@ -7,7 +7,7 @@ Running the Docker:
 docker run -v "$PWD/cinder:/vol" -w /vol -it --rm ghcr.io/facebookincubator/cinder/python-build-env:latest bash
 ```
 Steps to Run Static Python
-1. `cd` Ensure you're in the correct empty directory 
+1. `cd` Ensure you're in the corrt empty directory 
 2. Run the docker command above
 3. pull the changes (git pull)
 4. ls, and navigate to the file that needs to be run (./call-method/shallow)

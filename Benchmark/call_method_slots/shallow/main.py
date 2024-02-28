@@ -12,7 +12,7 @@ bg:
 """
 from typing import List
 import __static__
-
+import time
 
 class Foo(object):
     __slots__ = ()
@@ -140,4 +140,8 @@ def test_calls() -> None:
 
 
 if __name__ == "__main__":
-    test_calls()
+    startTime = time.time()
+    test_calls() # call
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
