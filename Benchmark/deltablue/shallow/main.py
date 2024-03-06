@@ -24,11 +24,14 @@ import __static__
 
 from __static__ import cast
 from typing import final
+import time
+
 
 # The JS variant implements "OrderedCollection", which basically completely
 # overlaps with ``list``. So we'll cheat. :D
 class OrderedCollection(list):
     pass
+
 
 @final
 class Strength(object):
@@ -152,7 +155,7 @@ class UrnaryConstraint(Constraint):
 
     def choose_method(self, mark: int) -> None:
         if self.my_output.mark != mark and \
-           Strength.stronger(self.strength, self.my_output.walk_strength):
+                Strength.stronger(self.strength, self.my_output.walk_strength):
             self.satisfied = True
         else:
             self.satisfied = False
@@ -337,7 +340,7 @@ class ScaleConstraint(BinaryConstraint):
             self.v2.value = self.v1.value * self.scale.value + self.offset.value
         else:
             self.v1.value = (
-                self.v2.value - self.offset.value) / self.scale.value
+                                    self.v2.value - self.offset.value) / self.scale.value
 
     def recalculate(self) -> None:
         ihn = self.input()
@@ -360,7 +363,7 @@ class EqualityConstraint(BinaryConstraint):
 @final
 class Variable(object):
 
-    def __init__(self, name: str, initial_value: int=0) -> None:
+    def __init__(self, name: str, initial_value: int = 0) -> None:
         super(Variable, self).__init__()
         self.name = name
         self.value = initial_value
@@ -693,6 +696,11 @@ def delta_blue(n: int) -> None:
     chain_test(n)
     projection_test(n)
 
+
 if __name__ == "__main__":
     n = 10000
+    startTime = time.time()
     delta_blue(n)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

@@ -21,20 +21,23 @@ the layout & logic from the original. (Ugh.)
 from __future__ import annotations
 
 import __static__
-
+import time
 from enum import IntEnum
 
 from __static__ import CheckedList, box, cast, cbool, clen, int64, inline
 from typing import final
+import time
 
 
 @inline
 def stronger(s1: Strength, s2: Strength) -> cbool:
     return s1.strength < s2.strength
 
+
 @inline
 def weaker(s1: Strength, s2: Strength) -> cbool:
     return s1.strength > s2.strength
+
 
 @inline
 def weakest_of(s1: Strength, s2: Strength) -> Strength:
@@ -46,7 +49,6 @@ class Strength:
     def __init__(self, strength: int64, name: str) -> None:
         self.strength: int64 = strength
         self.name: str = name
-
 
     def next_weaker(self) -> Strength:
         return STRENGTHS[self.strength]
@@ -149,7 +151,7 @@ class UrnaryConstraint(Constraint):
 
     def choose_method(self, mark: int64) -> None:
         if self.my_output.mark != mark and \
-           stronger(self.strength, self.my_output.walk_strength):
+                stronger(self.strength, self.my_output.walk_strength):
             self.satisfied = True
         else:
             self.satisfied = False
@@ -182,11 +184,13 @@ class UrnaryConstraint(Constraint):
 class StayConstraint(UrnaryConstraint):
     pass
 
+
 @final
 class EditConstraint(UrnaryConstraint):
 
     def is_input(self) -> cbool:
         return True
+
 
 @final
 class Direction(IntEnum):
@@ -236,7 +240,7 @@ class BinaryConstraint(Constraint):
 
     def is_satisfied(self) -> cbool:
         if self.direction != Direction.NONE:
-          return True
+            return True
         return False
 
     def mark_inputs(self, mark: int64) -> None:
@@ -307,7 +311,7 @@ class ScaleConstraint(BinaryConstraint):
             self.v2.value = self.v1.value * self.scale.value + self.offset.value
         else:
             self.v1.value = (
-                self.v2.value - self.offset.value) / self.scale.value
+                                    self.v2.value - self.offset.value) / self.scale.value
 
     def recalculate(self) -> None:
         ihn = self.input()
@@ -627,6 +631,7 @@ def change(v: Variable, new_value: int64) -> None:
 # In spirit of the original, we'll keep it, but ugh.
 planner = None
 
+
 def delta_blue(i: int) -> None:
     n = int64(i)
     chain_test(n)
@@ -635,4 +640,8 @@ def delta_blue(i: int) -> None:
 
 if __name__ == "__main__":
     n = 10000
+    startTime = time.time()
     delta_blue(n)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
