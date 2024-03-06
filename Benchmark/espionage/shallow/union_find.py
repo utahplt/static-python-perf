@@ -1,6 +1,6 @@
 import __static__
 from typing import List, Dict, Tuple
-
+import time
 class UnionFind:
     def __init__(self, my_dict: Dict[int, Tuple[int, int]]) -> None:
         self.my_dict = my_dict

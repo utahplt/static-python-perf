@@ -3,6 +3,7 @@ from operator import itemgetter
 from union_find import UnionFind
 import __static__
 from typing import List, Dict, Tuple
+import time
 
 
 def main(all_lines: List[str]) -> None:
@@ -82,5 +83,8 @@ def kruskal(nodes: List[int], edges: List[Tuple[int, int, int]], edges_to_check:
 fname = "../us-input.txt"
 with open(fname, "r") as f:
     in_lines = f.readlines()
+    startTime = time.time()
     main(in_lines)
-
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
