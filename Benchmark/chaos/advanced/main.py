@@ -1,5 +1,5 @@
 #   Copyright (C) 2005 Carl Friedrich Bolz
-
+# doesnt run
 """create chaosgame-like fractals
 
 bg:
@@ -26,7 +26,7 @@ from __future__ import annotations
 import __static__
 from typing import final, List, Iterator
 import random
-
+import time
 random.seed(1234)
 ITERATIONS = 1
 import math
@@ -224,4 +224,8 @@ if __name__ == "__main__":
             GVector(2.366800, 3.233460, 0.000000)],
             3, [0, 0, 0, 1, 1, 1])
     ]
+    startTime  = time.time()
     c = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
