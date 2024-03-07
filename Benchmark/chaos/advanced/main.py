@@ -32,10 +32,10 @@ ITERATIONS = 1
 import math
 
 class GVector(object):
-    def __init__(self, x: int, y: int, z: int) -> None:
-        self.x = x
-        self.y = y
-        self.z = z
+    def __init__(self, x: float, y: float, z: float) -> None:
+        self.x: float = x
+        self.y: float = y
+        self.z: float = z
 
     def Mag(self) -> float:
         return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
