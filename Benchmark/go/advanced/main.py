@@ -2,7 +2,7 @@ import random
 import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
-
+import time
 
 #@fields({'empties':List(int)
 #        ,'board':{'useful':Function(NamedParameters([('pos',int)])
@@ -369,6 +369,14 @@ ITERATIONS = 2
 if __name__ == "__main__":
     for i in range(ITERATIONS):
         random.seed(1)
+        start_time = time.time()
+
         board = Board()
+
+        end_time = time.time()
+        runtime = end_time - start_time
+        print(runtime)
+
+
         pos = computer_move(board)
         #print(pos)

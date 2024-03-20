@@ -1,10 +1,9 @@
 import sys
 from evolution.player.player import Player
-from Timer import Timer
+import time
 
 from dealer.dealer import Dealer
 from dealer.deck import Deck
-
 
 MIN_PLAYERS = 3
 MAX_PLAYERS = 8
@@ -23,6 +22,7 @@ def main(argv):
         dealer = make_dealer(n)
         dealer.run_game()
         score = dealer.get_sorted_scores()
+
 
 def make_dealer(n):
     """
@@ -47,11 +47,15 @@ def print_score(score):
     for i, s in enumerate(score):
         print("%s player id: %s info: %s score: %s" % (i + 1, s[0], s[1], s[2]))
 
-if __name__ == "__main__":
-    t = Timer()
-    with t:
-        if len(sys.argv) == 1:
-            main(["7"])
-        else:
-            main(sys.argv[1:])
 
+if __name__ == "__main__":
+    start_time = time.time()
+
+    if len(sys.argv) == 1:
+        main(["7"])
+    else:
+        main(sys.argv[1:])
+
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

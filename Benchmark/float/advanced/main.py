@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List
 from math import sin, cos, sqrt
-
+import time
 """
 bg:
 - add `ITERATIONS` constant
@@ -53,4 +53,10 @@ def benchmark(n: int) -> Point:
 POINTS = 200000
 
 if __name__ == "__main__":
+    start_time = time.time()
+
     benchmark(POINTS)
+
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)

@@ -9,6 +9,7 @@ from __future__ import annotations
 import __static__
 import sys
 from typing import Callable, List
+import time
 
 DEFAULT_ARG = 9
 
@@ -54,6 +55,14 @@ if __name__ == "__main__":
     num_iterations = 1
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+
     for _ in range(num_iterations):
+        start_time = time.time()
         res = fannkuch(DEFAULT_ARG)
+
+        end_time = time.time()
+        runtime = end_time - start_time
+        print(runtime)
+
+
         assert res == 30

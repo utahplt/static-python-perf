@@ -2,24 +2,25 @@ import random
 import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
+import time
 
 
-#@fields({'empties':List(int)
+# @fields({'empties':List(int)
 #        ,'board':{'useful':Function(NamedParameters([('pos',int)])
 #                 ,int)}
 #        ,'empty_pos':List(int)})
 class EmptySet:
-    #def __init__(self:EmptySet, board:{'useful':Function(NamedParameters([('pos',int)]), int)})->Void:
+    # def __init__(self:EmptySet, board:{'useful':Function(NamedParameters([('pos',int)]), int)})->Void:
     def __init__(self, board):
         self.board = board
-        self.empties = list(range(SIZE*SIZE))
-        self.empty_pos = list(range(SIZE*SIZE))
+        self.empties = list(range(SIZE * SIZE))
+        self.empty_pos = list(range(SIZE * SIZE))
 
-    #def random_choice(self:EmptySet)->int:
+    # def random_choice(self:EmptySet)->int:
     def random_choice(self):
         choices = len(self.empties)
         while choices:
-            i = int(random.random()*choices)
+            i = int(random.random() * choices)
             pos = self.empties[i]
             if self.board.useful(pos):
                 return pos
@@ -28,24 +29,25 @@ class EmptySet:
             self.set(choices, pos)
         return PASS
 
-    #def add(self:EmptySet, pos:int)->Void:
+    # def add(self:EmptySet, pos:int)->Void:
     def add(self, pos):
         self.empty_pos[pos] = len(self.empties)
         self.empties.append(pos)
 
-    #def remove(self:EmptySet, pos:int, update:bool)->Void:
+    # def remove(self:EmptySet, pos:int, update:bool)->Void:
     def remove(self, pos, update):
-        self.set(self.empty_pos[pos], self.empties[len(self.empties)-1])
+        self.set(self.empty_pos[pos], self.empties[len(self.empties) - 1])
         self.empties.pop()
 
-    #def set(self:EmptySet, i:int, pos:int)->Void:
+    # def set(self:EmptySet, i:int, pos:int)->Void:
     def set(self, i, pos):
         self.empties[i] = pos
         self.empty_pos[pos] = i
 
-#@fields({'hash':int})
+
+# @fields({'hash':int})
 class ZobristHash:
-    #def __init__(self:ZobristHash, board:{'squares':List(Square)})->Void:
+    # def __init__(self:ZobristHash, board:{'squares':List(Square)})->Void:
     def __init__(self, board):
         self.hash_set = set()
         self.hash = 0
@@ -54,19 +56,20 @@ class ZobristHash:
         self.hash_set.clear()
         self.hash_set.add(self.hash)
 
-    #def update(self:ZobristHash, square:Square, color:int)->Void:
+    # def update(self:ZobristHash, square:Square, color:int)->Void:
     def update(self, square, color):
         self.hash ^= square.zobrist_strings[square.color]
         self.hash ^= square.zobrist_strings[color]
 
-    #def add(self:ZobristHash)->Void:
+    # def add(self:ZobristHash)->Void:
     def add(self):
         self.hash_set.add(self.hash)
 
     def dupe(self):
         return self.hash in self.hash_set
 
-#@fields({'squares':List(Square)
+
+# @fields({'squares':List(Square)
 #        ,'emptyset':EmptySet
 #        ,'zobrist':ZobristHash
 #        ,'color':int
@@ -76,7 +79,7 @@ class ZobristHash:
 #        ,'black_dead':int
 #        ,'lastmove':int})
 class Board:
-    #def __init__(self:Board)->Void:
+    # def __init__(self:Board)->Void:
     def __init__(self):
         self.squares = []
         self.emptyset = EmptySet(self)
@@ -87,13 +90,13 @@ class Board:
         self.history = []
         self.white_dead = 0
         self.black_dead = 0
-        self.squares = [Square(self, pos) for pos in range(SIZE*SIZE)]
+        self.squares = [Square(self, pos) for pos in range(SIZE * SIZE)]
         for square in self.squares:
             square.set_neighbours()
             square.color = EMPTY
             square.used = False
 
-    #def reset(self:Board)->Void:
+    # def reset(self:Board)->Void:
     def reset(self):
         for square in self.squares:
             square.color = EMPTY
@@ -107,7 +110,7 @@ class Board:
         self.white_dead = 0
         self.black_dead = 0
 
-    #def move(self:Board, pos:int)->Void:
+    # def move(self:Board, pos:int)->Void:
     def move(self, pos):
         square = self.squares[pos]
         if pos != PASS:
@@ -115,16 +118,18 @@ class Board:
             self.emptyset.remove(square.pos, True)
         elif self.lastmove == PASS:
             self.finished = True
-        if self.color == BLACK: self.color = WHITE
-        else: self.color = BLACK
+        if self.color == BLACK:
+            self.color = WHITE
+        else:
+            self.color = BLACK
         self.lastmove = pos
         self.history.append(pos)
 
-    #def random_move(self:Board)->int:
+    # def random_move(self:Board)->int:
     def random_move(self):
         return self.emptyset.random_choice()
 
-    #def useful_fast(self:Board, square:Square)->bool:
+    # def useful_fast(self:Board, square:Square)->bool:
     def useful_fast(self, square):
         if not square.used:
             for neighbour in square.neighbours:
@@ -132,7 +137,7 @@ class Board:
                     return True
         return False
 
-    #def useful(self:Board, pos:int)->int:
+    # def useful(self:Board, pos:int)->int:
     def useful(self, pos):
         global TIMESTAMP
         TIMESTAMP += 1
@@ -164,21 +169,21 @@ class Board:
                     neighbour_ref.remove(neighbour_ref, False)
         dupe = self.zobrist.dupe()
         self.zobrist.hash = old_hash
-        strong_neighs = neighs-weak_neighs
-        strong_opps = opps-weak_opps
+        strong_neighs = neighs - weak_neighs
+        strong_opps = opps - weak_opps
         return not dupe and \
-               (empties or weak_opps or (strong_neighs and (strong_opps or weak_neighs)))
+            (empties or weak_opps or (strong_neighs and (strong_opps or weak_neighs)))
 
-    #def useful_moves(self:Board)->List(int):
+    # def useful_moves(self:Board)->List(int):
     def useful_moves(self):
         return [pos for pos in self.emptyset.empties if self.useful(pos)]
 
-    #def replay(self:Board, history:List(int))->Void:
+    # def replay(self:Board, history:List(int))->Void:
     def replay(self, history):
         for pos in history:
             self.move(pos)
 
-    #def score(self:Board, color:int)->float:
+    # def score(self:Board, color:int)->float:
     def score(self, color):
         if color == WHITE:
             count = KOMI + self.black_dead
@@ -197,7 +202,7 @@ class Board:
                     count += 1
         return count
 
-    #def check(self:Board)->Void:
+    # def check(self:Board)->Void:
     def check(self):
         for square in self.squares:
             if square.color == EMPTY:
@@ -238,19 +243,19 @@ class Board:
                     empties2.add(square.pos)
 
 
-#@fields({'pos':int, 'wins':int, 'losses':int})
+# @fields({'pos':int, 'wins':int, 'losses':int})
 class UCTNode:
-    #def __init__(self:UCTNode)->Void:
+    # def __init__(self:UCTNode)->Void:
     def __init__(self):
         self.bestchild = None
         self.pos = -1
         self.wins = 0
         self.losses = 0
-        self.pos_child = [None for x in range(SIZE*SIZE)]
+        self.pos_child = [None for x in range(SIZE * SIZE)]
         self.parent = None
         self.unexplored = True
 
-    #def play(self:UCTNode, board:Board)->Void:
+    # def play(self:UCTNode, board:Board)->Void:
     def play(self, board):
         """ uct tree search """
         color = board.color
@@ -274,13 +279,13 @@ class UCTNode:
         self.random_playout(board)
         self.update_path(board, color, path)
 
-    #def select(self:UCTNode, board:Board)->int:
+    # def select(self:UCTNode, board:Board)->int:
     def select(self, board):
         """ select move; unexplored children first, then according to uct value """
         if self.unexplored:
             i = random.randrange(len(self.unexplored))
             pos = self.unexplored[i]
-            self.unexplored[i] = self.unexplored[len(self.unexplored)-1]
+            self.unexplored[i] = self.unexplored[len(self.unexplored) - 1]
             self.unexplored.pop()
             return pos
         elif self.bestchild:
@@ -288,21 +293,23 @@ class UCTNode:
         else:
             return PASS
 
-    #def random_playout(self:UCTNode, board:Board)->Void:
+    # def random_playout(self:UCTNode, board:Board)->Void:
     def random_playout(self, board):
         """ random play until both players pass """
-        for x in range(MAXMOVES): # XXX while not self.finished?
+        for x in range(MAXMOVES):  # XXX while not self.finished?
             if board.finished:
                 break
             board.move(board.random_move())
 
-    #def update_path(self:UCTNode, board:Board, color:int, path:List(UCTNode))->Void:
+    # def update_path(self:UCTNode, board:Board, color:int, path:List(UCTNode))->Void:
     def update_path(self, board, color, path):
         """ update win/loss count along path """
         wins = board.score(BLACK) >= board.score(WHITE)
         for node in path:
-            if color == BLACK: color = WHITE
-            else: color = BLACK
+            if color == BLACK:
+                color = WHITE
+            else:
+                color = BLACK
             if wins == (color == BLACK):
                 node.wins += 1
             else:
@@ -310,16 +317,16 @@ class UCTNode:
             if node.parent:
                 node.parent.bestchild = node.parent.best_child()
 
-    #def score(self:UCTNode)->float:
+    # def score(self:UCTNode)->float:
     def score(self):
-        winrate = self.wins/float(self.wins+self.losses)
-        parentvisits = self.parent.wins+self.parent.losses
+        winrate = self.wins / float(self.wins + self.losses)
+        parentvisits = self.parent.wins + self.parent.losses
         if not parentvisits:
             return winrate
-        nodevisits = self.wins+self.losses
-        return winrate + math.sqrt((math.log(parentvisits))/(5*nodevisits))
+        nodevisits = self.wins + self.losses
+        return winrate + math.sqrt((math.log(parentvisits)) / (5 * nodevisits))
 
-    #def best_child(self:UCTNode)->UCTNode:
+    # def best_child(self:UCTNode)->UCTNode:
     def best_child(self):
         maxscore = -1
         maxchild = None
@@ -329,16 +336,17 @@ class UCTNode:
                 maxscore = child.score()
         return maxchild
 
-    #def best_visited(self:UCTNode)->UCTNode:
+    # def best_visited(self:UCTNode)->UCTNode:
     def best_visited(self):
         maxvisits = -1
         maxchild = None
         for child in self.pos_child:
-            if child and (child.wins+child.losses) > maxvisits:
-                maxvisits, maxchild = (child.wins+child.losses), child
+            if child and (child.wins + child.losses) > maxvisits:
+                maxvisits, maxchild = (child.wins + child.losses), child
         return maxchild
 
-#def computer_move(board:{'useful_moves':Function([], List(int)),
+
+# def computer_move(board:{'useful_moves':Function([], List(int)),
 #                         'random_move':Function([], int),
 #                         'history':List(int)})->int:
 def computer_move(board):
@@ -356,6 +364,7 @@ def computer_move(board):
         node.play(nboard)
     return tree.best_visited().pos
 
+
 ITERATIONS = 2
 
 # Histogram of method call counts:
@@ -369,6 +378,13 @@ ITERATIONS = 2
 if __name__ == "__main__":
     for i in range(ITERATIONS):
         random.seed(1)
+        start_time = time.time()
+
         board = Board()
+
+        end_time = time.time()
+        runtime = end_time - start_time
+        print(runtime)
+
         pos = computer_move(board)
-        #print(pos)
+        # print(pos)
