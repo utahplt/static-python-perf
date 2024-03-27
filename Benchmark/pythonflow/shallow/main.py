@@ -8,7 +8,7 @@
 from __future__ import annotations
 from typing import List
 import __static__
-
+import time
 class PythonFlow:
     def __init__(self: PythonFlow) -> None:
         self.graph = []
@@ -129,4 +129,11 @@ class PythonFlow:
 
 
 flow = PythonFlow()
+
+# run class or both here???
+
+startTime = time.time()
 flow.main_algorithm()
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)

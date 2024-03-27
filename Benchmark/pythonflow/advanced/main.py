@@ -8,7 +8,7 @@
 import __static__
 from __static__ import int64, Array
 from typing import List
-
+import time
 class PythonFlow:
     # PythonFlow implement Ford-Fulkerson method to maximize flow on graph problems.
     # example of input text:
@@ -185,4 +185,9 @@ class PythonFlow:
 
 # # example of usage
 flow = PythonFlow()
+
+startTime = time.time()
 flow.main_algorithm()
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)
