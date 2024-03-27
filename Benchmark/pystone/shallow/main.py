@@ -47,13 +47,11 @@ from __future__ import annotations
 import __static__
 from __static__ import cast
 from typing import Final, List
-
+import time
 
 LOOPS: Final[int] = 50000
 
-
 __version__ = "1.2"
-
 
 Ident1: Final[int] = 1
 Ident2: Final[int] = 2
@@ -64,12 +62,12 @@ Ident5: Final[int] = 5
 
 class Record:
     def __init__(
-        self,
-        PtrComp: Record | None = None,
-        Discr: int = 0,
-        EnumComp: int = 0,
-        IntComp: int = 0,
-        StringComp: str = "\0",
+            self,
+            PtrComp: Record | None = None,
+            Discr: int = 0,
+            EnumComp: int = 0,
+            IntComp: int = 0,
+            StringComp: str = "\0",
     ):
         self.PtrComp: Record | None = PtrComp
         self.Discr: int = Discr
@@ -175,7 +173,7 @@ def Proc1(PtrParIn: Record) -> Record:
 
 def Proc2(IntParIO: int) -> int:
     IntLoc: int = IntParIO + 10
-    EnumLoc : int = 0
+    EnumLoc: int = 0
     while 1:
         if Char1Glob == "A":
             IntLoc = IntLoc - 1
@@ -244,7 +242,7 @@ def Proc7(IntParI1: int, IntParI2: int) -> int:
 
 
 def Proc8(
-    Array1Par: List[int], Array2Par: List[int], IntParI1: int, IntParI2: int
+        Array1Par: List[int], Array2Par: List[int], IntParI1: int, IntParI2: int
 ) -> None:
     global IntGlob
     IntLoc = IntParI1 + 5
@@ -297,6 +295,7 @@ def run() -> None:
     loops: int = LOOPS
     pystones(loops)
 
+
 if __name__ == "__main__":
     import sys
 
@@ -304,4 +303,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
     for _ in range(num_iterations):
+        startTime = time.time()
         run()
+        endTime = time.time()
+        runtime = endTime - startTime
+        print(runtime)

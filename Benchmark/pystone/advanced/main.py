@@ -49,7 +49,7 @@ from __future__ import annotations
 import __static__
 from __static__ import cast, CheckedList
 from typing import Final
-
+import time
 
 LOOPS: Final[int] = 50000
 
@@ -306,4 +306,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
     for _ in range(num_iterations):
+        startTime = time.time()
         run()
+        endTime = time.time()
+        runtime = endTime - startTime
+        print(runtime)
+
