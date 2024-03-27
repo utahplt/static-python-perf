@@ -2,7 +2,7 @@ import __static__
 from typing import Callable
 from sha1 import SHA1
 from sha512 import SHA512
-
+import time
 
 def new(algorithm: str, message: bytes) -> Callable:
     obj = {
@@ -36,4 +36,8 @@ def main() -> None:
     return None
 
 
+startTime = time.time()
 main()
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)
