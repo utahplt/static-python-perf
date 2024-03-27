@@ -17,6 +17,7 @@ import __static__
 from __static__ import int64, CheckedList
 from typing import List, Tuple
 from typing import Callable as Function
+import time
 
 
 def eval_A(i: float, j: float) -> float:
@@ -52,9 +53,14 @@ DEFAULT_N = 130
 if __name__ == "__main__":
     u = [1] * DEFAULT_N
 
+    startTime = time.time()
     for dummy in range(10):
         v = eval_AtA_times_u(u)
         u = eval_AtA_times_u(v)
+
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
 
     vBv = vv = 0
 

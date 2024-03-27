@@ -1,3 +1,5 @@
+###Timing Help
+
 import __static__
 import anova
 import central_tendency

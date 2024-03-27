@@ -12,6 +12,7 @@ import __static__
 
 from typing import List, Tuple
 from typing import Callable as Function
+import time
 
 """
 bg:
@@ -20,12 +21,14 @@ bg:
 note, I don't see any concurrency in this code
 """
 
+
 def eval_A(i: float, j: float) -> float:
     return 1.0 / ((i + j) * (i + j + 1) // 2 + i + 1)
 
 
 def eval_times_u(func: Function[[Tuple[float, List[float]]], float], u: List[float]) -> List[float]:
     return [func((i, u)) for i in range(len(list(u)))]
+
 
 def eval_AtA_times_u(u: List[float]) -> List[float]:
     return eval_times_u(part_At_times_u, eval_times_u(part_A_times_u, u))
@@ -52,9 +55,17 @@ DEFAULT_N = 130
 if __name__ == "__main__":
     u = [1] * DEFAULT_N
 
+    ## inside loop??
+
+    startTime = time.time()
+
     for dummy in range(10):
         v = eval_AtA_times_u(u)
         u = eval_AtA_times_u(v)
+
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
 
     vBv = vv = 0
 

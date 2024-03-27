@@ -1,3 +1,4 @@
+##### Timing help
 import __static__
 import anova
 import central_tendency
@@ -10,7 +11,7 @@ import pstat
 import support
 import trimming
 import variability
-
+import time
 
 ##bg: use to test correctness
 # def print_debug(*args):
