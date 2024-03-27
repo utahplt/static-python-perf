@@ -2,7 +2,7 @@ from player import Player
 from dealer import Dealer
 from typing import List
 import __static__
-
+import time
 
 def generate_dealer(players: List[Player], cards_per_game: int) -> Dealer:
     """
@@ -42,5 +42,9 @@ def main() -> None:
     dealer.simulate_game()
 
 for i in range(500):
+    startTime = time.time()
     main()
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
 
