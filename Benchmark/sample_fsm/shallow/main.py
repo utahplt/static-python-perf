@@ -3,7 +3,7 @@ from Utilities import relative_average
 from Other import build_random_population
 from typing import List, Tuple
 import __static__
-
+import time
 
 def run() -> None:
     simulation_to_lines(evolve(build_random_population(100), 10, 2, 1))
@@ -49,4 +49,8 @@ def simulation_to_lines(data: List[float]) -> List[Tuple[int, float]]:
 
 
 for i in range(100):
+    startTime = time.time()
     run()
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
