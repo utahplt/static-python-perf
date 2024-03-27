@@ -6,7 +6,7 @@
 from __future__ import annotations
 import __static__
 from typing import Generator, Tuple, Iterator, List
-
+import time
 
 # Pure-Python implementation of itertools.permutations().
 def permutations(iterable: Iterator[int], r: int = -1) -> Iterator[List[int]]:
@@ -69,5 +69,13 @@ if __name__ == "__main__":
 
     queen_count = 8
     for _ in range(num_iterations):
-        res = bench_n_queens(queen_count)
+
+        startTime = time.time()
+
+        res = bench_n_queens(queen_count) ## main call?
+
+        endTime = time.time()
+        runtime = endTime - startTime
+        print(runtime)
+
         assert len(res) == 92

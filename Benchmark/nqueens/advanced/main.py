@@ -6,7 +6,7 @@ from __future__ import annotations
 import __static__
 from __static__ import int64, box, Array, cbool, clen
 from typing import List, Generator, Iterator
-
+import time
 
 def static_abs(v: int64) -> int64:
     if v < 0:
@@ -117,6 +117,15 @@ if __name__ == "__main__":
 
     queen_count = 8
     for _ in range(num_iterations):
-        res = bench_n_queens(queen_count)
+
+        startTime = time.time()
+
+        res = bench_n_queens(queen_count) ## main fun call?
+        
+        endTime = time.time()
+        runtime = endTime - startTime
+        print(runtime)
+
+
         assert len(res) == 92
 
