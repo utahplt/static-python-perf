@@ -24,6 +24,7 @@ import __static__
 from __static__ import int64, CheckedList, CheckedDict, Array
 from typing import List
 from bisect import bisect
+import time
 
 w, h = 20, 40
 dir_no = 6
@@ -62,7 +63,8 @@ def convert(ido: CheckedList[float]) -> CheckedList[float]:
     return list(set(out))
 
 
-def get_footprints(board: CheckedList[float], cti: CheckedDict[float, int], pieces: CheckedList[CheckedList[CheckedList[float]]]) -> \
+def get_footprints(board: CheckedList[float], cti: CheckedDict[float, int],
+                   pieces: CheckedList[CheckedList[CheckedList[float]]]) -> \
         CheckedList[CheckedList[CheckedList[Set[Array[int64]]]]]:
     fps = [[[] for p in range(len(pieces))] for ci in range(len(board))]
     for c in board:
@@ -143,4 +145,9 @@ if __name__ == "__main__":
     curr_board = [-1] * len(board)
     pieces_left = list(range(len(pieces)))
     solutions = []
+
+    start = time.time()
     solve(SOLVE_ARG, 0, free, curr_board, pieces_left, solutions)
+    endTime = time.time()
+    runtime = endTime - start
+    print(runtime)

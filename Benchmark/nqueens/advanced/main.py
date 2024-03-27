@@ -121,7 +121,7 @@ if __name__ == "__main__":
         startTime = time.time()
 
         res = bench_n_queens(queen_count) ## main fun call?
-        
+
         endTime = time.time()
         runtime = endTime - startTime
         print(runtime)

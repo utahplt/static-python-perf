@@ -1,7 +1,7 @@
 from iri2uri import Iri2Uri
 import os
 import __static__
-
+import time
 def main() -> None:
     iri2uri = Iri2Uri().iri2uri
     ### 1. test correctness on invariant iri
@@ -43,4 +43,9 @@ def main() -> None:
             iri2uri(url)
 
 for i in range(10):
+
+    start = time.time()
     main()
+    endTime = time.time()
+    runtime = endTime - start
+    print(runtime)

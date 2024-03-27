@@ -19,7 +19,7 @@ Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 import __static__
 from __static__ import double, CheckedList, CheckedDict, box
-
+import time
 __contact__ = "collinwinter@google.com (Collin Winter)"
 DEFAULT_ITERATIONS = 20000
 DEFAULT_REFERENCE = "sun"
@@ -189,5 +189,10 @@ if __name__ == "__main__":
     #    if len(sys.argv) > 1:
     #        num_loops = int(sys.argv[1])
 
+    startTime = time.time()
+
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

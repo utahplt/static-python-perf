@@ -22,7 +22,7 @@ bg:
 from typing import List, Dict, Set
 import __static__
 from bisect import bisect
-
+import time
 w: int = 20
 h: int = 40
 dir_no: int = 6
@@ -140,4 +140,11 @@ if __name__ == "__main__":
     curr_board = [-1] * len(board)
     pieces_left = list(range(len(pieces)))
     solutions = []
+
+    start = time.time()
+
     solve(SOLVE_ARG, 0, free, curr_board, pieces_left, fps, se_nh, solutions)
+
+    endTime = time.time()
+    runtime = endTime - start
+    print(runtime)
