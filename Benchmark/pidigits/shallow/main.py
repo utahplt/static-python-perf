@@ -1,7 +1,7 @@
 from __future__ import annotations
 import __static__
 from typing import List, Tuple
-
+import time
 """
 Calculating (some of) the digits of pi. This stresses big integer
 arithmetic.
@@ -56,4 +56,9 @@ def calc_ndigits(n: int) -> List[int]:
 
 
 if __name__ == "__main__":
+
+    startTime = time.time()
     calc_ndigits(NDIGITS)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)

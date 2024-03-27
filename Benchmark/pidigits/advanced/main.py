@@ -13,7 +13,7 @@ bg
 import __static__
 from __static__ import int64, Array
 from typing import List, Tuple
-
+import time
 NDIGITS = 5000
 
 
@@ -64,5 +64,11 @@ def calc_ndigits(n: int) -> List[int64]:
 
 
 if __name__ == "__main__":
+    startTime = time.time()
     result = calc_ndigits(NDIGITS)
-    print(result)
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
+
+
+    # print(result)
