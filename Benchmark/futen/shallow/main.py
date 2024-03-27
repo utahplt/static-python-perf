@@ -1,7 +1,7 @@
 from os import path
 from futen import get_netlocs, execute
 import __static__
-
+import time
 def main(n: int) -> None:
     testfile = '../ssh.config.dat'
     expect = {'web': '2200', 'app': '2201', 'db': '2202'}
@@ -26,4 +26,8 @@ def main(n: int) -> None:
         if result != expect:
             raise ValueError("'%s' is not equal to '%s'" % (expect, result))
 
+start = time.time()
 main(1900)
+endTime = time.time()
+runtime = endTime - start
+print(runtime)
