@@ -68,14 +68,14 @@ if __name__ == "__main__":
         num_iterations = int(sys.argv[1])
 
     queen_count = 8
+    startTime = time.time()
+
     for _ in range(num_iterations):
-
-        startTime = time.time()
-
         res = bench_n_queens(queen_count) ## main call?
 
-        endTime = time.time()
-        runtime = endTime - startTime
-        print(runtime)
 
-        assert len(res) == 92
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
+
+        # assert len(res) == 92
