@@ -4,6 +4,7 @@ from typing import List
 import __static__
 import time
 
+
 def generate_dealer(players: List[Player], cards_per_game: int) -> Dealer:
     """
     Instantiates the dealer which will take over the game
@@ -41,10 +42,12 @@ def main() -> None:
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
-for i in range(500):
-    startTime = time.time()
-    main()
-    endTime = time.time()
-    runtime = endTime - startTime
-    print(runtime)
 
+startTime = time.time()
+
+for i in range(500):
+    main()
+
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)

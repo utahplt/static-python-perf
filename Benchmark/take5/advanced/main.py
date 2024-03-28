@@ -42,10 +42,11 @@ def main() -> None:
     dealer = generate_dealer(players, cards_per_game)
     dealer.simulate_game()
 
+startTime = time.time()
 
 for i in range(500):
-    startTime = time.time()
     main()
-    endTime = time.time()
-    runtime = endTime - startTime
-    print(runtime)
+
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)
