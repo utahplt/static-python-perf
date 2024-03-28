@@ -703,7 +703,7 @@ if __name__ == "__main__":
     n = 10000
     delta_blue(n)
 
-   
+
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
