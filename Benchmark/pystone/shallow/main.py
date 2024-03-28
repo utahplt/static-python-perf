@@ -302,9 +302,12 @@ if __name__ == "__main__":
     num_iterations = 2
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
+
+    startTime = time.time()
+
     for _ in range(num_iterations):
-        startTime = time.time()
         run()
-        endTime = time.time()
-        runtime = endTime - startTime
-        print(runtime)
+
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
