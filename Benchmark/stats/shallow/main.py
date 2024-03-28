@@ -12,7 +12,7 @@ import pstat
 import support
 import trimming
 import variability
-
+import time
 
 ##bg: use to test correctness
 # def print_debug(*args):
@@ -32,6 +32,7 @@ print = print_noop
 
 LIST_SIZE = 500
 
+start_time = time.time()
 l = list(map(float, range(1, LIST_SIZE)))
 lf = list(map(float, range(1, LIST_SIZE)))
 lf[2] = 3.0
@@ -195,3 +196,7 @@ print(support.shellsort(l))
 print('rankdata:')
 print(support.rankdata(m))
 print(support.rankdata(l))
+
+endTime = time.time()
+runtime = endTime - start_time
+print(runtime)
