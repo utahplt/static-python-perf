@@ -376,15 +376,15 @@ ITERATIONS = 2
 # (obtained by adding a `print` at the top of each method call, counting the prints from 1 run)
 
 if __name__ == "__main__":
+
+    start_time = time.time()
+
     for i in range(ITERATIONS):
         random.seed(1)
-        start_time = time.time()
-
         board = Board()
-
-        end_time = time.time()
-        runtime = end_time - start_time
-        print(runtime)
-
         pos = computer_move(board)
         # print(pos)
+
+    end_time = time.time()
+    runtime = end_time - start_time
+    print(runtime)
