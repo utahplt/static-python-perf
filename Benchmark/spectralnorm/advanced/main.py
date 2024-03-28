@@ -58,12 +58,13 @@ if __name__ == "__main__":
         v = eval_AtA_times_u(u)
         u = eval_AtA_times_u(v)
 
-    endTime = time.time()
-    runtime = endTime - startTime
-    print(runtime)
 
     vBv = vv = 0
 
     for ue, ve in zip(u, v):
         vBv += ue * ve
         vv += ve * ve
+
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
