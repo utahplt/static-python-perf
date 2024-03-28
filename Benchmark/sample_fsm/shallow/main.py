@@ -5,6 +5,7 @@ from typing import List, Tuple
 import __static__
 import time
 
+
 def run() -> None:
     simulation_to_lines(evolve(build_random_population(100), 10, 2, 1))
     return
@@ -48,9 +49,10 @@ def simulation_to_lines(data: List[float]) -> List[Tuple[int, float]]:
     # print(str(result))
 
 
+startTime = time.time()
+
 for i in range(100):
-    startTime = time.time()
     run()
-    endTime = time.time()
-    runtime = endTime - startTime
-    print(runtime)
+endTime = time.time()
+runtime = endTime - startTime
+print(runtime)
