@@ -2,6 +2,8 @@ from iri2uri import Iri2Uri
 import os
 import __static__
 import time
+
+
 def main() -> None:
     iri2uri = Iri2Uri().iri2uri
     ### 1. test correctness on invariant iri
@@ -22,9 +24,11 @@ def main() -> None:
     ### 2. test correctness on variant iri
     if not ("http://Not-a-COMET.com/Not-a-COMET" == iri2uri("http://Not-a-COMET.com/Not-a-COMET")):
         raise AssertionError("test 2")
-    if not ("http://bitworking.org/?fred=another non_COMET" == iri2uri("http://bitworking.org/?fred=another non_COMET")):
+    if not ("http://bitworking.org/?fred=another non_COMET" == iri2uri(
+            "http://bitworking.org/?fred=another non_COMET")):
         raise AssertionError("test 3")
-    if not ("http://bitworking.org/whats\"with\"all the COMET" == iri2uri("http://bitworking.org/whats\"with\"all the COMET")):
+    if not ("http://bitworking.org/whats\"with\"all the COMET" == iri2uri(
+            "http://bitworking.org/whats\"with\"all the COMET")):
         raise AssertionError("test 4")
     if not ("#acOMET" == iri2uri("#acOMET")):
         raise AssertionError("test 5")
@@ -42,10 +46,10 @@ def main() -> None:
             url = ln.split(",", 1)[0]
             iri2uri(url)
 
-for i in range(10):
 
-    start = time.time()
+start = time.time()
+for i in range(10):
     main()
-    endTime = time.time()
-    runtime = endTime - start
-    print(runtime)
+endTime = time.time()
+runtime = endTime - start
+print(runtime)

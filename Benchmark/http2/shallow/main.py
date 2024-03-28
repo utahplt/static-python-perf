@@ -42,10 +42,10 @@ def main() -> None:
             url = ln.split(",", 1)[0]
             iri2uri(url)
 
-for i in range(10):
 
-    start = time.time()
+start = time.time()
+for i in range(10):
     main()
-    endTime = time.time()
-    runtime = endTime - start
-    print(runtime)
+endTime = time.time()
+runtime = endTime - start
+print(runtime)
