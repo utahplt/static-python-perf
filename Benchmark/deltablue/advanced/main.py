@@ -639,9 +639,12 @@ def delta_blue(i: int) -> None:
 
 
 if __name__ == "__main__":
-    n = 10000
     startTime = time.time()
+
+    n = 10000
+
     delta_blue(n)
+
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
