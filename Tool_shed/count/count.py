@@ -8,7 +8,7 @@ from mypy.options import Options
 from mypy.errors import CompileError, Errors
 
 sys.path.append("../helpers")
-from ..helpers import get_files
+from helpers import get_files
 
 def count_classes(stmt: any):
     count = 0
@@ -58,8 +58,8 @@ def count(filepath) -> None:
             res[file] = count
         
     else:
-        count = scan_file(file)
-        res[file] = count
+        count = scan_file(filepath)
+        res[filepath] = count
 
     print(res)
 

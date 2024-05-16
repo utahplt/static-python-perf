@@ -55,3 +55,7 @@ def test_nested_class():
         count += count_classes(stmt)
 
     assert count == 2
+
+
+if __name__ == "__main__":
+    ...

@@ -10,4 +10,3 @@ def get_files(filepath) -> list[str]:
             dir_files.append(os.path.join(root, file))
 
     return dir_files
-
