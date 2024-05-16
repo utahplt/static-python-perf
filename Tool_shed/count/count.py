@@ -6,6 +6,7 @@ import mypy.nodes
 from mypy.parse import parse
 from mypy.options import Options
 from mypy.errors import CompileError, Errors
+import pprint
 
 sys.path.append("../helpers")
 from helpers import get_files
@@ -24,7 +25,7 @@ def scan_file(file: str) -> Optional[int]:
     count = 0
 
     if not file.endswith(".py"):
-        click.echo("expected .py file, got: " + file)
+        # click.echo("expected .py file, got: " + file)
         return
     
     f = open(pathlib.Path(file), "r", io.DEFAULT_BUFFER_SIZE)
@@ -55,13 +56,16 @@ def count(filepath) -> None:
         for file in dir_files:
             count = scan_file(file)
 
-            res[file] = count
+            if count is not None:
+                res[file] = count
         
     else:
         count = scan_file(filepath)
         res[filepath] = count
 
-    print(res)
+    pprint.pp(res)
 
+
+# todo: new script. remove types from file
 if __name__ == "__main__":
     count()
