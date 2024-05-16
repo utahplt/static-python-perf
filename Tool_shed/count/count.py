@@ -9,7 +9,7 @@ from mypy.errors import CompileError, Errors
 import pprint
 
 sys.path.append("../helpers")
-from helpers import get_files
+from helpers import get_files, scan_file
 
 def count_classes(stmt: any):
     count = 0
@@ -21,30 +21,6 @@ def count_classes(stmt: any):
     
     return count
 
-def scan_file(file: str) -> Optional[int]:
-    count = 0
-
-    if not file.endswith(".py"):
-        # click.echo("expected .py file, got: " + file)
-        return
-    
-    f = open(pathlib.Path(file), "r", io.DEFAULT_BUFFER_SIZE)
-
-    options = Options()
-    errors = Errors(options)
-    
-    try:
-        ast = parse(f.read(), file, None, errors, options, raise_on_error=True)
-    except CompileError:
-        click.echo("unable to scan file: " + file)
-        return
-
-    for stmt in ast.defs:
-        count += count_classes(stmt)
-
-    f.close()
-    return count
-
 @click.command()
 @click.argument("filepath", type=click.Path(exists=True))
 def count(filepath) -> None:
@@ -54,18 +30,26 @@ def count(filepath) -> None:
         dir_files = get_files(filepath)
 
         for file in dir_files:
-            count = scan_file(file)
+            count = 0
+            ast = scan_file(file)
 
-            if count is not None:
+            if ast is not None:
+                for stmt in ast.defs:
+                    count += count_classes(stmt)
+
                 res[file] = count
         
     else:
-        count = scan_file(filepath)
-        res[filepath] = count
+        ast = scan_file(filepath)
+
+        if ast is not None:
+            for stmt in ast.defs:
+                count += count_classes(stmt)
+
+            res[filepath] = count
 
     pprint.pp(res)
 
-
-# todo: new script. remove types from file
+# todo: take multiple files?
 if __name__ == "__main__":
     count()
