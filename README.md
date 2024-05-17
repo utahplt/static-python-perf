@@ -20,9 +20,13 @@ git checkout c085ffc4d8dd84da3a871666c596f31c6e979bcb
 3. pull the changes (git pull).
 4. ls, and navigate to the file that needs to be run (./call-method/shallow).
 5. Run the following command:
+
 ```
-/vol/python -m compiler --static main.py
+/vol/python -m cinderx.compiler --static module.py
 ```
+
+(old command used `-m compiler`)
+
 
 ## Related Work
 
