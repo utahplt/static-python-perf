@@ -1,22 +1,19 @@
 # Static Python Perf
 
+## Steps to Run Static Python
+(Taken from [cinder/python-build-env](https://github.com/facebookincubator/cinder/pkgs/container/cinder%2Fpython-build-env).)
 
-Running the Docker:
+> [!NOTE]
+> You must have already installed and set up Docker on your machine.
 
-```
-docker run -v "$PWD/cinder:/vol" -w /vol -it --rm ghcr.io/facebookincubator/cinder/python-build-env:latest bash
-```
-Steps to Run Static Python
 1. Clone the `cinder` respotory.
 ```bash
 git clone https://github.com/facebookincubator/cinder.git
 ```
-2. Checkout to the commit `c085ffc4d8dd84da3a871666c596f31c6e979bcb`
+2. Run the following docker command.
 ```bash
-cd cinder
-git checkout c085ffc4d8dd84da3a871666c596f31c6e979bcb
+docker run -v "$PWD/cinder:/vol" -w /vol -it --rm ghcr.io/facebookincubator/cinder/python-build-env:latest bash
 ```
-3. `cd` out of `/cinder` and run the docker command above.
 3. pull the changes (git pull).
 4. ls, and navigate to the file that needs to be run (./call-method/shallow).
 5. Run the following command:
