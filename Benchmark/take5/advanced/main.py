@@ -43,10 +43,8 @@ def main() -> None:
     dealer.simulate_game()
 
 startTime = time.time()
-
 for i in range(500):
     main()
-
 endTime = time.time()
 runtime = endTime - startTime
 print(runtime)

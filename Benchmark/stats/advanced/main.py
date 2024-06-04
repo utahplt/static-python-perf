@@ -198,5 +198,5 @@ print(support.rankdata(m))
 print(support.rankdata(l))
 
 endTime = time.time()
-runtime = endTime - startTime
+runtime = endTime - start_time #unknown main fxn call
 print(runtime)

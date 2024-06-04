@@ -698,9 +698,9 @@ def delta_blue(n: int) -> None:
 
 
 if __name__ == "__main__":
-    startTime = time.time()
 
     n = 10000
+    startTime = time.time()
     delta_blue(n)
 
 
