@@ -3,6 +3,7 @@ import numpy as np
 from scipy.stats import norm
 from prettytable import PrettyTable
 
+
 def count_lines(file_name):
     try:
         with open(file_name, 'r') as file:
@@ -137,10 +138,15 @@ def signed_rank_confidence_interval(data, alpha=0.05):
     return lower_bound, upper_bound
 
 
+# wanted to try getting the name of the benchmark
+def get_benchmark_name(directory_path):
+    return directory_path.split('/')[-1]
+
+
 if __name__ == "__main__":
     file_paths = [
         ### Untyped Files ###
-        # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
+        "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_method_slots/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/call_simple/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/chaos/untyped/main.py",
         # "/Users/vivaan/PycharmProjects/Time-Track/static-python-perf/Benchmark/deltablue/untyped/main.py",
@@ -224,16 +230,25 @@ if __name__ == "__main__":
 
     num_iterations = 8
     max_attempts = 3
+    # Temp
+    # for file_path in file_paths:
+    #     print(f"Running benchmarks in directory: {file_path}")
+    #     # Get the directory path from the file_path
+    #     directory_path = '/'.join(file_path.split('/')[:-1])
+    #     for file_name in os.listdir(directory_path):
+    #         if file_name.endswith(".py"):
+    #             full_file_path = os.path.join(directory_path, file_name)
+    #             print(f"  Running benchmark: {full_file_path}")
+    #             check_stability(full_file_path, num_iterations, max_attempts)
 
     for file_path in file_paths:
-        print(f"Running benchmarks in directory: {file_path}")
-        # Get the directory path from the file_path
+        benchmark_name = get_benchmark_name(file_path)
         directory_path = '/'.join(file_path.split('/')[:-1])
-        for file_name in os.listdir(directory_path):
-            if file_name.endswith(".py"):
-                full_file_path = os.path.join(directory_path, file_name)
-                print(f"  Running benchmark: {full_file_path}")
-                check_stability(full_file_path, num_iterations, max_attempts)
+        for subdir in ['advanced', 'shallow', 'untyped']:
+            full_file_path = os.path.join(directory_path, subdir, f"{benchmark_name}.py")
+            check_stability(full_file_path, num_iterations, max_attempts)
+
+            print(f"--- Finished {subdir} version ---")
 
     # print("\nNumber of lines in the files:")
     # table_lines = PrettyTable()
@@ -244,7 +259,6 @@ if __name__ == "__main__":
     #     table_lines.add_row([static_file, num_lines])
     #
     # print(table_lines)
-
 
     # print("Line Count Calculator")
     #
