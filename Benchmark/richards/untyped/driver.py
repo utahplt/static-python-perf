@@ -230,25 +230,28 @@ if __name__ == "__main__":
 
     num_iterations = 8
     max_attempts = 3
-    # Temp
-    # for file_path in file_paths:
-    #     print(f"Running benchmarks in directory: {file_path}")
-    #     # Get the directory path from the file_path
-    #     directory_path = '/'.join(file_path.split('/')[:-1])
-    #     for file_name in os.listdir(directory_path):
-    #         if file_name.endswith(".py"):
-    #             full_file_path = os.path.join(directory_path, file_name)
-    #             print(f"  Running benchmark: {full_file_path}")
-    #             check_stability(full_file_path, num_iterations, max_attempts)
 
     for file_path in file_paths:
-        benchmark_name = get_benchmark_name(file_path)
+        print(f"Running benchmarks in directory: {file_path}")
+        # Get the directory path from the file_path
         directory_path = '/'.join(file_path.split('/')[:-1])
-        for subdir in ['advanced', 'shallow', 'untyped']:
-            full_file_path = os.path.join(directory_path, subdir, f"{benchmark_name}.py")
-            check_stability(full_file_path, num_iterations, max_attempts)
+        for file_name in os.listdir(directory_path):
+            if file_name.endswith(".py"):
+                full_file_path = os.path.join(directory_path, file_name)
+                print(f"  Running benchmark: {full_file_path}")
+                check_stability(full_file_path, num_iterations, max_attempts)
 
-            print(f"--- Finished {subdir} version ---")
+
+
+
+    # for file_path in file_paths:
+    #     benchmark_name = get_benchmark_name(file_path)
+    #     directory_path = '/'.join(file_path.split('/')[:-1])
+    #     for subdir in ['advanced', 'shallow', 'untyped']:
+    #         full_file_path = os.path.join(directory_path, subdir, f"{benchmark_name}.py")
+    #         check_stability(full_file_path, num_iterations, max_attempts)
+    #
+    #         print(f"--- Finished {subdir} version ---")
 
     # print("\nNumber of lines in the files:")
     # table_lines = PrettyTable()
@@ -283,6 +286,9 @@ if __name__ == "__main__":
     #             table_lines.add_row([full_file_path, num_lines])
     #
     # print(table_lines)
+
+
+
     print("Line Count Calculator")
 
     print("\nNumber of lines in the files:")
