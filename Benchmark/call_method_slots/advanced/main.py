@@ -18,7 +18,7 @@ class Foo(object):
 
     __slots__ = ()
 
-    def foo(self, a:int64, b:int64, c:int64, d:int64)->None:
+    def foo(self: 'Foo', a:int64, b:int64, c:int64, d:int64)->None:
         # 20 calls
         self.bar(a, b, c)
         self.bar(a, b, c)
@@ -41,7 +41,7 @@ class Foo(object):
         self.bar(a, b, c)
         self.bar(a, b, c)
 
-    def bar(self, a:int64, b:int64, c:int64)->None:
+    def bar(self: 'Foo', a:int64, b:int64, c:int64)->None:
         # 20 calls
         self.baz(a, b)
         self.baz(a, b)
@@ -64,7 +64,7 @@ class Foo(object):
         self.baz(a, b)
         self.baz(a, b)
 
-    def baz(self, a:int64, b:int64)->None:
+    def baz(self: 'Foo', a:int64, b:int64)->None:
         # 20 calls
         self.quux(a)
         self.quux(a)
@@ -87,7 +87,7 @@ class Foo(object):
         self.quux(a)
         self.quux(a)
 
-    def quux(self, a:int64)->None:
+    def quux(self: 'Foo', a:int64)->None:
         # 20 calls
         self.qux()
         self.qux()
@@ -110,7 +110,7 @@ class Foo(object):
         self.qux()
         self.qux()
 
-    def qux(self)->None:
+    def qux(self: 'Foo')->None:
         pass
 
 def test_calls()->None:

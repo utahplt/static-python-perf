@@ -105,7 +105,7 @@ def quux(a: int64) -> None:
     qux()
     qux()
     qux()
-    
+
 def qux() -> None:
     pass
 
