@@ -142,6 +142,7 @@ def signed_rank_confidence_interval(data, alpha=0.05):
 def get_benchmark_name(directory_path):
     return directory_path.split('/')[-1]
 
+# use os to get the directory path instead of harcoding; os.listdir() to get the files in the directory
 
 if __name__ == "__main__":
     file_paths = [
