@@ -269,4 +269,3 @@ if __name__ == "__main__":
     runtime = endTime - startTime
     print(runtime)
 
-    print(c)

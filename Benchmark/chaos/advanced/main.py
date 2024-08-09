@@ -1,5 +1,4 @@
 #   Copyright (C) 2005 Carl Friedrich Bolz
-# doesnt run
 """create chaosgame-like fractals
 
 bg:
@@ -25,6 +24,7 @@ bg:
 from __future__ import annotations
 import __static__
 from typing import final, List, Iterator
+from __static__ import CheckedList
 import random
 import time
 random.seed(1234)
@@ -67,10 +67,10 @@ class GVector(object):
         return v
 
 class Spline(object):
-    def __init__(self, points: List[GVector], degree: int, knots: List[int]) -> None:
+    def __init__(self, points: CheckedList[GVector], degree: int, knots: CheckedList[int]) -> None:
         if knots == None:
             knots = [0] * degree + range(1, len(points) - degree)
-            knots += [len(points) - degree] * degree
+            knots += CheckedList[int]([len(points) - degree]) * degree
             self.knots = knots
         else:
             if len(points) > len(knots) - degree + 1:
@@ -121,7 +121,7 @@ class Spline(object):
 
 class Chaosgame(object):
     def __init__(self, splines: List[Spline], thickness: float, w: int, h: int, n: int) -> None:
-        self.splines = splines
+        self.splines : CheckedList[Spline] = CheckedList[Spline](splines)
         self.thickness = thickness
         self.minx = min([p.x for spl in splines for p in spl.points])
         self.miny = min([p.y for spl in splines for p in spl.points])
