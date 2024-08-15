@@ -14,7 +14,7 @@ git clone https://github.com/mrigankpawagi/cinder && cd cinder
 
 # reinstall requirements in static-python
 ./python -m ensurepip # install pip
-./python -m pip install -r requirements.txt --no-cache-dir
+./python -m pip install -r ../requirements.txt --no-cache-dir
 
 ## create venv with static-python
 cd ../
