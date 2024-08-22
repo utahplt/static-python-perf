@@ -1,3 +1,5 @@
+#! /bin/bash
+
 # requirements for cinder
 sudo apt install libsqlite3-dev
 
@@ -13,12 +15,10 @@ source ./testsite/env/bin/activate
 # install wagtail
 python -m pip install wagtail
 
-# create a new wagtail site
-wagtail start TestSite testsite
-
-# Django setup
+# Setup
 cd testsite
 pip install -r requirements.txt
+python manage.py makemigrations
 python manage.py migrate
 DJANGO_SUPERUSER_PASSWORD=sudo1234 python manage.py createsuperuser --email=su@su.com --username=su --noinput
 python manage.py runserver
