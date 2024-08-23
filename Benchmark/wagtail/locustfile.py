@@ -4,6 +4,7 @@ import random
 import re
 import logging
 from locust import HttpUser, task, between
+from requests.adapters import HTTPAdapter
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -14,7 +15,7 @@ class admin(HttpUser):
     num_editors = 0
     admin_instance = None
     blogpage_id = None
-    stopped = False
+    homepage_id = None
 
     def make_new_editor(self):        
         with self.client.post(f"/admin/users/new/", data={
@@ -37,27 +38,10 @@ class admin(HttpUser):
         return admin.num_editors - 1
 
     def make_blog_index_page(self):
-        with self.client.post("/admin/pages/add/blog/blogindexpage/3/", data={
+        with self.client.post(f"/admin/pages/add/blog/blogindexpage/{admin.get_homepage_id()}/", data={
             "title": "Blog",
             "slug": "blog",
             "intro": """{"blocks":[{"key":"60mvf","text":"This is our blog!","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}""",
-            "comment_notifications": "on",
-            "comments-TOTAL_FORMS": "0",
-            "comments-INITIAL_FORMS": "0",
-            "comments-MIN_NUM_FORMS": "0",
-            "action-publish": "action-publish",
-            "csrfmiddlewaretoken": self.csrftoken,
-        }, headers={
-            'X-CSRFToken': self.csrftoken,
-        }, cookies={
-            "csrftoken": self.csrftoken,
-        }, catch_response=True) as response:
-            response.success()
-
-    def make_home_page(self):
-        with self.client.post("/admin/pages/add/home/homepage/1/", data={
-            "title": "Home",
-            "slug": "home",
             "comment_notifications": "on",
             "comments-TOTAL_FORMS": "0",
             "comments-INITIAL_FORMS": "0",
@@ -77,8 +61,6 @@ class admin(HttpUser):
         self.csrftoken = response.cookies['csrftoken']
 
         self.login()
-
-        self.make_home_page()
         self.make_blog_index_page()
 
     def login(self):
@@ -93,7 +75,7 @@ class admin(HttpUser):
             "csrftoken": self.csrftoken,
         })
 
-    def on_stop(self):
+    def delete_editors(self):
         # get list of user Ids and delete them
         ids_to_delete = set()
 
@@ -117,17 +99,15 @@ class admin(HttpUser):
         }, cookies={
             "csrftoken": self.csrftoken,
         })
-        
-        # delete blog
-        response = self.client.post(f"/admin/pages/{admin.get_blogpage_id()}/delete/", data={
+
+    def delete_blog(self):
+        self.client.post(f"/admin/pages/{admin.get_blogpage_id()}/delete/", data={
             "csrfmiddlewaretoken": self.csrftoken,
         }, headers={
             'X-CSRFToken': self.csrftoken,
         }, cookies={
             "csrftoken": self.csrftoken,
         })
-
-        admin.stopped = True
 
     @staticmethod
     def create_editor(env):
@@ -139,10 +119,18 @@ class admin(HttpUser):
     @staticmethod
     def get_blogpage_id():
         if not admin.blogpage_id:
-            with admin.admin_instance.client.get(f"/admin/pages/3/", catch_response=True) as response:
+            with admin.admin_instance.client.get(f"/admin/pages/{admin.get_homepage_id()}/", catch_response=True) as response:
                 response.success()
-                admin.blogpage_id = re.findall(r'href="/admin/pages/(\d+)/add_subpage', response.text)[-1]
+                admin.blogpage_id = re.findall(r'/admin/pages/(\d+)/add_subpage', response.text)[-1]
         return admin.blogpage_id
+
+    @staticmethod
+    def get_homepage_id():
+        if not admin.homepage_id:
+            with admin.admin_instance.client.get(f"/admin/pages/", catch_response=True) as response:
+                response.success()
+                admin.homepage_id = re.findall(r'/admin/pages/(\d+)/add_subpage', response.text)[-1]
+        return admin.homepage_id
 
 
 class editor(HttpUser):
@@ -150,6 +138,11 @@ class editor(HttpUser):
     fixed_count = 1000
     weight = 10
     blogs = set() # set of blog slugs
+    num_instances = 0
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=editor.fixed_count))
 
     def on_start(self):
         # create csrf token
@@ -160,11 +153,12 @@ class editor(HttpUser):
         self.logged_in = False
 
         self.login()
+        editor.num_instances += 1
 
     def on_stop(self):
-        if admin.stopped:
-            return
-        admin.admin_instance.on_stop()
+        editor.num_instances -= 1
+        if editor.num_instances == 0:
+            admin.admin_instance.delete_editors()
 
     def login(self):
         # login as editor
@@ -218,14 +212,27 @@ class editor(HttpUser):
             editor.blogs.add(blog_slug)
 
 
-
 class reader(HttpUser):
     wait_time = between(1, 3)
     fixed_count = 10000
     weight = 1
+    num_instances = 0
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client.mount('http://', HTTPAdapter(pool_maxsize=reader.fixed_count))
+
+    def on_start(self):
+        reader.num_instances += 1
+
+    def on_stop(self):
+        reader.num_instances -= 1
+        if reader.num_instances == 0:
+            admin.admin_instance.delete_blog()
 
     @task
     def view_blog_index(self):
+        if not admin.blogpage_id: return
         with self.client.get("/blog/", catch_response=True) as response:
             response.success()
 
