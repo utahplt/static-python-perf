@@ -148,7 +148,7 @@ class admin(HttpUser):
 class editor(HttpUser):
     wait_time = between(5, 10)
     fixed_count = 1000
-    weight = 1
+    weight = 10
     blogs = set() # set of blog slugs
 
     def on_start(self):
@@ -216,3 +216,21 @@ class editor(HttpUser):
         }, catch_response=True) as response:
             response.success()
             editor.blogs.add(blog_slug)
+
+
+
+class reader(HttpUser):
+    wait_time = between(1, 3)
+    fixed_count = 10000
+    weight = 1
+
+    @task
+    def view_blog_index(self):
+        with self.client.get("/blog/", catch_response=True) as response:
+            response.success()
+
+    @task
+    def view_blog_post(self):
+        if not editor.blogs: return
+        with self.client.get(f"/blog/{random.choice(list(editor.blogs))}/", catch_response=True) as response:
+            response.success()
