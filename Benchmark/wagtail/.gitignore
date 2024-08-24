@@ -2,4 +2,4 @@ env
 **/*.sqlite3
 cinder
 profile_data
-**/prof_report.txt
+**/*prof_report.*
