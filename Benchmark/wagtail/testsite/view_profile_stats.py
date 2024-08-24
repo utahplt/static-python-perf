@@ -17,6 +17,9 @@ for file in os.listdir("profile_data"):
         s.sort_stats("time").print_stats(20)
 
         lines = buf.getvalue().split("\n")[8:]
+        
+        # only retain lines with site-packages/django or site-packages/wagtail
+        lines = filter(lambda x: "site-packages/django" in x or "site-packages/wagtail" in x, lines)
 
         with open("prof_report.txt", "a") as f:
             f.write("\n".join(lines) + "\n")
