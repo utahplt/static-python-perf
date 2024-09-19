@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import List
 from math import sin, cos, sqrt
+from __static__ import CheckedList, inline
+from typing import final
 import time
 """
 bg:
@@ -11,7 +12,7 @@ bg:
 - remove unused imports
 """
 
-
+@final
 class Point(object):
 
     def __init__(self: Point, i: float) -> None:
@@ -35,16 +36,15 @@ class Point(object):
         self.z = self.z if self.z > other.z else other.z
         return self
 
-
-def maximize(points: List[Point]) -> Point:
+def maximize(points: CheckedList[Point]) -> Point:
     next: Point = points[0]
     for p in points[1:]:
         next = next.maximize(p)
     return next
 
-
+@inline
 def benchmark(n: int) -> Point:
-    points: List[Point] = [Point(i) for i in range(n)]
+    points: CheckedList[Point] = CheckedList[Point]([Point(i) for i in range(n)])
     for p in points:
         p.normalize()
     return maximize(points)
