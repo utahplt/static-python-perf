@@ -1,7 +1,7 @@
 import os
 from operator import itemgetter
 from union_find import UnionFind
-import __static__
+from __static__ import Array, int64
 from typing import List, Dict, Tuple
 import time
 
@@ -12,7 +12,7 @@ def main(all_lines: List[str]) -> None:
     edges = [make_tuple(line) for line in all_lines[1:edge_count + 1]]
     edges_to_check = [make_set(line) for line in all_lines[edge_count + 1: len(all_lines)]]
     all_nodes = create_nodes(edges)
-    res = kruskal(list(all_nodes), edges, edges_to_check)
+    res = kruskal(all_nodes, edges, edges_to_check)
     res_tuple = convert_to_set(res)
     output_result(res_tuple, edges_to_check)
     return
@@ -38,7 +38,7 @@ def convert_to_set(res: List[Tuple[int, int, int]]) -> List[Tuple[int, int]]:
     return res_tuple
 
 
-def create_nodes(edges: List[Tuple[int, int, int]]) -> List[int]:
+def create_nodes(edges: List[Array[int64]]) -> List[int]:
     all_nodes = set()
     for edge in edges:
         e1 = edge[0]
@@ -50,9 +50,13 @@ def create_nodes(edges: List[Tuple[int, int, int]]) -> List[int]:
     return list(all_nodes)
 
 
-def make_tuple(line: str) -> Tuple[int, int, int]:
+def make_tuple(line: str) -> Array[int64]:
     split = line.split(" ")
-    return (int(split[0]), int(split[1]), int(split[2]))
+    arr = Array[int64](3)
+    arr[0] = int64(int(split[0]))
+    arr[1] = int64(int(split[1]))
+    arr[2] = int64(int(split[2]))
+    return arr
 
 
 def make_set(line: str) -> Tuple[int, int]:
@@ -60,8 +64,7 @@ def make_set(line: str) -> Tuple[int, int]:
     return (int(split[0]), int(split[1]))
 
 
-def kruskal(nodes: List[int], edges: List[Tuple[int, int, int]], edges_to_check: List[Tuple[int, int]]) \
-        -> List[Tuple[int, int, int]]:
+def kruskal(nodes: List[int], edges: List[Array[int64]], edges_to_check: List[Tuple[int, int]]) -> List[Array[int64]]:
     sets = UnionFind({})
     mst = []
     for n in nodes:
