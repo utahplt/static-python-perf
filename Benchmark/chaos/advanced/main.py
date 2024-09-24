@@ -22,7 +22,6 @@ bg:
   - inlined GetKnots
 """
 from __future__ import annotations
-import __static__
 from typing import final, List, Iterator
 from __static__ import CheckedList
 import random
