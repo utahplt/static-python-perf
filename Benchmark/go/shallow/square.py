@@ -2,7 +2,7 @@ from __future__ import annotations
 import random
 from typing import List
 import __static__
-# from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
+from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 
 """
 bg: summary of changes from POPL'17 'go' to this 'go'
@@ -28,18 +28,10 @@ NOTE: the object fields in `Square` are Dyn
 - subtyping failed with the right types (huge error message #recursion)
 - cannot be 'object', retic doesn't know the object type
 """
-SIZE = 9
-GAMES = 200
-KOMI = 7.5
-EMPTY, WHITE, BLACK = 0, 1, 2
-SHOW = {EMPTY: '.', WHITE: 'o', BLACK: 'x'}
-PASS = -1
-MAXMOVES = SIZE*SIZE*3
-TIMESTAMP = 0
-MOVES = 0
 
 def to_pos(x: int, y: int) -> int:
     return y * SIZE + x
+
 class Square:
     def __init__(self: Square, board: Board, pos: int) -> None:
         self.board: Board = board
