@@ -3,19 +3,20 @@ import random
 import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
-from typing import List
+from typing import List, final, Set
 import time
 
 #@fields({'empties':List(int)
 #        ,'board':{'useful':Function(NamedParameters([('pos',int)])
 #                 ,int)}
 #        ,'empty_pos':List(int)})
+@final
 class EmptySet:
     #def __init__(self:EmptySet, board:{'useful':Function(NamedParameters([('pos',int)]), int)})->Void:
     def __init__(self, board: Board) -> None:
-        self.board = board
-        self.empties = list(range(SIZE*SIZE))
-        self.empty_pos = list(range(SIZE*SIZE))
+        self.board: Board = board
+        self.empties: List[int] = list(range(SIZE*SIZE))
+        self.empty_pos: List[int] = list(range(SIZE*SIZE))
 
     #def random_choice(self:EmptySet)->int:
     def random_choice(self) -> int:
@@ -46,11 +47,12 @@ class EmptySet:
         self.empty_pos[pos] = i
 
 #@fields({'hash':int})
+@final
 class ZobristHash:
     #def __init__(self:ZobristHash, board:{'squares':List(Square)})->Void:
     def __init__(self, board: Board) -> None:
-        self.hash_set = set()
-        self.hash = 0
+        self.hash_set: Set[int] = set()
+        self.hash: int = 0
         for square in board.squares:
             self.hash ^= square.zobrist_strings[EMPTY]
         self.hash_set.clear()
@@ -77,18 +79,19 @@ class ZobristHash:
 #        ,'white_dead':int
 #        ,'black_dead':int
 #        ,'lastmove':int})
+@final
 class Board:
     #def __init__(self:Board)->Void:
     def __init__(self) -> None:
-        self.squares = []
-        self.emptyset = EmptySet(self)
-        self.zobrist = ZobristHash(self)
-        self.color = BLACK
-        self.finished = False
-        self.lastmove = -2
-        self.history = []
-        self.white_dead = 0
-        self.black_dead = 0
+        self.squares: List[Square] = []
+        self.emptyset: EmptySet = EmptySet(self)
+        self.zobrist: ZobristHash = ZobristHash(self)
+        self.color: int = BLACK
+        self.finished: bool = False
+        self.lastmove: int = -2
+        self.history: List[int] = []
+        self.white_dead: int = 0
+        self.black_dead: int = 0
         self.squares = [Square(self, pos) for pos in range(SIZE*SIZE)]
         for square in self.squares:
             square.set_neighbours()
@@ -241,16 +244,17 @@ class Board:
 
 
 #@fields({'pos':int, 'wins':int, 'losses':int})
+@final
 class UCTNode:
     #def __init__(self:UCTNode)->Void:
     def __init__(self) -> None:
-        self.bestchild = None
-        self.pos = -1
-        self.wins = 0
-        self.losses = 0
-        self.pos_child = [None for x in range(SIZE*SIZE)]
-        self.parent = None
-        self.unexplored = True
+        self.bestchild: None | UCTNode = None
+        self.pos: int = -1
+        self.wins: int = 0
+        self.losses: int = 0
+        self.pos_child: List[None | UCTNode] = [None for x in range(SIZE*SIZE)]
+        self.parent: None | UCTNode = None
+        self.unexplored: List[int]  = []
 
     #def play(self:UCTNode, board:Board)->Void:
     def play(self, board: Board) -> None:
@@ -285,7 +289,7 @@ class UCTNode:
             self.unexplored[i] = self.unexplored[len(self.unexplored)-1]
             self.unexplored.pop()
             return pos
-        elif self.bestchild:
+        elif self.bestchild is not None:
             return self.bestchild.pos
         else:
             return PASS
@@ -315,7 +319,11 @@ class UCTNode:
     #def score(self:UCTNode)->float:
     def score(self) -> float:
         winrate = self.wins/float(self.wins+self.losses)
-        parentvisits = self.parent.wins+self.parent.losses
+        parentvisits = 0
+        if self.parent is not None:
+            parentvisits += self.parent.wins
+        if self.parent is not None:
+            parentvisits += self.parent.losses
         if not parentvisits:
             return winrate
         nodevisits = self.wins+self.losses

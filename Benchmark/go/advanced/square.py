@@ -1,6 +1,6 @@
 from __future__ import annotations
 import random
-from typing import List
+from typing import List, final
 import __static__
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 
@@ -32,6 +32,7 @@ NOTE: the object fields in `Square` are Dyn
 def to_pos(x: int, y: int) -> int:
     return y * SIZE + x
 
+@final
 class Square:
     def __init__(self: Square, board: Board, pos: int) -> None:
         self.board: Board = board
