@@ -2,8 +2,9 @@ from __future__ import annotations
 import random
 import math
 from square import Square
-from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
-from typing import List, final, Set
+from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, PASS, MAXMOVES, TIMESTAMP, MOVES
+from typing import List, final, Set, box
+from __static__ import int64, Array, CheckedList, cbool
 import time
 
 #@fields({'empties':List(int)
@@ -15,14 +16,19 @@ class EmptySet:
     #def __init__(self:EmptySet, board:{'useful':Function(NamedParameters([('pos',int)]), int)})->Void:
     def __init__(self, board: Board) -> None:
         self.board: Board = board
-        self.empties: List[int] = list(range(SIZE*SIZE))
-        self.empty_pos: List[int] = list(range(SIZE*SIZE))
+        S2 = SIZE*SIZE
+        self.empties: Array[int64] = Array[int64](S2)
+        self.empty_pos: Array[int64] = Array[int64](S2)
+        for kk in range(S2):
+          ii = int64(kk)
+          self.empties[ii] = ii
+          self.empty_pos[ii] = ii
 
     #def random_choice(self:EmptySet)->int:
-    def random_choice(self) -> int:
-        choices = len(self.empties)
+    def random_choice(self) -> int64:
+        choices: int64 = int64(len(self.empties))
         while choices:
-            i = int(random.random()*choices)
+            i = int64(random.random())*choices
             pos = self.empties[i]
             if self.board.useful(pos):
                 return pos
@@ -33,7 +39,7 @@ class EmptySet:
 
     #def add(self:EmptySet, pos:int)->Void:
     def add(self, pos: int) -> None:
-        self.empty_pos[pos] = len(self.empties)
+        self.empty_pos[pos] = int64(len(self.empties))
         self.empties.append(pos)
 
     #def remove(self:EmptySet, pos:int, update:bool)->Void:
@@ -42,7 +48,7 @@ class EmptySet:
         self.empties.pop()
 
     #def set(self:EmptySet, i:int, pos:int)->Void:
-    def set(self, i: int, pos: int) -> None:
+    def set(self, i: int64, pos: int64) -> None:
         self.empties[i] = pos
         self.empty_pos[pos] = i
 
@@ -88,7 +94,7 @@ class Board:
         self.zobrist: ZobristHash = ZobristHash(self)
         self.color: int = BLACK
         self.finished: bool = False
-        self.lastmove: int = -2
+        self.lastmove: int64 = -2
         self.history: List[int] = []
         self.white_dead: int = 0
         self.black_dead: int = 0
@@ -113,20 +119,21 @@ class Board:
         self.black_dead = 0
 
     #def move(self:Board, pos:int)->Void:
-    def move(self, pos: int) -> None:
+    def move(self, pos: int64) -> None:
         square = self.squares[pos]
-        if pos != PASS:
+        if pos != -1: #bg# PASS:
             square.move(self.color)
             self.emptyset.remove(square.pos, True)
-        elif self.lastmove == PASS:
+        elif self.lastmove == -1: #bg# PASS:
             self.finished = True
         if self.color == BLACK: self.color = WHITE
         else: self.color = BLACK
         self.lastmove = pos
-        self.history.append(pos)
+        bbb: int = pos ## TODO what to do, time to revert pos changes??!
+        self.history.append(bbb)
 
     #def random_move(self:Board)->int:
-    def random_move(self) -> int:
+    def random_move(self) -> int64:
         return self.emptyset.random_choice()
 
     #def useful_fast(self:Board, square:Square)->bool:
@@ -138,7 +145,7 @@ class Board:
         return False
 
     #def useful(self:Board, pos:int)->int:
-    def useful(self, pos: int) -> int:
+    def useful(self, pos: int64) -> int:
         global TIMESTAMP
         TIMESTAMP += 1
         square = self.squares[pos]
