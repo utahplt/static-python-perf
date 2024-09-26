@@ -4,6 +4,7 @@ import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 from typing import List, Set
+import __static__
 import time
 
 

@@ -1,3 +1,5 @@
+import __static__
+
 SIZE = 9
 GAMES = 200
 KOMI = 7.5

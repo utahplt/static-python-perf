@@ -1,8 +1,8 @@
 from __future__ import annotations
 import random
 from typing import List, final
-import __static__
-from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
+from __static__ import CheckedList, int64, Array, cbool
+from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, PASS, MAXMOVES, TIMESTAMP, MOVES
 
 """
 bg: summary of changes from POPL'17 'go' to this 'go'
@@ -29,31 +29,33 @@ NOTE: the object fields in `Square` are Dyn
 - cannot be 'object', retic doesn't know the object type
 """
 
-def to_pos(x: int, y: int) -> int:
+def to_pos(x: int64, y: int64) -> int64:
     return y * SIZE + x
 
 @final
 class Square:
     def __init__(self: Square, board: Board, pos: int) -> None:
         self.board: Board = board
-        self.pos: int = pos
-        self.timestamp: int = TIMESTAMP
-        self.removestamp: int = TIMESTAMP
-        self.zobrist_strings: List[int] = [random.randrange(9223372036854775807) for _ in range(3)]
-        self.color: int = 0
+        self.pos: int64 = int64(pos)
+        self.timestamp: int64 = TIMESTAMP
+        self.removestamp: int64 = TIMESTAMP
+        self.zobrist_strings: Array[int64] = Array[int64](3)
+        for ii in range(3):
+          self.zobrist_strings[ii] = int64(random.randrange(9223372036854775807))
+        self.color: int64 = 0
         self.reference: Square = self
-        self.ledges: int = 0
-        self.used: bool = False
+        self.ledges: int64 = 0
+        self.used: cbool = False
         self.neighbours: List[Square] = []
 
 
     def set_neighbours(self: Square) -> None:
-        x: int = self.pos % SIZE
-        y: int = self.pos // SIZE
+        x: int64 = self.pos % SIZE
+        y: int64 = self.pos // SIZE
         self.neighbours = []
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            newx: int = x + dx
-            newy: int = y + dy
+            newx: int64 = x + int64(dx)
+            newy: int64 = y + int64(dy)
             if 0 <= newx < SIZE and 0 <= newy < SIZE:
                 self.neighbours.append(self.board.squares[to_pos(newx, newy)])
 
@@ -62,12 +64,12 @@ class Square:
         TIMESTAMP += 1
         MOVES += 1
         self.board.zobrist.update(self, color)
-        self.color = color
+        self.color = int64(color)
         self.reference = self
-        self.ledges = 0
+        self.ledges = int64(0)
         self.used = True
         for neighbour in self.neighbours:
-            neighcolor: int = neighbour.color
+            neighcolor: int64 = neighbour.color
             if neighcolor == EMPTY:
                 self.ledges += 1
             else:
