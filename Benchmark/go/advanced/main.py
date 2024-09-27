@@ -3,8 +3,8 @@ import random
 import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, PASS, MAXMOVES, TIMESTAMP, MOVES
-from typing import List, final, Set, box
-from __static__ import int64, Array, CheckedList, cbool
+from typing import List, final, Set
+from __static__ import int64, Array, CheckedList, cbool, box
 import time
 
 #@fields({'empties':List(int)
@@ -129,8 +129,7 @@ class Board:
         if self.color == BLACK: self.color = WHITE
         else: self.color = BLACK
         self.lastmove = pos
-        bbb: int = pos ## TODO what to do, time to revert pos changes??!
-        self.history.append(bbb)
+        self.history.append(box(pos))
 
     #def random_move(self:Board)->int:
     def random_move(self) -> int64:
@@ -186,7 +185,7 @@ class Board:
         return [pos for pos in self.emptyset.empties if self.useful(pos)]
 
     #def replay(self:Board, history:List(int))->Void:
-    def replay(self, history: List[int]) -> None:
+    def replay(self, history: Array[int64]) -> None:
         for pos in history:
             self.move(pos)
 
@@ -256,9 +255,9 @@ class UCTNode:
     #def __init__(self:UCTNode)->Void:
     def __init__(self) -> None:
         self.bestchild: None | UCTNode = None
-        self.pos: int = -1
-        self.wins: int = 0
-        self.losses: int = 0
+        self.pos: int64 = -1
+        self.wins: int64 = 0
+        self.losses: int64 = 0
         self.pos_child: List[None | UCTNode] = [None for x in range(SIZE*SIZE)]
         self.parent: None | UCTNode = None
         self.unexplored: List[int]  = []
@@ -266,12 +265,13 @@ class UCTNode:
     #def play(self:UCTNode, board:Board)->Void:
     def play(self, board: Board) -> None:
         """ uct tree search """
-        color = board.color
-        node = self
-        path = [node]
+        color: int = board.color
+        node: UCTNode = self
+        path: List[UCTNode] = [node]
+        pos: int64 = 0
         while True:
             pos = node.select(board)
-            if pos == PASS:
+            if pos == -1:
                 break
             board.move(pos)
             child = node.pos_child[pos]
@@ -288,7 +288,7 @@ class UCTNode:
         self.update_path(board, color, path)
 
     #def select(self:UCTNode, board:Board)->int:
-    def select(self, board: Board) -> int:
+    def select(self, board: Board) -> int64:
         """ select move; unexplored children first, then according to uct value """
         if self.unexplored:
             i = random.randrange(len(self.unexplored))
@@ -299,7 +299,7 @@ class UCTNode:
         elif self.bestchild is not None:
             return self.bestchild.pos
         else:
-            return PASS
+            return -1
 
     #def random_playout(self:UCTNode, board:Board)->Void:
     def random_playout(self, board: Board) -> None:
@@ -325,15 +325,15 @@ class UCTNode:
 
     #def score(self:UCTNode)->float:
     def score(self) -> float:
-        winrate = self.wins/float(self.wins+self.losses)
-        parentvisits = 0
+        winrate = box(self.wins)/float(box(self.wins)+box(self.losses))
+        parentvisits: int = 0
         if self.parent is not None:
-            parentvisits += self.parent.wins
+            parentvisits += box(self.parent.wins)
         if self.parent is not None:
-            parentvisits += self.parent.losses
+            parentvisits += box(self.parent.losses)
         if not parentvisits:
             return winrate
-        nodevisits = self.wins+self.losses
+        nodevisits: int = box(self.wins+self.losses)
         return winrate + math.sqrt((math.log(parentvisits))/(5*nodevisits))
 
     #def best_child(self:UCTNode)->UCTNode:
@@ -361,17 +361,21 @@ class UCTNode:
 def computer_move(board: Board) -> int:
     global MOVES
     pos = board.random_move()
-    if pos == PASS:
+    if pos == -1:
         return PASS
     tree = UCTNode()
     tree.unexplored = board.useful_moves()
     nboard = Board()
+    num_hist = len(board.history)
+    ahist = Array[int64](num_hist)
+    for ii in range(num_hist):
+      ahist[ii] = int64(board.history[ii])
     for game in range(GAMES):
         node = tree
         nboard.reset()
-        nboard.replay(board.history)
+        nboard.replay(ahist)
         node.play(nboard)
-    return tree.best_visited().pos
+    return box(tree.best_visited().pos)
 
 ITERATIONS = 2
 
