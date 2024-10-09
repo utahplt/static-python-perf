@@ -2,10 +2,20 @@ from __future__ import annotations
 import random
 import math
 from square import Square
-from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, PASS, MAXMOVES, TIMESTAMP, MOVES
 from typing import List, final, Set
 from __static__ import int64, Array, CheckedList, cbool, box
 import time
+
+#SIZE: int64 = 9
+GAMES: int = 200
+#KOMI = 7.5
+#EMPTY: int64 = 0
+#WHITE: int64 = 1
+#BLACK: int64 = 2
+#PASS: int64 = -1
+MAXMOVES: int = 9*9*3 #bg#SIZE*SIZE*3
+TIMESTAMP: int = 0
+#MOVES: int64 = 0
 
 #@fields({'empties':List(int)
 #        ,'board':{'useful':Function(NamedParameters([('pos',int)])
@@ -16,29 +26,29 @@ class EmptySet:
     #def __init__(self:EmptySet, board:{'useful':Function(NamedParameters([('pos',int)]), int)})->Void:
     def __init__(self, board: Board) -> None:
         self.board: Board = board
-        S2 = SIZE*SIZE
-        self.empties: Array[int64] = Array[int64](S2)
+        S2 = 9*9 #bg#SIZE*SIZE
+        self.empties: CheckedList[int64] = CheckedList[int64]([]) #TODO Array[int64](S2)
         self.empty_pos: Array[int64] = Array[int64](S2)
         for kk in range(S2):
-          ii = int64(kk)
-          self.empties[ii] = ii
+          ii: int64 = int64(kk)
+          self.empties.append(ii)
           self.empty_pos[ii] = ii
 
     #def random_choice(self:EmptySet)->int:
     def random_choice(self) -> int64:
         choices: int64 = int64(len(self.empties))
         while choices:
-            i = int64(random.random())*choices
+            i: int64 = int64(int(random.random()*box(choices)))
             pos = self.empties[i]
             if self.board.useful(pos):
                 return pos
             choices -= 1
             self.set(i, self.empties[choices])
             self.set(choices, pos)
-        return PASS
+        return -1 #bg#PASS
 
     #def add(self:EmptySet, pos:int)->Void:
-    def add(self, pos: int) -> None:
+    def add(self, pos: int64) -> None:
         self.empty_pos[pos] = int64(len(self.empties))
         self.empties.append(pos)
 
@@ -60,7 +70,7 @@ class ZobristHash:
         self.hash_set: Set[int] = set()
         self.hash: int = 0
         for square in board.squares:
-            self.hash ^= square.zobrist_strings[EMPTY]
+            self.hash ^= square.zobrist_strings[0] #bg# EMPTY
         self.hash_set.clear()
         self.hash_set.add(self.hash)
 
@@ -92,26 +102,28 @@ class Board:
         self.squares: List[Square] = []
         self.emptyset: EmptySet = EmptySet(self)
         self.zobrist: ZobristHash = ZobristHash(self)
-        self.color: int = BLACK
+        self.color: int = 2 #bg#BLACK
         self.finished: bool = False
         self.lastmove: int64 = -2
         self.history: List[int] = []
         self.white_dead: int = 0
         self.black_dead: int = 0
-        self.squares = [Square(self, pos) for pos in range(SIZE*SIZE)]
+        #bgWHYYY#self.squares = [Square(self, pos) for pos in range(9*9)] #bg#SIZE*SIZE)
+        for pos in range(9*9):
+          self.squares.append(Square(self, pos))
         for square in self.squares:
             square.set_neighbours()
-            square.color = EMPTY
+            square.color = 0 #bg#EMPTY
             square.used = False
 
     #def reset(self:Board)->Void:
     def reset(self) -> None:
         for square in self.squares:
-            square.color = EMPTY
+            square.color = 0 #bg#EMPTY
             square.used = False
         self.emptyset = EmptySet(self)
         self.zobrist = ZobristHash(self)
-        self.color = BLACK
+        self.color = 2 #bg#BLACK
         self.finished = False
         self.lastmove = -2
         self.history = []
@@ -126,8 +138,8 @@ class Board:
             self.emptyset.remove(square.pos, True)
         elif self.lastmove == -1: #bg# PASS:
             self.finished = True
-        if self.color == BLACK: self.color = WHITE
-        else: self.color = BLACK
+        if self.color == 2: self.color = 1 #bg#BLACK WHITE #bg#WHITE
+        else: self.color = 2 #bg#BLACK 
         self.lastmove = pos
         self.history.append(box(pos))
 
@@ -139,7 +151,7 @@ class Board:
     def useful_fast(self, square: Square) -> bool:
         if not square.used:
             for neighbour in square.neighbours:
-                if neighbour.color == EMPTY:
+                if neighbour.color == 0: #bg# EMPTY
                     return True
         return False
 
@@ -155,7 +167,7 @@ class Board:
         empties = opps = weak_opps = neighs = weak_neighs = 0
         for neighbour in square.neighbours:
             neighcolor = neighbour.color
-            if neighcolor == EMPTY:
+            if neighcolor == 0: #bg#EMPTY
                 empties += 1
                 continue
             neighbour_ref = neighbour.find(False)
@@ -181,7 +193,7 @@ class Board:
                (empties or weak_opps or (strong_neighs and (strong_opps or weak_neighs)))
 
     #def useful_moves(self:Board)->List(int):
-    def useful_moves(self) -> List[int]:
+    def useful_moves(self) -> List[int64]:
         return [pos for pos in self.emptyset.empties if self.useful(pos)]
 
     #def replay(self:Board, history:List(int))->Void:
@@ -191,15 +203,15 @@ class Board:
 
     #def score(self:Board, color:int)->float:
     def score(self, color: int) -> float:
-        if color == WHITE:
-            count = KOMI + self.black_dead
+        if color == 1: #bg#WHITE
+            count = 7.5 + self.black_dead #bg#KOMI
         else:
             count = self.white_dead
         for square in self.squares:
             squarecolor = square.color
             if squarecolor == color:
                 count += 1
-            elif squarecolor == EMPTY:
+            elif squarecolor == 0: #bg#EMPTY
                 surround = 0
                 for neighbour in square.neighbours:
                     if neighbour.color == color:
@@ -211,7 +223,7 @@ class Board:
     #def check(self:Board)->Void:
     def check(self) -> None:
         for square in self.squares:
-            if square.color == EMPTY:
+            if square.color == 0: #bg#EMPTY
                 continue
 
             members1 = set([square])
@@ -226,14 +238,14 @@ class Board:
             ledges1 = 0
             for member in members1:
                 for neighbour in member.neighbours:
-                    if neighbour.color == EMPTY:
+                    if neighbour.color == 0: #bg#EMPTY
                         ledges1 += 1
 
             root = square.find(False)
 
             members2 = set()
             for square2 in self.squares:
-                if square2.color != EMPTY and square2.find(False) == root:
+                if square2.color != 0 and square2.find(False) == root: #bg#EMPTY
                     members2.add(square2)
 
             ledges2 = root.ledges
@@ -245,7 +257,7 @@ class Board:
 
             empties2 = set()
             for square in self.squares:
-                if square.color == EMPTY:
+                if square.color == 0: #bg#EMPTY
                     empties2.add(square.pos)
 
 
@@ -258,9 +270,9 @@ class UCTNode:
         self.pos: int64 = -1
         self.wins: int64 = 0
         self.losses: int64 = 0
-        self.pos_child: List[None | UCTNode] = [None for x in range(SIZE*SIZE)]
+        self.pos_child: List[None | UCTNode] = [None for x in range(9*9)] #bg#SIZE*SIZE
         self.parent: None | UCTNode = None
-        self.unexplored: List[int]  = []
+        self.unexplored: List[int64]  = []
 
     #def play(self:UCTNode, board:Board)->Void:
     def play(self, board: Board) -> None:
@@ -291,8 +303,8 @@ class UCTNode:
     def select(self, board: Board) -> int64:
         """ select move; unexplored children first, then according to uct value """
         if self.unexplored:
-            i = random.randrange(len(self.unexplored))
-            pos = self.unexplored[i]
+            i:int = random.randrange(len(self.unexplored))
+            pos:int64 = int64(self.unexplored[i])
             self.unexplored[i] = self.unexplored[len(self.unexplored)-1]
             self.unexplored.pop()
             return pos
@@ -312,11 +324,11 @@ class UCTNode:
     #def update_path(self:UCTNode, board:Board, color:int, path:List(UCTNode))->Void:
     def update_path(self, board: Board, color: int, path: List[UCTNode]) -> None:
         """ update win/loss count along path """
-        wins = board.score(BLACK) >= board.score(WHITE)
+        wins = board.score(2) >= board.score(1) #bg#BLACK #bg#WHITE
         for node in path:
-            if color == BLACK: color = WHITE
-            else: color = BLACK
-            if wins == (color == BLACK):
+            if color == 2: color = 1 #bg#BLACK #bg#WHITE
+            else: color = 2 #bg#BLACK
+            if wins == (color == 2): #bg#BLACK
                 node.wins += 1
             else:
                 node.losses += 1
@@ -362,7 +374,7 @@ def computer_move(board: Board) -> int:
     global MOVES
     pos = board.random_move()
     if pos == -1:
-        return PASS
+        return -1 #bg#PASS
     tree = UCTNode()
     tree.unexplored = board.useful_moves()
     nboard = Board()
