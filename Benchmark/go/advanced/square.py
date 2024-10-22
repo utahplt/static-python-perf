@@ -90,7 +90,7 @@ class Square:
         self.removestamp = TIMESTAMP
         if update:
             self.color = EMPTY
-            self.board.emptyset.add(self.pos)
+            self.board.emptyset.add(self.pos) # TODO ERROR: expected int got int64, likely cannot pass int64 across boundary https://github.com/facebookincubator/cinder/issues/146
             # if color == BLACK:
             #     self.board.black_dead += 1
             # else:

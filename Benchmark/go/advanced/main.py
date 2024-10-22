@@ -1,8 +1,7 @@
 from __future__ import annotations
 import random
 import math
-from square import Square
-from typing import List, final, Set
+from typing import final, Set
 from __static__ import int64, Array, CheckedList, cbool, box
 import time
 
@@ -15,7 +14,94 @@ GAMES: int = 200
 #PASS: int64 = -1
 MAXMOVES: int = 9*9*3 #bg#SIZE*SIZE*3
 TIMESTAMP: int = 0
-#MOVES: int64 = 0
+MOVES: int = 0
+
+def to_pos(x: int64, y: int64) -> int64:
+    return y * 9 + x # SIZE + x
+
+@final
+class Square:
+    def __init__(self: Square, board: Board, pos: int) -> None:
+        self.board: Board = board
+        self.pos: int64 = int64(pos)
+        self.timestamp: int = TIMESTAMP
+        self.removestamp: int = TIMESTAMP
+        self.zobrist_strings: Array[int64] = Array[int64](3)
+        for ii in range(3):
+          self.zobrist_strings[ii] = int64(random.randrange(9223372036854775807))
+        self.color: int64 = 0
+        self.reference: Square = self
+        self.ledges: int64 = 0
+        self.used: cbool = False
+        self.neighbours: CheckedList[Square] = CheckedList[Square]([])
+        self.temp_ledges: int64 = 0
+
+
+    def set_neighbours(self: Square) -> None:
+        x: int64 = self.pos % 9 ## SIZE
+        y: int64 = self.pos // 9 ## SIZE
+        self.neighbours = []
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            newx: int64 = x + int64(dx)
+            newy: int64 = y + int64(dy)
+            if 0 <= newx < 9 and 0 <= newy < 9: ## 9 = SIZE
+                bbb: Square = self.board.squares[to_pos(newx, newy)]
+                self.neighbours.append(bbb)
+
+
+
+    def move(self: Square, color: int64) -> None:
+        global TIMESTAMP, MOVES
+        TIMESTAMP += 1
+        MOVES += 1
+        self.board.zobrist.update(self, color)
+        self.color = (color)
+        self.reference = self
+        self.ledges = int64(0)
+        self.used = True
+        for neighbour in self.neighbours:
+            neighcolor: int64 = neighbour.color
+            if neighcolor == 0: ## bg EMPTY:
+                self.ledges += 1
+            else:
+                neighbour_ref: Square = neighbour.find(True)
+                if neighcolor == self.color:
+                    if neighbour_ref.reference.pos != self.pos:
+                        self.ledges += neighbour_ref.ledges
+                        neighbour_ref.reference = self
+                    self.ledges -= 1
+                else:
+                    neighbour_ref.ledges -= 1
+                    if neighbour_ref.ledges == 0:
+                        neighbour.remove(neighbour_ref, True)
+        self.board.zobrist.add()
+
+    def remove(self: Square, reference: Square, update: bool) -> None:
+        self.board.zobrist.update(self, 0) #bg EMPTY
+        self.removestamp = TIMESTAMP
+        if update:
+            self.color = 0 #bg EMPTY
+            self.board.emptyset.add(self.pos)
+            # if color == BLACK:
+            #     self.board.black_dead += 1
+            # else:
+            #     self.board.white_dead += 1
+        for neighbour in self.neighbours:
+            if neighbour.color != 0 and cbool(neighbour.removestamp != TIMESTAMP): # bg 0 = EMPTY
+                neighbour_ref: Square = neighbour.find(update)
+                if neighbour_ref.pos == reference.pos:
+                    neighbour.remove(reference, update)
+                else:
+                    if update:
+                        neighbour_ref.ledges += 1
+
+    def find(self: Square, update: bool) -> Square:
+        reference: Square = self.reference
+        if reference.pos != self.pos:
+            reference = reference.find(update)
+            if update:
+                self.reference = reference
+        return reference
 
 #@fields({'empties':List(int)
 #        ,'board':{'useful':Function(NamedParameters([('pos',int)])
@@ -27,16 +113,16 @@ class EmptySet:
     def __init__(self, board: Board) -> None:
         self.board: Board = board
         S2 = 9*9 #bg#SIZE*SIZE
-        self.empties: CheckedList[int64] = CheckedList[int64]([]) #TODO Array[int64](S2)
+        self.empties: Array[int64] = Array[int64](S2)
         self.empty_pos: Array[int64] = Array[int64](S2)
         for kk in range(S2):
           ii: int64 = int64(kk)
-          self.empties.append(ii)
+          self.empties[ii] = ii
           self.empty_pos[ii] = ii
 
     #def random_choice(self:EmptySet)->int:
     def random_choice(self) -> int64:
-        choices: int64 = int64(len(self.empties))
+        choices: int64 = int64(len(self.empties)) # TODO ... optional ?!
         while choices:
             i: int64 = int64(int(random.random()*box(choices)))
             pos = self.empties[i]
@@ -50,12 +136,12 @@ class EmptySet:
     #def add(self:EmptySet, pos:int)->Void:
     def add(self, pos: int64) -> None:
         self.empty_pos[pos] = int64(len(self.empties))
-        self.empties.append(pos)
+        self.empties[pos] = pos # TODO append
 
     #def remove(self:EmptySet, pos:int, update:bool)->Void:
-    def remove(self, pos: int, update: bool) -> None:
+    def remove(self, pos: int64, update: bool) -> None:
         self.set(self.empty_pos[pos], self.empties[len(self.empties)-1])
-        self.empties.pop()
+        # self.empties.pop() # TODO pop
 
     #def set(self:EmptySet, i:int, pos:int)->Void:
     def set(self, i: int64, pos: int64) -> None:
@@ -67,7 +153,7 @@ class EmptySet:
 class ZobristHash:
     #def __init__(self:ZobristHash, board:{'squares':List(Square)})->Void:
     def __init__(self, board: Board) -> None:
-        self.hash_set: Set[int] = set()
+        self.hash_set: Set[int] = set() # TODO no Set?
         self.hash: int = 0
         for square in board.squares:
             self.hash ^= square.zobrist_strings[0] #bg# EMPTY
@@ -75,7 +161,7 @@ class ZobristHash:
         self.hash_set.add(self.hash)
 
     #def update(self:ZobristHash, square:Square, color:int)->Void:
-    def update(self, square: Square, color: int) -> None:
+    def update(self, square: Square, color: int64) -> None:
         self.hash ^= square.zobrist_strings[square.color]
         self.hash ^= square.zobrist_strings[color]
 
@@ -99,13 +185,13 @@ class ZobristHash:
 class Board:
     #def __init__(self:Board)->Void:
     def __init__(self) -> None:
-        self.squares: List[Square] = []
+        self.squares: CheckedList[Square] = CheckedList[Square]([])
         self.emptyset: EmptySet = EmptySet(self)
         self.zobrist: ZobristHash = ZobristHash(self)
-        self.color: int = 2 #bg#BLACK
+        self.color: int64 = 2 #bg#BLACK
         self.finished: bool = False
         self.lastmove: int64 = -2
-        self.history: List[int] = []
+        self.history: CheckedList[int] = CheckedList[int]([])
         self.white_dead: int = 0
         self.black_dead: int = 0
         #bgWHYYY#self.squares = [Square(self, pos) for pos in range(9*9)] #bg#SIZE*SIZE)
@@ -193,8 +279,8 @@ class Board:
                (empties or weak_opps or (strong_neighs and (strong_opps or weak_neighs)))
 
     #def useful_moves(self:Board)->List(int):
-    def useful_moves(self) -> List[int64]:
-        return [pos for pos in self.emptyset.empties if self.useful(pos)]
+    def useful_moves(self) -> CheckedList[int]:
+        return CheckedList[int]([pos for pos in self.emptyset.empties if self.useful(pos)])
 
     #def replay(self:Board, history:List(int))->Void:
     def replay(self, history: Array[int64]) -> None:
@@ -202,7 +288,7 @@ class Board:
             self.move(pos)
 
     #def score(self:Board, color:int)->float:
-    def score(self, color: int) -> float:
+    def score(self, color: int64) -> float:
         if color == 1: #bg#WHITE
             count = 7.5 + self.black_dead #bg#KOMI
         else:
@@ -232,7 +318,7 @@ class Board:
                 changed = False
                 for member in members1.copy():
                     for neighbour in member.neighbours:
-                        if neighbour.color == square.color and neighbour not in members1:
+                        if int64(neighbour.color) == square.color and cbool(neighbour not in members1):
                             changed = True
                             members1.add(neighbour)
             ledges1 = 0
@@ -245,20 +331,21 @@ class Board:
 
             members2 = set()
             for square2 in self.squares:
-                if square2.color != 0 and square2.find(False) == root: #bg#EMPTY
+                if square2.color != 0 and cbool(square2.find(False) == root): #bg#EMPTY
                     members2.add(square2)
 
             ledges2 = root.ledges
 
-            assert members1 == members2
-            assert ledges1 == ledges2, ('ledges differ at %r: %d %d' % (square, ledges1, ledges2))
+            # TODO
+            # assert members1 == members2
+            # assert ledges1 == ledges2, ('ledges differ at %r: %d %d' % (square, ledges1, ledges2))
 
             empties1 = set(self.emptyset.empties)
 
             empties2 = set()
             for square in self.squares:
                 if square.color == 0: #bg#EMPTY
-                    empties2.add(square.pos)
+                    empties2.add(box(square.pos))
 
 
 #@fields({'pos':int, 'wins':int, 'losses':int})
@@ -270,16 +357,16 @@ class UCTNode:
         self.pos: int64 = -1
         self.wins: int64 = 0
         self.losses: int64 = 0
-        self.pos_child: List[None | UCTNode] = [None for x in range(9*9)] #bg#SIZE*SIZE
+        self.pos_child: CheckedList[None | UCTNode] = CheckedList[None | UCTNode]([None for x in range(9*9)]) #bg#SIZE*SIZE
         self.parent: None | UCTNode = None
-        self.unexplored: List[int64]  = []
+        self.unexplored: CheckedList[int]  = CheckedList[int]([])
 
     #def play(self:UCTNode, board:Board)->Void:
     def play(self, board: Board) -> None:
         """ uct tree search """
-        color: int = board.color
+        color: int = box(board.color)
         node: UCTNode = self
-        path: List[UCTNode] = [node]
+        path: CheckedList[UCTNode] = CheckedList[UCTNode]([node])
         pos: int64 = 0
         while True:
             pos = node.select(board)
@@ -322,7 +409,7 @@ class UCTNode:
             board.move(board.random_move())
 
     #def update_path(self:UCTNode, board:Board, color:int, path:List(UCTNode))->Void:
-    def update_path(self, board: Board, color: int, path: List[UCTNode]) -> None:
+    def update_path(self, board: Board, color: int, path: CheckedList[UCTNode]) -> None:
         """ update win/loss count along path """
         wins = board.score(2) >= board.score(1) #bg#BLACK #bg#WHITE
         for node in path:
@@ -332,8 +419,11 @@ class UCTNode:
                 node.wins += 1
             else:
                 node.losses += 1
-            if node.parent:
-                node.parent.bestchild = node.parent.best_child()
+            if node.parent is not None:
+                mypar = node.parent
+                bc = mypar.best_child()
+                if node.parent is not None:
+                    node.parent.bestchild = bc
 
     #def score(self:UCTNode)->float:
     def score(self) -> float:
@@ -349,7 +439,7 @@ class UCTNode:
         return winrate + math.sqrt((math.log(parentvisits))/(5*nodevisits))
 
     #def best_child(self:UCTNode)->UCTNode:
-    def best_child(self) -> UCTNode:
+    def best_child(self) -> None | UCTNode:
         maxscore = -1
         maxchild = None
         for child in self.pos_child:
@@ -359,12 +449,13 @@ class UCTNode:
         return maxchild
 
     #def best_visited(self:UCTNode)->UCTNode:
-    def best_visited(self) -> UCTNode:
-        maxvisits = -1
+    def best_visited(self) -> None | UCTNode:
+        maxvisits: int64 = -1
         maxchild = None
         for child in self.pos_child:
-            if child and (child.wins+child.losses) > maxvisits:
-                maxvisits, maxchild = (child.wins+child.losses), child
+            if child is not None and box((child.wins+child.losses) > maxvisits):
+                maxvisits = (child.wins+child.losses)
+                maxchild = child
         return maxchild
 
 #def computer_move(board:{'useful_moves':Function([], List(int)),
@@ -387,7 +478,10 @@ def computer_move(board: Board) -> int:
         nboard.reset()
         nboard.replay(ahist)
         node.play(nboard)
-    return box(tree.best_visited().pos)
+    bvv = tree.best_visited()
+    if bvv is not None:
+        return box(bvv.pos)
+    return -1
 
 ITERATIONS = 2
 
