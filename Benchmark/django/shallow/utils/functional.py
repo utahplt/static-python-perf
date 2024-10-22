@@ -15,6 +15,8 @@ Self_cached_property = TypeVar("Self", bound="cached_property")
 Self_classproperty = TypeVar("Self", bound="classproperty")
 Self_LazyObject = TypeVar("Self", bound="LazyObject")
 
+### SECTION SEPARATOR ###
+
 class cached_property(Generic[W]):
     """
     Decorator that converts a method with a single self argument into a
@@ -37,6 +39,8 @@ class cached_property(Generic[W]):
         self.real_func: Callable[..., W] = func
         self.__doc__: str = getattr(func, "__doc__")
 
+    ### SECTION SEPARATOR ###
+
     # conflicts with typing NoReturns and None
     # see: https://github.com/python/typing/issues/695#issue-539279471
     # block could raise an error (never passes back control) or implicitly return None
@@ -55,6 +59,8 @@ class cached_property(Generic[W]):
                 "Cannot assign the same cached_property to two different names "
                 "(%r and %r)." % (self.name, name)
             )
+    
+    ### SECTION SEPARATOR ###
 
     def __get__(self: Self_cached_property, instance: object, cls: Optional[NoReturn] = None) -> Union[Self_cached_property, W]:
         """
@@ -71,6 +77,8 @@ class cached_property(Generic[W]):
         # if statements not working. occurrence bug?
         return res
 
+### SECTION SEPARATOR ###
+
 class classproperty(Generic[W]):
     """
     Decorator that converts a method with a single cls argument into a property
@@ -81,12 +89,18 @@ class classproperty(Generic[W]):
         if method:
             self.fget: Callable[..., W] = method
 
+    ### SECTION SEPARATOR ###
+
     def __get__(self: Self_classproperty, instance: NoReturn, cls: Optional[object] = None) -> W:
         return self.fget(cls)
+
+    ### SECTION SEPARATOR ###
 
     def getter(self: Self_classproperty, method: Callable[..., W]) -> Self_classproperty:
         self.fget = method
         return self
+
+### SECTION SEPARATOR ###
 
 class Promise:
     """
@@ -121,6 +135,8 @@ def lazy(func: Callable[..., Any], *resultclasses: object) -> Any:
         def __init__(self: Self_lazy, args: Tuple[W, ...], kw: Dict[str, X]) -> None:
             self._args = args
             self._kw = kw
+            
+        ### SECTION SEPARATOR ###
 
         def __reduce__(self: Self_lazy) -> Tuple[Callable[..., Any], Tuple[Any, ...]]:
             return (
@@ -133,7 +149,7 @@ def lazy(func: Callable[..., Any], *resultclasses: object) -> Any:
             # collection of functions. So we don't need to do anything
             # complicated for copying.
             memo[id(self)] = self
-            return self
+            return sel
 
         def __cast(self: Self_lazy) -> Self_lazy:
             return func(*self._args, **self._kw)
@@ -218,6 +234,8 @@ def lazy(func: Callable[..., Any], *resultclasses: object) -> Any:
                     return getattr(result, __method_name)(*args, **kw)
 
                 setattr(__proxy__, method_name, __wrapper__)
+    
+    ### SECTION SEPARATOR ###
 
     # dibri: issue distinguishing this from wrapper defined earlier?
     @wraps(func) # type: ignore
@@ -227,8 +245,12 @@ def lazy(func: Callable[..., Any], *resultclasses: object) -> Any:
 
     return __wrapper__
 
+### SECTION SEPARATOR ###
+
 def _lazy_proxy_unpickle(func: Callable[..., W], args: Tuple[X, ...], kwargs: Dict[str, Y], *resultclasses: Z) -> Z:
     return lazy(func, *resultclasses)(*args, **kwargs)
+
+### SECTION SEPARATOR ###
 
 # dibri: or text: Callable[[], str]
 def lazystr(text: str) -> str:
@@ -237,6 +259,7 @@ def lazystr(text: str) -> str:
     """
     return lazy(str, str)(text)
 
+### SECTION SEPARATOR ###
 
 # dibri: how do you type functions that may not return?
 def keep_lazy(*resultclasses: W) -> Union[NoReturn,  Callable[[Callable[..., X]], Callable[..., X]]]:
@@ -265,6 +288,7 @@ def keep_lazy(*resultclasses: W) -> Union[NoReturn,  Callable[[Callable[..., X]]
 
     return decorator
 
+### SECTION SEPARATOR ###
 
 def keep_lazy_text(func: Callable[..., str]) -> Union[NoReturn,  Callable[..., str]]:
     """
@@ -272,9 +296,9 @@ def keep_lazy_text(func: Callable[..., str]) -> Union[NoReturn,  Callable[..., s
     """
     return keep_lazy(str)(func)
 
+### SECTION SEPARATOR ###
 
 empty = object()
-
 
 def new_method_proxy(func: Callable[..., "LazyObject"]) -> Callable[["LazyObject", Tuple[X, ...]], "LazyObject"]:
     def inner(self: "LazyObject", *args: Tuple[X, ...]) -> "LazyObject":
@@ -286,6 +310,7 @@ def new_method_proxy(func: Callable[..., "LazyObject"]) -> Callable[["LazyObject
     inner._mask_wrapped = False #type: ignore
     return inner
 
+### SECTION SEPARATOR ###
 
 class LazyObject(Generic[X]):
     """
@@ -302,6 +327,8 @@ class LazyObject(Generic[X]):
         # Note: if a subclass overrides __init__(), it will likely need to
         # override __copy__() and __deepcopy__() as well.
         self._wrapped = empty
+    
+    ### SECTION SEPARATOR ###
 
     def __getattribute__(self: Self_LazyObject, name: str) -> Union[NoReturn, X]:
         if name == "_wrapped":
@@ -314,6 +341,8 @@ class LazyObject(Generic[X]):
             raise AttributeError
         return value
 
+    ### SECTION SEPARATOR ###
+
     __getattr__ = new_method_proxy(getattr)
 
     def __setattr__(self: Self_LazyObject, name: str, value: W) -> None:
@@ -324,6 +353,8 @@ class LazyObject(Generic[X]):
             if self._wrapped is empty:
                 self._setup()
             setattr(self._wrapped, name, value)
+    
+    ### SECTION SEPARATOR ###
 
     def __delattr__(self: Self_LazyObject, name: str) -> None:
         if name == "_wrapped":
@@ -331,6 +362,8 @@ class LazyObject(Generic[X]):
         if self._wrapped is empty:
             self._setup()
         delattr(self._wrapped, name)
+    
+    ### SECTION SEPARATOR ###
 
     def _setup(self: Self_LazyObject) -> NoReturn:
         """
@@ -339,6 +372,8 @@ class LazyObject(Generic[X]):
         raise NotImplementedError(
             "subclasses of LazyObject must provide a _setup() method"
         )
+        
+    ### SECTION SEPARATOR ###
 
     # Because we have messed with __class__ below, we confuse pickle as to what
     # class we are pickling. We're going to have to initialize the wrapped
@@ -358,6 +393,8 @@ class LazyObject(Generic[X]):
         if self._wrapped is empty:
             self._setup()
         return (unpickle_lazyobject, (self._wrapped,))
+    
+    ### SECTION SEPARATOR ###
 
     def __copy__(self: Self_LazyObject) -> Union[object, "LazyObject"]:
         if self._wrapped is empty:
@@ -367,6 +404,8 @@ class LazyObject(Generic[X]):
         else:
             # If initialized, return a copy of the wrapped object.
             return copy.copy(self._wrapped)
+        
+    ### SECTION SEPARATOR ###
 
     def __deepcopy__(self: Self_LazyObject, memo: Dict[int, "LazyObject"]) -> Union[object, "LazyObject"]:
         if self._wrapped is empty:
@@ -376,6 +415,8 @@ class LazyObject(Generic[X]):
             memo[id(self)] = result
             return result
         return copy.deepcopy(self._wrapped, memo)
+    
+    ### SECTION SEPARATOR ###
 
     __bytes__ = new_method_proxy(bytes)
     __str__ = new_method_proxy(str)
@@ -401,6 +442,7 @@ class LazyObject(Generic[X]):
     __len__ = new_method_proxy(len)
     __contains__ = new_method_proxy(operator.contains)
 
+### SECTION SEPARATOR ###
 
 # dibri: why?
 def unpickle_lazyobject(wrapped: W) -> W:
@@ -410,6 +452,7 @@ def unpickle_lazyobject(wrapped: W) -> W:
     """
     return wrapped
 
+### SECTION SEPARATOR ###
 
 class SimpleLazyObject(LazyObject):
     """
@@ -428,9 +471,13 @@ class SimpleLazyObject(LazyObject):
         """
         self.__dict__["_setupfunc"] = func
         super().__init__()
+    
+    ### SECTION SEPARATOR ###
 
     def _setup(self: Self_LazyObject) -> None:
         self._wrapped = self._setupfunc()
+    
+    ### SECTION SEPARATOR ###
 
     # Return a meaningful representation of the lazy object for debugging
     # without evaluating the wrapped object.
@@ -440,6 +487,8 @@ class SimpleLazyObject(LazyObject):
         else:
             repr_attr = self._wrapped
         return "<%s: %r>" % (type(self).__name__, repr_attr)
+    
+    ### SECTION SEPARATOR ###
 
     def __copy__(self: Self_LazyObject) -> Union[object, "SimpleLazyObject"]:
         if self._wrapped is empty:
@@ -449,6 +498,8 @@ class SimpleLazyObject(LazyObject):
         else:
             # If initialized, return a copy of the wrapped object.
             return copy.copy(self._wrapped)
+        
+    ### SECTION SEPARATOR ###
 
     def __deepcopy__(self, memo: Dict[int, "SimpleLazyObject"]) -> Union[object, "SimpleLazyObject"]:
         if self._wrapped is empty:
@@ -458,13 +509,16 @@ class SimpleLazyObject(LazyObject):
             memo[id(self)] = result
             return result
         return copy.deepcopy(self._wrapped, memo)
+    
+    ### SECTION SEPARATOR ###
 
     __add__ = new_method_proxy(operator.add)
 
     @new_method_proxy
     def __radd__(self: Self_LazyObject, other: "SimpleLazyObject") -> "SimpleLazyObject":
         return self + other
-
+    
+### SECTION SEPARATOR ###
 
 def partition(predicate: Callable[[int], bool], values: List[int]) -> Tuple[List[int], List[int]]:
     """
