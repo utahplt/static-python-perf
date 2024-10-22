@@ -1,60 +1,52 @@
 import copy
 import itertools
 import operator
-from functools import wraps
-from typing import Dict, Generic, NoReturn, Optional, Callable, Tuple, List, TypeVar, Union, Any
+import warnings
+from functools import total_ordering, wraps
 
-W = TypeVar("W")
-X = TypeVar("X")
-Y = TypeVar("Y")
-Z = TypeVar("Z")
 
-Self_cached_property = TypeVar("Self", bound="cached_property")
-Self_classproperty = TypeVar("Self", bound="classproperty")
-Self_LazyObject = TypeVar("Self", bound="LazyObject")
-
-class cached_property(Generic[W]):
+class cached_property:
     """
     Decorator that converts a method with a single self argument into a
     property cached on the instance.
+
     A cached property can be made out of an existing method:
     (e.g. ``url = cached_property(get_absolute_url)``).
     """
 
-    name: Optional[str] = None
+    name = None
 
     @staticmethod
-    def func(instance: object) -> Union[W, NoReturn]:
+    def func(instance):
         raise TypeError(
             "Cannot use cached_property instance without calling "
             "__set_name__() on it."
         )
 
-    ## why does noReturn not work here?
-    def __init__(self: Self_cached_property, func: Callable[..., W]) -> None:
-        self.real_func: Callable[..., W] = func
-        self.__doc__: str = getattr(func, "__doc__")
+    def __init__(self, func, name=None):
+        from django.utils.deprecation import RemovedInDjango50Warning
 
-    # conflicts with typing NoReturns and None
-    # see: https://github.com/python/typing/issues/695#issue-539279471
-    # block could raise an error (never passes back control) or implicitly return None
-    # Optional[NoReturn] should work but raises an error saying no explicit return
-    # None is misleading
-    def __set_name__(self: Self_cached_property, owner: NoReturn, name: Optional[str]) -> None:
+        if name is not None:
+            warnings.warn(
+                "The name argument is deprecated as it's unnecessary as of "
+                "Python 3.6.",
+                RemovedInDjango50Warning,
+                stacklevel=2,
+            )
+        self.real_func = func
+        self.__doc__ = getattr(func, "__doc__")
+
+    def __set_name__(self, owner, name):
         if self.name is None:
             self.name = name
-            setattr(self, "func", self.real_func)
-            # self.func = self.real_func ## mypy does not like this. 
-            # callable not smart enough for bound and unbound funcs
-            # see: https://github.com/python/mypy/issues/2427#issuecomment-259677994
-
+            self.func = self.real_func
         elif name != self.name:
             raise TypeError(
                 "Cannot assign the same cached_property to two different names "
                 "(%r and %r)." % (self.name, name)
             )
 
-    def __get__(self: Self_cached_property, instance: object, cls: Optional[NoReturn] = None) -> Union[Self_cached_property, W]:
+    def __get__(self, instance, cls=None):
         """
         Call the function and put the return value in instance.__dict__ so that
         subsequent attribute access on the instance returns the cached value
@@ -62,29 +54,26 @@ class cached_property(Generic[W]):
         """
         if instance is None:
             return self
-
-        res: W = self.func(instance)
-        instance.__dict__[self.name] = res #type: ignore
-        # how do i convince mypy that name exists?
-        # if statements not working. occurrence bug?
+        res = instance.__dict__[self.name] = self.func(instance)
         return res
 
-class classproperty(Generic[W]):
+
+class classproperty:
     """
     Decorator that converts a method with a single cls argument into a property
     that can be accessed directly from the class.
     """
 
-    def __init__(self: Self_classproperty, method: Optional[Callable[..., W]] = None) -> None:
-        if method:
-            self.fget: Callable[..., W] = method
+    def __init__(self, method=None):
+        self.fget = method
 
-    def __get__(self: Self_classproperty, instance: NoReturn, cls: Optional[object] = None) -> W:
+    def __get__(self, instance, cls=None):
         return self.fget(cls)
 
-    def getter(self: Self_classproperty, method: Callable[..., W]) -> Self_classproperty:
+    def getter(self, method):
         self.fget = method
         return self
+
 
 class Promise:
     """
@@ -94,150 +83,147 @@ class Promise:
 
     pass
 
-# dibri:
-# Callable[[Tuple[W, ...], Dict[str, X]], Y]
-# proxy not defined yet
-# how to describe an object with secific props
-ResultClasses = Tuple[W, ...]
 
-def lazy(func: Callable[..., Any], *resultclasses: object) -> Any:
+def lazy(func, *resultclasses):
     """
     Turn any callable into a lazy evaluated callable. result classes or types
     is required -- at least one is needed so that the automatic forcing of
     the lazy evaluation code is triggered. Results are not memoized; the
     function is evaluated on every access.
     """
-    Self_lazy = TypeVar("Self", bound="__proxy__")
 
-    class __proxy__(Promise, Generic[X]):
+    @total_ordering
+    class __proxy__(Promise):
         """
         Encapsulate a function call and act as a proxy for methods that are
         called on the result of that function. The function is not evaluated
         until one of the methods on the result is called.
         """
 
-        def __init__(self: Self_lazy, args: Tuple[W, ...], kw: Dict[str, X]) -> None:
-            self._args = args
-            self._kw = kw
+        __prepared = False
 
-        def __reduce__(self: Self_lazy) -> Tuple[Callable[..., Any], Tuple[Any, ...]]:
+        def __init__(self, args, kw):
+            self.__args = args
+            self.__kw = kw
+            if not self.__prepared:
+                self.__prepare_class__()
+            self.__class__.__prepared = True
+
+        def __reduce__(self):
             return (
                 _lazy_proxy_unpickle,
-                (func, self._args, self._kw) + resultclasses,
+                (func, self.__args, self.__kw) + resultclasses,
             )
 
-        def __deepcopy__(self: Self_lazy, memo: Dict[int, Self_lazy]) -> Self_lazy:
+        def __repr__(self):
+            return repr(self.__cast())
+
+        @classmethod
+        def __prepare_class__(cls):
+            for resultclass in resultclasses:
+                for type_ in resultclass.mro():
+                    for method_name in type_.__dict__:
+                        # All __promise__ return the same wrapper method, they
+                        # look up the correct implementation when called.
+                        if hasattr(cls, method_name):
+                            continue
+                        meth = cls.__promise__(method_name)
+                        setattr(cls, method_name, meth)
+            cls._delegate_bytes = bytes in resultclasses
+            cls._delegate_text = str in resultclasses
+            if cls._delegate_bytes and cls._delegate_text:
+                raise ValueError(
+                    "Cannot call lazy() with both bytes and text return types."
+                )
+            if cls._delegate_text:
+                cls.__str__ = cls.__text_cast
+            elif cls._delegate_bytes:
+                cls.__bytes__ = cls.__bytes_cast
+
+        @classmethod
+        def __promise__(cls, method_name):
+            # Builds a wrapper around some magic method
+            def __wrapper__(self, *args, **kw):
+                # Automatically triggers the evaluation of a lazy value and
+                # applies the given magic method of the result type.
+                res = func(*self.__args, **self.__kw)
+                return getattr(res, method_name)(*args, **kw)
+
+            return __wrapper__
+
+        def __text_cast(self):
+            return func(*self.__args, **self.__kw)
+
+        def __bytes_cast(self):
+            return bytes(func(*self.__args, **self.__kw))
+
+        def __bytes_cast_encoded(self):
+            return func(*self.__args, **self.__kw).encode()
+
+        def __cast(self):
+            if self._delegate_bytes:
+                return self.__bytes_cast()
+            elif self._delegate_text:
+                return self.__text_cast()
+            else:
+                return func(*self.__args, **self.__kw)
+
+        def __str__(self):
+            # object defines __str__(), so __prepare_class__() won't overload
+            # a __str__() method from the proxied class.
+            return str(self.__cast())
+
+        def __eq__(self, other):
+            if isinstance(other, Promise):
+                other = other.__cast()
+            return self.__cast() == other
+
+        def __lt__(self, other):
+            if isinstance(other, Promise):
+                other = other.__cast()
+            return self.__cast() < other
+
+        def __hash__(self):
+            return hash(self.__cast())
+
+        def __mod__(self, rhs):
+            if self._delegate_text:
+                return str(self) % rhs
+            return self.__cast() % rhs
+
+        def __add__(self, other):
+            return self.__cast() + other
+
+        def __radd__(self, other):
+            return other + self.__cast()
+
+        def __deepcopy__(self, memo):
             # Instances of this class are effectively immutable. It's just a
             # collection of functions. So we don't need to do anything
             # complicated for copying.
             memo[id(self)] = self
             return self
 
-        def __cast(self: Self_lazy) -> Self_lazy:
-            return func(*self._args, **self._kw)
-
-        # Explicitly wrap methods which are defined on object and hence would
-        # not have been overloaded by the loop over resultclasses below.
-
-        def __repr__(self: Self_lazy) -> str:
-            return repr(self.__cast())
-
-        def __str__(self: Self_lazy) -> str:
-            return str(self.__cast())
-
-        def __eq__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() == other
-
-        def __ne__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() != other
-
-        def __lt__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() < other
-
-        def __le__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() <= other
-
-        def __gt__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() > other
-
-        def __ge__(self: Self_lazy, other: object) -> bool:
-            if isinstance(other, Promise):
-                other = other.__cast() #type: ignore
-            return self.__cast() >= other
-
-        def __hash__(self: Self_lazy) -> int:
-            return hash(self.__cast())
-
-        def __format__(self: Self_lazy, format_spec: str) -> str:
-            return format(self.__cast(), format_spec)
-
-        # Explicitly wrap methods which are required for certain operations on
-        # int/str objects to function correctly.
-
-        # dibri: redefined. see: 166
-        def __ge__(self: Self_lazy, other: Promise) -> Any:
-            return self.__cast() + other
-
-        def __radd__(self: Self_lazy, other: Promise) -> Any:
-            return other + self.__cast()
-
-        def __mod__(self: Self_lazy, other: Promise) -> Any:
-            return self.__cast() % other
-
-        def __mul__(self: Self_lazy, other: Promise) -> Any:
-            return self.__cast() * other
-
-    # Add wrappers for all methods from resultclasses which haven't been
-    # wrapped explicitly above.
-    for resultclass in resultclasses:
-        for type_ in resultclass.mro(): #type: ignore
-            for method_name in type_.__dict__:
-                # All __promise__ return the same wrapper method, they look up
-                # the correct implementation when called.
-                if hasattr(__proxy__, method_name):
-                    continue
-
-                # Builds a wrapper around some method. Pass method_name to
-                # avoid issues due to late binding.
-                def __wrapper__(self, *args, __method_name = method_name, **kw) -> __proxy__:
-                    # Automatically triggers the evaluation of a lazy value and
-                    # applies the given method of the result type.
-                    result = func(*self._args, **self._kw)
-                    return getattr(result, __method_name)(*args, **kw)
-
-                setattr(__proxy__, method_name, __wrapper__)
-
-    # dibri: issue distinguishing this from wrapper defined earlier?
-    @wraps(func) # type: ignore
-    def __wrapper__(*args: Tuple[W, ...], **kw: Dict[str, X]) -> __proxy__:
+    @wraps(func)
+    def __wrapper__(*args, **kw):
         # Creates the proxy object, instead of the actual value.
         return __proxy__(args, kw)
 
     return __wrapper__
 
-def _lazy_proxy_unpickle(func: Callable[..., W], args: Tuple[X, ...], kwargs: Dict[str, Y], *resultclasses: Z) -> Z:
+
+def _lazy_proxy_unpickle(func, args, kwargs, *resultclasses):
     return lazy(func, *resultclasses)(*args, **kwargs)
 
-# dibri: or text: Callable[[], str]
-def lazystr(text: str) -> str:
+
+def lazystr(text):
     """
     Shortcut for the common case of a lazy callable that returns str.
     """
     return lazy(str, str)(text)
 
 
-# dibri: how do you type functions that may not return?
-def keep_lazy(*resultclasses: W) -> Union[NoReturn,  Callable[[Callable[..., X]], Callable[..., X]]]:
+def keep_lazy(*resultclasses):
     """
     A decorator that allows a function to be called with one or more lazy
     arguments. If none of the args are lazy, the function is evaluated
@@ -247,11 +233,11 @@ def keep_lazy(*resultclasses: W) -> Union[NoReturn,  Callable[[Callable[..., X]]
     if not resultclasses:
         raise TypeError("You must pass at least one argument to keep_lazy().")
 
-    def decorator(func: Callable[..., X]) -> Callable[..., X]:
+    def decorator(func):
         lazy_func = lazy(func, *resultclasses)
 
         @wraps(func)
-        def wrapper(*args: Tuple[Y, ...], **kwargs: Dict[str, Z]):
+        def wrapper(*args, **kwargs):
             if any(
                 isinstance(arg, Promise)
                 for arg in itertools.chain(args, kwargs.values())
@@ -264,7 +250,7 @@ def keep_lazy(*resultclasses: W) -> Union[NoReturn,  Callable[[Callable[..., X]]
     return decorator
 
 
-def keep_lazy_text(func: Callable[..., str]) -> Union[NoReturn,  Callable[..., str]]:
+def keep_lazy_text(func):
     """
     A decorator for functions that accept lazy arguments and return text.
     """
@@ -274,21 +260,22 @@ def keep_lazy_text(func: Callable[..., str]) -> Union[NoReturn,  Callable[..., s
 empty = object()
 
 
-def new_method_proxy(func: Callable[..., "LazyObject"]) -> Callable[["LazyObject", Tuple[X, ...]], "LazyObject"]:
-    def inner(self: "LazyObject", *args: Tuple[X, ...]) -> "LazyObject":
+def new_method_proxy(func):
+    def inner(self, *args):
         if (_wrapped := self._wrapped) is empty:
             self._setup()
             _wrapped = self._wrapped
         return func(_wrapped, *args)
 
-    inner._mask_wrapped = False #type: ignore
+    inner._mask_wrapped = False
     return inner
 
 
-class LazyObject(Generic[X]):
+class LazyObject:
     """
     A wrapper for another class that can be used to delay instantiation of the
     wrapped class.
+
     By subclassing, you have the opportunity to intercept and alter the
     instantiation. If you don't need to do that, use SimpleLazyObject.
     """
@@ -296,16 +283,16 @@ class LazyObject(Generic[X]):
     # Avoid infinite recursion when tracing __init__ (#19456).
     _wrapped = None
 
-    def __init__(self: Self_LazyObject) -> None:
+    def __init__(self):
         # Note: if a subclass overrides __init__(), it will likely need to
         # override __copy__() and __deepcopy__() as well.
         self._wrapped = empty
 
-    def __getattribute__(self: Self_LazyObject, name: str) -> Union[NoReturn, X]:
+    def __getattribute__(self, name):
         if name == "_wrapped":
             # Avoid recursion when getting wrapped object.
             return super().__getattribute__(name)
-        value: X = super().__getattribute__(name)
+        value = super().__getattribute__(name)
         # If attribute is a proxy method, raise an AttributeError to call
         # __getattr__() and use the wrapped object method.
         if not getattr(value, "_mask_wrapped", True):
@@ -314,7 +301,7 @@ class LazyObject(Generic[X]):
 
     __getattr__ = new_method_proxy(getattr)
 
-    def __setattr__(self: Self_LazyObject, name: str, value: W) -> None:
+    def __setattr__(self, name, value):
         if name == "_wrapped":
             # Assign to __dict__ to avoid infinite __setattr__ loops.
             self.__dict__["_wrapped"] = value
@@ -323,14 +310,14 @@ class LazyObject(Generic[X]):
                 self._setup()
             setattr(self._wrapped, name, value)
 
-    def __delattr__(self: Self_LazyObject, name: str) -> None:
+    def __delattr__(self, name):
         if name == "_wrapped":
             raise TypeError("can't delete _wrapped.")
         if self._wrapped is empty:
             self._setup()
         delattr(self._wrapped, name)
 
-    def _setup(self: Self_LazyObject) -> NoReturn:
+    def _setup(self):
         """
         Must be implemented by subclasses to initialize the wrapped object.
         """
@@ -352,12 +339,12 @@ class LazyObject(Generic[X]):
     # pickle the wrapped object as the unpickler's argument, so that pickle
     # will pickle it normally, and then the unpickler simply returns its
     # argument.
-    def __reduce__(self: Self_LazyObject) -> Tuple[Callable[["LazyObject"], "LazyObject"], Tuple[Any]]:
+    def __reduce__(self):
         if self._wrapped is empty:
             self._setup()
         return (unpickle_lazyobject, (self._wrapped,))
 
-    def __copy__(self: Self_LazyObject) -> Union[object, "LazyObject"]:
+    def __copy__(self):
         if self._wrapped is empty:
             # If uninitialized, copy the wrapper. Use type(self), not
             # self.__class__, because the latter is proxied.
@@ -366,7 +353,7 @@ class LazyObject(Generic[X]):
             # If initialized, return a copy of the wrapped object.
             return copy.copy(self._wrapped)
 
-    def __deepcopy__(self: Self_LazyObject, memo: Dict[int, "LazyObject"]) -> Union[object, "LazyObject"]:
+    def __deepcopy__(self, memo):
         if self._wrapped is empty:
             # We have to use type(self), not self.__class__, because the
             # latter is proxied.
@@ -400,8 +387,7 @@ class LazyObject(Generic[X]):
     __contains__ = new_method_proxy(operator.contains)
 
 
-# dibri: why?
-def unpickle_lazyobject(wrapped: W) -> W:
+def unpickle_lazyobject(wrapped):
     """
     Used to unpickle lazy objects. Just return its argument, which will be the
     wrapped object.
@@ -412,13 +398,15 @@ def unpickle_lazyobject(wrapped: W) -> W:
 class SimpleLazyObject(LazyObject):
     """
     A lazy object initialized from any function.
+
     Designed for compound objects of unknown type. For builtins or objects of
     known type, use django.utils.functional.lazy.
     """
 
-    def __init__(self: Self_LazyObject, func: Callable[..., W]) -> None:
+    def __init__(self, func):
         """
         Pass in a callable that returns the object to be wrapped.
+
         If copies are made of the resulting SimpleLazyObject, which can happen
         in various circumstances within Django, then you must ensure that the
         callable can be safely run more than once and will return the same
@@ -427,19 +415,19 @@ class SimpleLazyObject(LazyObject):
         self.__dict__["_setupfunc"] = func
         super().__init__()
 
-    def _setup(self: Self_LazyObject) -> None:
+    def _setup(self):
         self._wrapped = self._setupfunc()
 
     # Return a meaningful representation of the lazy object for debugging
     # without evaluating the wrapped object.
-    def __repr__(self: Self_LazyObject) -> str:
+    def __repr__(self):
         if self._wrapped is empty:
             repr_attr = self._setupfunc
         else:
             repr_attr = self._wrapped
         return "<%s: %r>" % (type(self).__name__, repr_attr)
 
-    def __copy__(self: Self_LazyObject) -> Union[object, "SimpleLazyObject"]:
+    def __copy__(self):
         if self._wrapped is empty:
             # If uninitialized, copy the wrapper. Use SimpleLazyObject, not
             # self.__class__, because the latter is proxied.
@@ -448,7 +436,7 @@ class SimpleLazyObject(LazyObject):
             # If initialized, return a copy of the wrapped object.
             return copy.copy(self._wrapped)
 
-    def __deepcopy__(self, memo: Dict[int, "SimpleLazyObject"]) -> Union[object, "SimpleLazyObject"]:
+    def __deepcopy__(self, memo):
         if self._wrapped is empty:
             # We have to use SimpleLazyObject, not self.__class__, because the
             # latter is proxied.
@@ -460,18 +448,19 @@ class SimpleLazyObject(LazyObject):
     __add__ = new_method_proxy(operator.add)
 
     @new_method_proxy
-    def __radd__(self: Self_LazyObject, other: "SimpleLazyObject") -> "SimpleLazyObject":
-        return self + other
+    def __radd__(self, other):
+        return other + self
 
 
-def partition(predicate: Callable[[int], bool], values: List[int]) -> Tuple[List[int], List[int]]:
+def partition(predicate, values):
     """
     Split the values into two sets, based on the return value of the function
     (True/False). e.g.:
+
         >>> partition(lambda x: x > 3, range(5))
         [0, 1, 2, 3], [4]
     """
-    results: Tuple[List[int], List[int]] = ([], [])
+    results = ([], [])
     for item in values:
         results[predicate(item)].append(item)
     return results
