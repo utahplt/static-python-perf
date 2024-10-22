@@ -30,6 +30,8 @@ DEBUG_ENGINE = Engine(
 )
 
 
+### SECTION SEPARATOR ###
+
 def builtin_template_path(name):
     """
     Return a path to a builtin template.
@@ -52,12 +54,16 @@ class CallableSettingWrapper:
       (#23070).
     """
 
+    ### SECTION SEPARATOR ###
+
     def __init__(self, callable_setting):
         self._wrapped = callable_setting
 
     def __repr__(self):
         return repr(self._wrapped)
 
+
+### SECTION SEPARATOR ###
 
 def technical_500_response(request, exc_type, exc_value, tb, status_code=500):
     """
@@ -74,6 +80,7 @@ def technical_500_response(request, exc_type, exc_value, tb, status_code=500):
             text, status=status_code, content_type="text/plain; charset=utf-8"
         )
 
+### SECTION SEPARATOR ###
 
 @functools.lru_cache
 def get_default_exception_reporter_filter():
@@ -81,10 +88,14 @@ def get_default_exception_reporter_filter():
     return import_string(settings.DEFAULT_EXCEPTION_REPORTER_FILTER)()
 
 
+### SECTION SEPARATOR ###
+
 def get_exception_reporter_filter(request):
     default_filter = get_default_exception_reporter_filter()
     return getattr(request, "exception_reporter_filter", default_filter)
 
+
+### SECTION SEPARATOR ###
 
 def get_exception_reporter_class(request):
     default_exception_reporter_class = import_string(
@@ -95,6 +106,8 @@ def get_exception_reporter_class(request):
     )
 
 
+### SECTION SEPARATOR ###
+
 def get_caller(request):
     resolver_match = request.resolver_match
     if resolver_match is None:
@@ -104,6 +117,7 @@ def get_caller(request):
             pass
     return "" if resolver_match is None else resolver_match._func_path
 
+### SECTION SEPARATOR ###
 
 class SafeExceptionReporterFilter:
     """
@@ -115,6 +129,8 @@ class SafeExceptionReporterFilter:
     hidden_settings = _lazy_re_compile(
         "API|TOKEN|KEY|SECRET|PASS|SIGNATURE|HTTP_COOKIE", flags=re.I
     )
+
+    ### SECTION SEPARATOR ###
 
     def cleanse_setting(self, key, value):
         """
@@ -145,6 +161,8 @@ class SafeExceptionReporterFilter:
 
         return cleansed
 
+    ### SECTION SEPARATOR ###
+
     def get_safe_settings(self):
         """
         Return a dictionary of the settings module with values of sensitive
@@ -156,6 +174,8 @@ class SafeExceptionReporterFilter:
                 settings_dict[k] = self.cleanse_setting(k, getattr(settings, k))
         return settings_dict
 
+    ### SECTION SEPARATOR ###
+
     def get_safe_request_meta(self, request):
         """
         Return a dictionary of request.META with sensitive values redacted.
@@ -163,6 +183,8 @@ class SafeExceptionReporterFilter:
         if not hasattr(request, "META"):
             return {}
         return {k: self.cleanse_setting(k, v) for k, v in request.META.items()}
+
+    ### SECTION SEPARATOR ###
 
     def get_safe_cookies(self, request):
         """
@@ -172,6 +194,8 @@ class SafeExceptionReporterFilter:
             return {}
         return {k: self.cleanse_setting(k, v) for k, v in request.COOKIES.items()}
 
+    ### SECTION SEPARATOR ###
+
     def is_active(self, request):
         """
         This filter is to add safety in production environments (i.e. DEBUG
@@ -180,6 +204,8 @@ class SafeExceptionReporterFilter:
         deactivate the filter on a per request basis.
         """
         return settings.DEBUG is False
+
+    ### SECTION SEPARATOR ###
 
     def get_cleansed_multivaluedict(self, request, multivaluedict):
         """
@@ -194,6 +220,8 @@ class SafeExceptionReporterFilter:
                 if param in multivaluedict:
                     multivaluedict[param] = self.cleansed_substitute
         return multivaluedict
+
+    ### SECTION SEPARATOR ###
 
     def get_post_parameters(self, request):
         """
@@ -222,6 +250,8 @@ class SafeExceptionReporterFilter:
             else:
                 return request.POST
 
+    ### SECTION SEPARATOR ###
+
     def cleanse_special_types(self, request, value):
         try:
             # If value is lazy or a complex object of another kind, this check
@@ -235,6 +265,8 @@ class SafeExceptionReporterFilter:
             # Cleanse MultiValueDicts (request.POST is the one we usually care about)
             value = self.get_cleansed_multivaluedict(request, value)
         return value
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_frame_variables(self, request, tb_frame):
         """
@@ -306,17 +338,24 @@ class SafeExceptionReporterFilter:
 
         return cleansed.items()
 
+### SECTION SEPARATOR ###
 
 class ExceptionReporter:
     """Organize and coordinate reporting on exceptions."""
+    
+    ### SECTION SEPARATOR ###
 
     @property
     def html_template_path(self):
         return builtin_template_path("technical_500.html")
 
+    ### SECTION SEPARATOR ###
+
     @property
     def text_template_path(self):
         return builtin_template_path("technical_500.txt")
+
+    ### SECTION SEPARATOR ###
 
     def __init__(self, request, exc_type, exc_value, tb, is_email=False):
         self.request = request
@@ -330,6 +369,8 @@ class ExceptionReporter:
         self.template_does_not_exist = False
         self.postmortem = None
 
+    ### SECTION SEPARATOR ###
+
     def _get_raw_insecure_uri(self):
         """
         Return an absolute URI from variables available in this request. Skip
@@ -340,6 +381,8 @@ class ExceptionReporter:
             host=self.request._get_raw_host(),
             path=self.request.get_full_path(),
         )
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_data(self):
         """Return a dictionary containing traceback information."""
@@ -421,6 +464,8 @@ class ExceptionReporter:
             c["lastframe"] = frames[-1]
         return c
 
+    ### SECTION SEPARATOR ###
+
     def get_traceback_html(self):
         """Return HTML version of debug 500 HTTP error page."""
         with self.html_template_path.open(encoding="utf-8") as fh:
@@ -428,12 +473,16 @@ class ExceptionReporter:
         c = Context(self.get_traceback_data(), use_l10n=False)
         return t.render(c)
 
+    ### SECTION SEPARATOR ###
+
     def get_traceback_text(self):
         """Return plain text version of debug 500 HTTP error page."""
         with self.text_template_path.open(encoding="utf-8") as fh:
             t = DEBUG_ENGINE.from_string(fh.read())
         c = Context(self.get_traceback_data(), autoescape=False, use_l10n=False)
         return t.render(c)
+
+    ### SECTION SEPARATOR ###
 
     def _get_source(self, filename, loader, module_name):
         source = None
@@ -451,6 +500,8 @@ class ExceptionReporter:
             except OSError:
                 pass
         return source
+
+    ### SECTION SEPARATOR ###
 
     def _get_lines_from_file(
         self, filename, lineno, context_lines, loader=None, module_name=None
@@ -488,11 +539,15 @@ class ExceptionReporter:
             return None, [], None, []
         return lower_bound, pre_context, context_line, post_context
 
+    ### SECTION SEPARATOR ###
+
     def _get_explicit_or_implicit_cause(self, exc_value):
         explicit = getattr(exc_value, "__cause__", None)
         suppress_context = getattr(exc_value, "__suppress_context__", None)
         implicit = getattr(exc_value, "__context__", None)
         return explicit or (None if suppress_context else implicit)
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_frames(self):
         # Get the exception and all its causes
@@ -526,6 +581,8 @@ class ExceptionReporter:
                 break
             tb = exc_value.__traceback__
         return frames
+
+    ### SECTION SEPARATOR ###
 
     def get_exception_traceback_frames(self, exc_value, tb):
         exc_cause = self._get_explicit_or_implicit_cause(exc_value)
@@ -605,6 +662,8 @@ class ExceptionReporter:
             tb = tb.tb_next
 
 
+### SECTION SEPARATOR ###
+
 def technical_404_response(request, exception):
     """Create a technical 404 error response. `exception` is the Http404."""
     try:
@@ -651,6 +710,8 @@ def technical_404_response(request, exception):
     )
     return HttpResponseNotFound(t.render(c))
 
+
+### SECTION SEPARATOR ###
 
 def default_urlconf(request):
     """Create an empty URLconf 404 error response."""

@@ -43,6 +43,8 @@ DEBUG_ENGINE: Engine = Engine(
 )
 
 
+### SECTION SEPARATOR ###
+
 def builtin_template_path(name: str) -> Path:
     """
     Return a path to a builtin template.
@@ -66,12 +68,16 @@ class CallableSettingWrapper:
     """
     _wrapped: Any = None
 
+    ### SECTION SEPARATOR ###
+
     def __init__(self, callable_setting: Any) -> None:
         self._wrapped = callable_setting
 
     def __repr__(self) -> str:
         return repr(self._wrapped)
 
+
+### SECTION SEPARATOR ###
 
 def technical_500_response(request: HttpRequest, exc_type: type, exc_value: BaseException, tb: types.TracebackType, status_code: int = 500) -> HttpResponse:
     """
@@ -89,16 +95,22 @@ def technical_500_response(request: HttpRequest, exc_type: type, exc_value: Base
         )
 
 
+### SECTION SEPARATOR ###
+
 @functools.lru_cache
 def get_default_exception_reporter_filter() -> TypeVar:
     # Instantiate the default filter for the first time and cache it.
     return import_string(settings.DEFAULT_EXCEPTION_REPORTER_FILTER)()
 
 
+### SECTION SEPARATOR ###
+
 def get_exception_reporter_filter(request: HttpRequest) -> TypeVar:
     default_filter: TypeVar = get_default_exception_reporter_filter()
     return getattr(request, "exception_reporter_filter", default_filter)
 
+
+### SECTION SEPARATOR ###
 
 def get_exception_reporter_class(request: HttpRequest) -> "ExceptionReporter":
     default_exception_reporter_class: ExceptionReporter = import_string(
@@ -109,6 +121,8 @@ def get_exception_reporter_class(request: HttpRequest) -> "ExceptionReporter":
     )
 
 
+### SECTION SEPARATOR ###
+
 def get_caller(request: HttpRequest) -> str:
     resolver_match: Optional[ResolverMatch] = request.resolver_match
     if resolver_match is None:
@@ -118,6 +132,7 @@ def get_caller(request: HttpRequest) -> str:
             pass
     return "" if resolver_match is None else resolver_match._func_path
 
+### SECTION SEPARATOR ###
 
 class SafeExceptionReporterFilter:
     """
@@ -129,6 +144,8 @@ class SafeExceptionReporterFilter:
     hidden_settings: re.Pattern = _lazy_re_compile(
         "API|AUTH|TOKEN|KEY|SECRET|PASS|SIGNATURE|HTTP_COOKIE", flags=re.I
     )
+
+    ### SECTION SEPARATOR ###
 
     def cleanse_setting(self, key: str, value: T) -> Union[T, CallableSettingWrapper]:
         """
@@ -161,6 +178,8 @@ class SafeExceptionReporterFilter:
 
         return cleansed
 
+    ### SECTION SEPARATOR ###
+
     def get_safe_settings(self) -> Dict[str, Union[T, CallableSettingWrapper]]:
         """
         Return a dictionary of the settings module with values of sensitive
@@ -173,6 +192,8 @@ class SafeExceptionReporterFilter:
                 settings_dict[k] = self.cleanse_setting(k, getattr(settings, k))
         return settings_dict
 
+    ### SECTION SEPARATOR ###
+
     def get_safe_request_meta(self, request: HttpRequest) -> Dict[str, Union[T, CallableSettingWrapper]]:
         """
         Return a dictionary of request.META with sensitive values redacted.
@@ -180,6 +201,8 @@ class SafeExceptionReporterFilter:
         if not hasattr(request, "META"):
             return {}
         return {k: self.cleanse_setting(k, v) for k, v in request.META.items()}
+
+    ### SECTION SEPARATOR ###
 
     def get_safe_cookies(self, request: HttpRequest) -> Dict[str, Union[T, CallableSettingWrapper]]:
         """
@@ -189,6 +212,8 @@ class SafeExceptionReporterFilter:
             return {}
         return {k: self.cleanse_setting(k, v) for k, v in request.COOKIES.items()}
 
+    ### SECTION SEPARATOR ###
+
     def is_active(self, request: HttpRequest) -> bool:
         """
         This filter is to add safety in production environments (i.e. DEBUG
@@ -197,6 +222,8 @@ class SafeExceptionReporterFilter:
         deactivate the filter on a per request basis.
         """
         return settings.DEBUG is False
+
+    ### SECTION SEPARATOR ###
 
     def get_cleansed_multivaluedict(self, request: HttpRequest, multivaluedict: MultiValueDict) -> MultiValueDict:
         """
@@ -211,6 +238,8 @@ class SafeExceptionReporterFilter:
                 if param in multivaluedict:
                     multivaluedict[param] = self.cleansed_substitute
         return multivaluedict
+
+    ### SECTION SEPARATOR ###
 
     def get_post_parameters(self, request: Optional[HttpRequest]) -> Union[QueryDict]:
         """
@@ -239,6 +268,8 @@ class SafeExceptionReporterFilter:
             else:
                 return request.POST
 
+    ### SECTION SEPARATOR ###
+
     def cleanse_special_types(self, request: HttpRequest, value: Any) -> Any:
         is_multivalue_dict: bool
         try:
@@ -253,6 +284,8 @@ class SafeExceptionReporterFilter:
             # Cleanse MultiValueDicts (request.POST is the one we usually care about)
             value = self.get_cleansed_multivaluedict(request, value)
         return value
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_frame_variables(self, request: HttpRequest, tb_frame: types.FrameType) -> Iterator[Tuple[str, Any]]:
         """
@@ -324,6 +357,7 @@ class SafeExceptionReporterFilter:
 
         return cleansed.items()
 
+### SECTION SEPARATOR ###
 
 class ExceptionReporter:
     """Organize and coordinate reporting on exceptions."""
@@ -336,14 +370,20 @@ class ExceptionReporter:
     template_info: Optional[Any]
     template_does_not_exist: bool
     postmortem: Optional[Union[List[BaseException], None]]
+    
+    ### SECTION SEPARATOR ###
 
     @property
     def html_template_path(self) -> Path:
         return builtin_template_path("technical_500.html")
 
+    ### SECTION SEPARATOR ###
+    
     @property
     def text_template_path(self) -> Path:
         return builtin_template_path("technical_500.txt")
+
+    ### SECTION SEPARATOR ###
 
     def __init__(self, request: HttpRequest, exc_type: Optional[Type[BaseException]], exc_value: BaseException, tb: Optional[types.TracebackType], is_email: bool = False) -> None:
         self.request = request
@@ -357,6 +397,8 @@ class ExceptionReporter:
         self.template_does_not_exist = False
         self.postmortem = None
 
+    ### SECTION SEPARATOR ###
+
     def _get_raw_insecure_uri(self) -> str:
         """
         Return an absolute URI from variables available in this request. Skip
@@ -367,6 +409,8 @@ class ExceptionReporter:
             host=self.request._get_raw_host(),
             path=self.request.get_full_path(),
         )
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_data(self):
         """Return a dictionary containing traceback information."""
@@ -449,6 +493,8 @@ class ExceptionReporter:
             c["lastframe"] = frames[-1]
         return c
 
+    ### SECTION SEPARATOR ###
+
     def get_traceback_html(self) -> str:
         """Return HTML version of debug 500 HTTP error page."""
         t: Template
@@ -457,6 +503,8 @@ class ExceptionReporter:
         c: Context = Context(self.get_traceback_data(), use_l10n=False)
         return t.render(c)
 
+    ### SECTION SEPARATOR ###
+
     def get_traceback_text(self) -> str:
         """Return plain text version of debug 500 HTTP error page."""
         t: Template
@@ -464,6 +512,8 @@ class ExceptionReporter:
             t = DEBUG_ENGINE.from_string(fh.read())
         c: Context = Context(self.get_traceback_data(), autoescape=False, use_l10n=False)
         return t.render(c)
+
+    ### SECTION SEPARATOR ###
 
     def _get_source(self, filename: str, loader: Optional[Any], module_name: Optional[str]) -> Optional[List[Union[str, bytes]]]:
         source: Optional[List[Union[str, bytes]]] = None
@@ -481,6 +531,8 @@ class ExceptionReporter:
             except OSError:
                 pass
         return source
+
+    ### SECTION SEPARATOR ###
 
     def _get_lines_from_file(
         self, filename: str, lineno: int, context_lines: int, loader: Optional[Any] = None, module_name: Optional[str] = None
@@ -518,11 +570,15 @@ class ExceptionReporter:
             return None, [], None, []
         return lower_bound, pre_context, context_line, post_context
 
+    ### SECTION SEPARATOR ###
+
     def _get_explicit_or_implicit_cause(self, exc_value: BaseException) -> Optional[BaseException]:
         explicit = getattr(exc_value, "__cause__", None)
         suppress_context = getattr(exc_value, "__suppress_context__", None)
         implicit = getattr(exc_value, "__context__", None)
         return explicit or (None if suppress_context else implicit)
+
+    ### SECTION SEPARATOR ###
 
     def get_traceback_frames(self) -> List[Dict[str, Any]]:
         # Get the exception and all its causes
@@ -556,6 +612,8 @@ class ExceptionReporter:
                 break
             tb = exc_value.__traceback__
         return frames
+
+    ### SECTION SEPARATOR ###
 
     def get_exception_traceback_frames(self, exc_value: BaseException, tb: Optional[types.TracebackType]) -> Iterator[Dict[str, Any]]:
         exc_cause = self._get_explicit_or_implicit_cause(exc_value)
@@ -645,6 +703,8 @@ class ExceptionReporter:
             tb = tb.tb_next
 
 
+### SECTION SEPARATOR ###
+
 def technical_404_response(request: HttpRequest, exception: Exception) -> HttpResponse:
     """Create a technical 404 error response. `exception` is the Http404."""
     error_url: str
@@ -693,6 +753,8 @@ def technical_404_response(request: HttpRequest, exception: Exception) -> HttpRe
     )
     return HttpResponseNotFound(t.render(c))
 
+
+### SECTION SEPARATOR ###
 
 def default_urlconf(request: HttpRequest) -> HttpResponse:
     """Create an empty URLconf 404 error response."""

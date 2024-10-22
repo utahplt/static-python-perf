@@ -38,6 +38,8 @@ from django.utils import timezone
 from django.utils.duration import duration_microseconds
 
 
+### SECTION SEPARATOR ###
+
 def register(connection):
     create_deterministic_function = functools.partial(
         connection.create_function,
@@ -104,6 +106,8 @@ def register(connection):
         create_deterministic_function("TAN", 1, _sqlite_tan)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_datetime_parse(dt, tzname=None, conn_tzname=None):
     if dt is None:
         return None
@@ -123,6 +127,8 @@ def _sqlite_datetime_parse(dt, tzname=None, conn_tzname=None):
     return dt
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_date_trunc(lookup_type, dt, tzname, conn_tzname):
     dt = _sqlite_datetime_parse(dt, tzname, conn_tzname)
     if dt is None:
@@ -141,6 +147,8 @@ def _sqlite_date_trunc(lookup_type, dt, tzname, conn_tzname):
         return f"{dt.year:04d}-{dt.month:02d}-{dt.day:02d}"
     raise ValueError(f"Unsupported lookup type: {lookup_type!r}")
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_time_trunc(lookup_type, dt, tzname, conn_tzname):
     if dt is None:
@@ -162,6 +170,8 @@ def _sqlite_time_trunc(lookup_type, dt, tzname, conn_tzname):
     raise ValueError(f"Unsupported lookup type: {lookup_type!r}")
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_datetime_cast_date(dt, tzname, conn_tzname):
     dt = _sqlite_datetime_parse(dt, tzname, conn_tzname)
     if dt is None:
@@ -169,12 +179,16 @@ def _sqlite_datetime_cast_date(dt, tzname, conn_tzname):
     return dt.date().isoformat()
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_datetime_cast_time(dt, tzname, conn_tzname):
     dt = _sqlite_datetime_parse(dt, tzname, conn_tzname)
     if dt is None:
         return None
     return dt.time().isoformat()
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_datetime_extract(lookup_type, dt, tzname=None, conn_tzname=None):
     dt = _sqlite_datetime_parse(dt, tzname, conn_tzname)
@@ -193,6 +207,8 @@ def _sqlite_datetime_extract(lookup_type, dt, tzname=None, conn_tzname=None):
     else:
         return getattr(dt, lookup_type)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_datetime_trunc(lookup_type, dt, tzname, conn_tzname):
     dt = _sqlite_datetime_parse(dt, tzname, conn_tzname)
@@ -225,6 +241,8 @@ def _sqlite_datetime_trunc(lookup_type, dt, tzname, conn_tzname):
     raise ValueError(f"Unsupported lookup type: {lookup_type!r}")
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_time_extract(lookup_type, dt):
     if dt is None:
         return None
@@ -235,6 +253,8 @@ def _sqlite_time_extract(lookup_type, dt):
     return getattr(dt, lookup_type)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_prepare_dtdelta_param(conn, param):
     if conn in ["+", "-"]:
         if isinstance(param, int):
@@ -243,6 +263,8 @@ def _sqlite_prepare_dtdelta_param(conn, param):
             return typecast_timestamp(param)
     return param
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_format_dtdelta(connector, lhs, rhs):
     """
@@ -272,6 +294,8 @@ def _sqlite_format_dtdelta(connector, lhs, rhs):
     return out
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_time_diff(lhs, rhs):
     if lhs is None or rhs is None:
         return None
@@ -289,6 +313,8 @@ def _sqlite_time_diff(lhs, rhs):
     )
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_timestamp_diff(lhs, rhs):
     if lhs is None or rhs is None:
         return None
@@ -296,6 +322,8 @@ def _sqlite_timestamp_diff(lhs, rhs):
     right = typecast_timestamp(rhs)
     return duration_microseconds(left - right)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_regexp(pattern, string):
     if pattern is None or string is None:
@@ -305,11 +333,15 @@ def _sqlite_regexp(pattern, string):
     return bool(re_search(pattern, string))
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_acos(x):
     if x is None:
         return None
     return acos(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_asin(x):
     if x is None:
@@ -317,11 +349,15 @@ def _sqlite_asin(x):
     return asin(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_atan(x):
     if x is None:
         return None
     return atan(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_atan2(y, x):
     if y is None or x is None:
@@ -329,11 +365,15 @@ def _sqlite_atan2(y, x):
     return atan2(y, x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_bitxor(x, y):
     if x is None or y is None:
         return None
     return x ^ y
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_ceiling(x):
     if x is None:
@@ -341,11 +381,15 @@ def _sqlite_ceiling(x):
     return ceil(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_cos(x):
     if x is None:
         return None
     return cos(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_cot(x):
     if x is None:
@@ -353,11 +397,15 @@ def _sqlite_cot(x):
     return 1 / tan(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_degrees(x):
     if x is None:
         return None
     return degrees(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_exp(x):
     if x is None:
@@ -365,11 +413,15 @@ def _sqlite_exp(x):
     return exp(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_floor(x):
     if x is None:
         return None
     return floor(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_ln(x):
     if x is None:
@@ -377,12 +429,16 @@ def _sqlite_ln(x):
     return log(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_log(base, x):
     if base is None or x is None:
         return None
     # Arguments reversed to match SQL standard.
     return log(x, base)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_lpad(text, length, fill_text):
     if text is None or length is None or fill_text is None:
@@ -393,11 +449,15 @@ def _sqlite_lpad(text, length, fill_text):
     return (fill_text * length)[:delta] + text
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_md5(text):
     if text is None:
         return None
     return md5(text.encode()).hexdigest()
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_mod(x, y):
     if x is None or y is None:
@@ -405,9 +465,13 @@ def _sqlite_mod(x, y):
     return fmod(x, y)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_pi():
     return pi
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_power(x, y):
     if x is None or y is None:
@@ -415,11 +479,15 @@ def _sqlite_power(x, y):
     return x**y
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_radians(x):
     if x is None:
         return None
     return radians(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_repeat(text, count):
     if text is None or count is None:
@@ -427,11 +495,15 @@ def _sqlite_repeat(text, count):
     return text * count
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_reverse(text):
     if text is None:
         return None
     return text[::-1]
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_rpad(text, length, fill_text):
     if text is None or length is None or fill_text is None:
@@ -439,11 +511,15 @@ def _sqlite_rpad(text, length, fill_text):
     return (text + fill_text * length)[:length]
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_sha1(text):
     if text is None:
         return None
     return sha1(text.encode()).hexdigest()
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_sha224(text):
     if text is None:
@@ -451,11 +527,15 @@ def _sqlite_sha224(text):
     return sha224(text.encode()).hexdigest()
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_sha256(text):
     if text is None:
         return None
     return sha256(text.encode()).hexdigest()
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_sha384(text):
     if text is None:
@@ -463,11 +543,15 @@ def _sqlite_sha384(text):
     return sha384(text.encode()).hexdigest()
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_sha512(text):
     if text is None:
         return None
     return sha512(text.encode()).hexdigest()
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_sign(x):
     if x is None:
@@ -475,11 +559,15 @@ def _sqlite_sign(x):
     return (x > 0) - (x < 0)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_sin(x):
     if x is None:
         return None
     return sin(x)
 
+
+### SECTION SEPARATOR ###
 
 def _sqlite_sqrt(x):
     if x is None:
@@ -487,27 +575,34 @@ def _sqlite_sqrt(x):
     return sqrt(x)
 
 
+### SECTION SEPARATOR ###
+
 def _sqlite_tan(x):
     if x is None:
         return None
     return tan(x)
 
+### SECTION SEPARATOR ###
 
 class ListAggregate(list):
     step = list.append
 
+### SECTION SEPARATOR ###
 
 class StdDevPop(ListAggregate):
     finalize = statistics.pstdev
 
+### SECTION SEPARATOR ###
 
 class StdDevSamp(ListAggregate):
     finalize = statistics.stdev
 
+### SECTION SEPARATOR ###
 
 class VarPop(ListAggregate):
     finalize = statistics.pvariance
 
+### SECTION SEPARATOR ###
 
 class VarSamp(ListAggregate):
     finalize = statistics.variance
