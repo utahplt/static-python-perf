@@ -9,14 +9,17 @@ import time
 
 DEFAULT_ARG = 9
 
+### SECTION SEPARATOR ###
 
 def fannkuch(n):
+    ### SECTION SEPARATOR ###
     count = list(range(1, n + 1))
     max_flips = 0
     m = n - 1
     r = n
     perm1 = list(range(n))
     perm = list(range(n))
+    ### SECTION SEPARATOR ###
     perm1_ins = perm1.insert
     perm1_pop = perm1.pop
 
@@ -47,6 +50,7 @@ def fannkuch(n):
             return max_flips
     return 0
 
+### SECTION SEPARATOR ###
 
 if __name__ == "__main__":
     import sys
@@ -61,4 +65,4 @@ if __name__ == "__main__":
         assert res == 30
     end_time = time.time()
     runtime = end_time - start_time
-    print(runtime)
+    print(runtime / num_iterations)

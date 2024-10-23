@@ -13,14 +13,17 @@ import time
 
 DEFAULT_ARG = 9
 
+### SECTION SEPARATOR ###
 
 def fannkuch(n: int) -> int:
+    ### SECTION SEPARATOR ###
     count: List[int] = list(range(1, n + 1))
     max_flips: int = 0
     m: int = n - 1
     r: int = n
     perm1: List[int] = list(range(n))
     perm: List[int] = list(range(n))
+    ### SECTION SEPARATOR ###
     perm1_ins: Callable[[int, int], None] = perm1.insert
     perm1_pop: Callable[[int], int] = perm1.pop
 
@@ -51,6 +54,8 @@ def fannkuch(n: int) -> int:
             return max_flips
     return 0
 
+### SECTION SEPARATOR ###
+
 if __name__ == "__main__":
     num_iterations = 1
     if len(sys.argv) > 1:
@@ -59,9 +64,7 @@ if __name__ == "__main__":
     start_time = time.time()
     for _ in range(num_iterations):
         res = fannkuch(DEFAULT_ARG)
-
+        assert res == 30
     end_time = time.time()
     runtime = end_time - start_time
-    print(runtime)
-
-        # assert res == 30
+    print(runtime / num_iterations)
