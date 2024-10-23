@@ -22,6 +22,12 @@ def fannkuch(nb: int) -> int:
     r: int64 = n
     perm1: Array[int64] = Array[int64](nb)
     perm: Array[int64] = Array[int64](nb)
+    i: int64 = 0
+    while i < n:
+        count[i] = i + 1
+        perm1[i] = i
+        perm[i] = i
+        i += 1
     perm0: Array[int64] = Array[int64](nb)
 
     while 1:
