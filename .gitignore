@@ -3,3 +3,5 @@ __pycache__
 *.swo
 *.swp
 .DS_Store
+env/
+cinder/
