@@ -17,9 +17,9 @@ def fannkuch(n):
     max_flips = 0
     m = n - 1
     r = n
+    ### SECTION SEPARATOR ###
     perm1 = list(range(n))
     perm = list(range(n))
-    ### SECTION SEPARATOR ###
     perm1_ins = perm1.insert
     perm1_pop = perm1.pop
 

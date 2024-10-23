@@ -21,9 +21,9 @@ def fannkuch(n: int) -> int:
     max_flips: int = 0
     m: int = n - 1
     r: int = n
+    ### SECTION SEPARATOR ###
     perm1: List[int] = list(range(n))
     perm: List[int] = list(range(n))
-    ### SECTION SEPARATOR ###
     perm1_ins: Callable[[int, int], None] = perm1.insert
     perm1_pop: Callable[[int], int] = perm1.pop
 

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import __static__
 from __static__ import box, int64, Array
+from typing import Callable, List
 import sys
 import time
 
@@ -19,18 +20,20 @@ def fannkuch(nb: int) -> int:
     n: int64 = int64(nb)
     ### SECTION SEPARATOR ###
     count: Array[int64] = Array[int64](n)
+    i: int64 = 0
+    while i < n:
+        count[i] = i + 1
     max_flips: int64 = 0
     m: int64 = n - 1
     r: int64 = n
+    ### SECTION SEPARATOR ###
     perm1: Array[int64] = Array[int64](n)
     perm: Array[int64] = Array[int64](n)
     i: int64 = 0
     while i < n:
-        count[i] = i + 1
         perm1[i] = i
         perm[i] = i
         i += 1
-    ### SECTION SEPARATOR ###
     perm0: Array[int64] = Array[int64](n)
 
     while 1:
