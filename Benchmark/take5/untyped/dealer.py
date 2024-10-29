@@ -1,4 +1,4 @@
-from random import randrange, shuffle, random, seed
+from random import randint, shuffle, random, seed
 from copy import deepcopy
 from player import Player
 
@@ -58,13 +58,13 @@ class Dealer:
         :param order: float, order of cards parametrization
         :return: [Card ...]
         """
-        seed(deck_size)
+        random.seed(deck_size)
         cards = []
         for i in range(deck_size):
-            cards.append((i + 1, randrange(min_val, max_val)))
-        s = (order or random())
-        shuffle(cards, lambda: s)
+            cards.append((i + 1, random.randint(min_val, max_val)))
+        random.shuffle(cards)
         return cards
+
 
     def create_stacks(self):
         """
