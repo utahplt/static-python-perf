@@ -22,16 +22,19 @@ def fannkuch(n):
     perm = list(range(n))
     perm1_ins = perm1.insert
     perm1_pop = perm1.pop
+    ### SHALLOW SEPARATOR ###
 
     while 1:
         while r != 1:
             count[r - 1] = r
             r -= 1
 
+        ### SHALLOW SEPARATOR ###
         if perm1[0] != 0 and perm1[m] != m:
             perm = perm1[:]
             flips_count = 0
             k = perm[0]
+            ### SHALLOW SEPARATOR ###
             while k:
                 perm[: k + 1] = perm[k::-1]
                 flips_count += 1
