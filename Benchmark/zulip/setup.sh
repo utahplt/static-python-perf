@@ -5,7 +5,7 @@ sudo adduser $USER docker
 # TODO: reboot the system
 
 # Get Zulip Code
-git clone https://github.com/mrigankpawagi/zulip
+git clone https://github.com/zulip/zulip
 cd zulip
 git remote add -f upstream https://github.com/zulip/zulip.git
 

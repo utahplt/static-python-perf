@@ -9,7 +9,7 @@ export CFLAGS="-I /srv/zulip/cinder/Include"
 export PATH=$PATH:/home/vagrant/.local/bin
 
 # download and build cinder
-git clone https://github.com/mrigankpawagi/cinder && cd cinder
+git clone https://github.com/facebookincubator/cinder && cd cinder
 ./configure --enable-loadable-sqlite-extensions && make -j
 
 # reinstall requirements in static-python

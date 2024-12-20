@@ -4,7 +4,7 @@
 sudo apt install libsqlite3-dev
 
 # download and build cinder
-git clone https://github.com/mrigankpawagi/cinder && cd cinder
+git clone https://github.com/facebookincubator/cinder && cd cinder
 ./configure --enable-loadable-sqlite-extensions && make -j
 cd ..
 
