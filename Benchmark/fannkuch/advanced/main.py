@@ -19,7 +19,7 @@ DEFAULT_ARG = 9
 def fannkuch(nb: int) -> int:
     n: int64 = int64(nb)
     ### SECTION SEPARATOR ###
-    count: Array[int64] = Array[int64](n)
+    count: Array[int64] = Array[int64](nb)
     i: int64 = 0
     while i < n:
         count[i] = i + 1
@@ -28,14 +28,14 @@ def fannkuch(nb: int) -> int:
     m: int64 = n - 1
     r: int64 = n
     ### SECTION SEPARATOR ###
-    perm1: Array[int64] = Array[int64](n)
-    perm: Array[int64] = Array[int64](n)
-    i: int64 = 0
+    perm1: Array[int64] = Array[int64](nb)
+    perm: Array[int64] = Array[int64](nb)
+    i = 0
     while i < n:
         perm1[i] = i
         perm[i] = i
         i += 1
-    perm0: Array[int64] = Array[int64](n)
+    perm0: Array[int64] = Array[int64](nb)
 
     while 1:
         while r != 1:
@@ -43,7 +43,7 @@ def fannkuch(nb: int) -> int:
             r -= 1
 
         if perm1[0] != 0 and perm1[m] != m:
-            i: int64 = 0
+            i = 0
             while i < n:
                 perm[i] = perm1[i]
                 i += 1
