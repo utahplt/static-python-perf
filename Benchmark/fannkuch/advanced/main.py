@@ -23,6 +23,7 @@ def fannkuch(nb: int) -> int:
     i: int64 = 0
     while i < n:
         count[i] = i + 1
+        i += 1
     max_flips: int64 = 0
     m: int64 = n - 1
     r: int64 = n
