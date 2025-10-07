@@ -1,5 +1,14 @@
 # Static Python Perf
 
+## Running on CloudLab
+
+We have a private CloudLab profile to install Cinder (commit [`1aeff3`](https://github.com/facebookincubator/cinder/commit/1aeff3259dc0aa2f9d6e61623e73dcf0878ec38b)) and fire up Facebook's Docker image.
+
+The profile runs the script here, which is public: <https://users.cs.utah.edu/~blg/sp-cloudlab.tar.gz>
+
+The CloudLab profile is named `sp-perf/sp-demo`. If you have access, the files are here: <https://www.cloudlab.us/show-profile.php?uuid=369bda87-5444-11ef-b3bd-e4434b2381fc>
+
+
 ## Steps to Run Static Python
 (Taken from [cinder/python-build-env](https://github.com/facebookincubator/cinder/pkgs/container/cinder%2Fpython-build-env).)
 
@@ -16,7 +25,7 @@ docker run -v "$PWD/cinder:/vol" -w /vol -it --rm ghcr.io/facebookincubator/cind
 ```
 3. pull the changes (git pull).
 4. ls, and navigate to the file that needs to be run (./call-method/shallow).
-5. Run the following command:
+5. Run the following command (maybe using `python.exe` instead):
 
 ```
 /vol/python -m cinderx.compiler --static module.py
