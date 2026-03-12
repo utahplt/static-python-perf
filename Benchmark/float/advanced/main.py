@@ -36,21 +36,22 @@ class Point(object):
         self.z = self.z if self.z > other.z else other.z
         return self
 
-def maximize(points: CheckedList[Point]) -> Point:
+def maximize_all(points: CheckedList[Point]) -> Point:
     next: Point = points[0]
     for p in points[1:]:
         next = next.maximize(p)
     return next
 
+def normal_point(i: int) -> Point:
+    p = Point(float(i))
+    p.normalize()
+    return p
+
 @inline
 def benchmark(n: int) -> Point:
-    points: CheckedList[Point] = CheckedList[Point]([Point(i) for i in range(n)])
-    for p in points:
-        p.normalize()
-    return maximize(points)
+    return maximize_all(CheckedList[Point](map(normal_point, range(n))))
 
-
-POINTS = 200000
+POINTS: int = 200000
 
 if __name__ == "__main__":
     start_time = time.time()
