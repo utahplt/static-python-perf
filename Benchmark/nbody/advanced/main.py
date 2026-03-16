@@ -18,21 +18,11 @@ Contributed by Kevin Carson.
 Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 import __static__
-from __static__ import double, CheckedList, CheckedDict, box
+from __static__ import double, CheckedList, CheckedDict, box, int64
 import time
 __contact__ = "collinwinter@google.com (Collin Winter)"
 DEFAULT_ITERATIONS = 20000
-DEFAULT_REFERENCE = "sun"
-
-
-def combinations(l):
-    """Pure-Python implementation of itertools.combinations(l, 2)."""
-    result = []
-    for x in range(len(l) - 1):
-        ls = l[x + 1:]
-        for y in ls:
-            result.append((l[x], y))
-    return result
+DEFAULT_REFERENCE: str = "sun"
 
 
 PI = 3.14159265358979323
@@ -59,6 +49,15 @@ class Body:
     def __repr__(self):
         return f"Body({self.pos}, {self.v}, {box(self.mass)})"
 
+def combinations(l: CheckedList[Body]) -> list[tuple[Body,Body]]:
+    """Pure-Python implementation of itertools.combinations(l, 2)."""
+    result: list[tuple[Body,Body]] = []
+    y: Body
+    for x in range(len(l) - 1):
+        ls: CheckedList[Body] = l[x + 1:]
+        for y in ls:
+            result.append((l[x], y))
+    return result
 
 BODIES = CheckedDict[str, Body]({
     "sun": Body(Vector(0.0, 0.0, 0.0), Vector(0.0, 0.0, 0.0), double(SOLAR_MASS)),
@@ -100,11 +99,11 @@ BODIES = CheckedDict[str, Body]({
     ),
 })
 
-SYSTEM = CheckedList[Body](BODIES.values())
-PAIRS = combinations(SYSTEM)
+SYSTEM: CheckedList[Body] = CheckedList[Body](BODIES.values())
+PAIRS: list[tuple[Body,Body]] = combinations(SYSTEM)
 
 
-def advance(dt: double, n, bodies: CheckedList[Body] = SYSTEM, pairs=PAIRS):
+def advance(dt: double, n, bodies: CheckedList[Body] = SYSTEM, pairs: list[tuple[Body,Body]]=PAIRS):
     for i in range(n):  # noqa: B007
         b1: Body
         b2: Body
@@ -133,7 +132,7 @@ def advance(dt: double, n, bodies: CheckedList[Body] = SYSTEM, pairs=PAIRS):
             r.z += dt * v.z
 
 
-def report_energy(bodies=SYSTEM, pairs=PAIRS, e: double = 0.0) -> double:
+def report_energy(bodies: CheckedList[Body] = SYSTEM, pairs: list[tuple[Body,Body]] = PAIRS, e: double = 0.0) -> double:
     b1: Body
     b2: Body
     body: Body
@@ -150,7 +149,7 @@ def report_energy(bodies=SYSTEM, pairs=PAIRS, e: double = 0.0) -> double:
     return e
 
 
-def offset_momentum(ref: Body, bodies, px: double = 0.0, py: double = 0.0, pz: double = 0.0):
+def offset_momentum(ref: Body, bodies: CheckedList[Body], px: double = 0.0, py: double = 0.0, pz: double = 0.0):
     body: Body
     for body in bodies:  # noqa: B007
         v: Vector = body.v
@@ -166,7 +165,7 @@ def offset_momentum(ref: Body, bodies, px: double = 0.0, py: double = 0.0, pz: d
     v.z = pz / m
 
 
-def bench_nbody(loops, reference, iterations):
+def bench_nbody(loops: int, reference: str, iterations: int):
     # Set up global state
     offset_momentum(BODIES[reference], SYSTEM)
 
@@ -178,14 +177,14 @@ def bench_nbody(loops, reference, iterations):
 
 
 def run():
-    num_loops = 5
+    num_loops: int = 5
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
 
 if __name__ == "__main__":
     import sys
 
-    num_loops = 5
+    num_loops: int = 5
     #    if len(sys.argv) > 1:
     #        num_loops = int(sys.argv[1])
 
