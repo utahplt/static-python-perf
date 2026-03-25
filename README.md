@@ -6,7 +6,7 @@ We have a private CloudLab profile to install Cinder (commit [`1aeff3`](https://
 
 The profile runs the script here, which is public: <https://users.cs.utah.edu/~blg/sp-cloudlab.tar.gz>
 
-The CloudLab profile is named `sp-perf/sp-demo`. If you have access, the files are here: <https://www.cloudlab.us/show-profile.php?uuid=369bda87-5444-11ef-b3bd-e4434b2381fc>
+The CloudLab profile is named `sp-perf/sp-demo`. If you have access, the files are here: <https://www.cloudlab.us/p/sp-perf/sp-demo>
 
 
 ## Steps to Run Static Python
