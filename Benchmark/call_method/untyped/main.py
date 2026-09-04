@@ -10,6 +10,9 @@ bg:
 """
 import time
 
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+
 
 class Foo(object):
 
@@ -134,9 +137,12 @@ def test_calls():
     return
 
 
-if __name__ == "__main__":
+def main():
     start_time = time.time()
     test_calls()
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

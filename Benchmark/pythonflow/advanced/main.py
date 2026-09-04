@@ -6,8 +6,8 @@
 
 """
 import __static__
-from __static__ import int64, Array
-from typing import List
+from __static__ import CheckedList, clen
+from pathlib import Path
 import time
 class PythonFlow:
     # PythonFlow implement Ford-Fulkerson method to maximize flow on graph problems.
@@ -22,16 +22,17 @@ class PythonFlow:
     #
     # (do not forget to put last enter)
     def __init__(self) -> None:
+        self.options: CheckedList[CheckedList[int]] = []
         # graph G network
-        self.graph = []
+        self.graph: CheckedList[CheckedList[int]] = []
         # flow f network
-        self.flow = []
+        self.flow: CheckedList[CheckedList[int]] = []
         # residual f' network
-        self.residual = []
+        self.residual: CheckedList[CheckedList[int]] = []
         # total flow which can be retrieved
-        self.total_flow = 0
+        self.total_flow: int = 0
         # file name
-        self.file_name = "graph2.txt"
+        self.file_name: str = str(Path(__file__).resolve().parent / "graph2.txt")
 
         """  -- testing --
         n = 20
@@ -54,10 +55,10 @@ class PythonFlow:
 
     # input graph from specified file
     def load_file(self) -> None:
-        counter_row = 0
-        counter_col = 0
-        row = []
-        number = ""
+        counter_row: int = 0
+        counter_col: int = 0
+        row: CheckedList[int] = []
+        number: str = ""
         # iterate whole lines
         for line in open(self.file_name):
             # iterate each character
@@ -77,7 +78,7 @@ class PythonFlow:
                     # initializing flow network
 
     def init_flow(self) -> None:
-        number = []
+        number: CheckedList[int] = []
         for element in self.graph:
             for value in element:
                 number.append(0)
@@ -87,7 +88,7 @@ class PythonFlow:
             # update residual network value based on current flow
 
     def update_residual(self) -> None:
-        number = []
+        number: CheckedList[int] = []
         self.residual = []
         for x in range(len(self.graph)):
             for y in range(len(self.graph[x])):
@@ -103,29 +104,31 @@ class PythonFlow:
             self.update_residual()
             best_path = self.find_best_path()
 
-    def apply_path(self, path: List[int64]) -> None:
+    def apply_path(self, path: CheckedList[int]) -> None:
         cost = self.get_minimum_cost_flow(path)
         #		print "applying cost:",cost
         self.total_flow += cost
-        source = 0
+        source: int = 0
+        x: int
         for x in path:
             self.flow[source][x] += cost
             source = x
         self.update_residual()
 
-    def find_best_path(self) -> List[int]:
+    def find_best_path(self) -> CheckedList[int]:
         # best path is obtained by doing bfs to reveal all available paths and greedy to choose the best path
         # assume that there is no antiparallel edges
         # this method chooses the best path from options
         self.options = []
         self.get_path(0, [])
-        if len(self.options) > 0:
-            self.cost = []
-            min_index = -1
-            max_flow = 0
+        x: int
+        if clen(self.options) > 0:
+            self.cost: CheckedList[int] = []
+            min_index: int = -1
+            max_flow: int = 0
             # do such a greedy to get the maximum impact
             for x in range(len(self.options)):
-                min = self.get_minimum_cost_flow(self.options[x])
+                min: int = self.get_minimum_cost_flow(self.options[x])
                 if max_flow < min:
                     max_flow = min
                     min_index = x
@@ -136,19 +139,19 @@ class PythonFlow:
 
         # find the minimum cost flow from augmenting paths
 
-    def get_minimum_cost_flow(self, path: List[int64]) -> int64:
-        source = 0
-        min = 9999
+    def get_minimum_cost_flow(self, path: CheckedList[int]) -> int:
+        source: int = 0
+        min: int = 9999
         for x in path:
             if min > self.residual[source][x]:
                 min = self.residual[source][x]
             source = x
         return min
 
-    # get list of available paths from particular vertex
-    def get_path(self, vertex: int64, paths: List[int64]) -> None:
-        options = self.get_options(vertex)
-        sink_index = len(self.graph[0]) - 1
+    # get CheckedList of available paths from particular vertex
+    def get_path(self, vertex: int, paths: CheckedList[int]) -> None:
+        options: CheckedList[int] = self.get_options(vertex)
+        sink_index: int = len(self.graph[0]) - 1
         if vertex == sink_index and len(options) == 0:
             self.options.append(paths)
         else:
@@ -158,7 +161,7 @@ class PythonFlow:
             for x in options:
                 if x not in paths:
                     # generate new path
-                    new_path = []
+                    new_path: CheckedList[int] = []
                     for y in paths:
                         new_path.append(y)
                     new_path.append(x)
@@ -168,9 +171,9 @@ class PythonFlow:
 
                 # permute available vertices to generate path
 
-    def get_options(self, initial_vertex: int64) -> List[int64]:
-        retval = []
-        index = 0
+    def get_options(self, initial_vertex: int) -> CheckedList[int]:
+        retval: CheckedList[int] = []
+        index: int = 0
         for x in self.graph[initial_vertex]:
             if index != initial_vertex and self.residual[initial_vertex][index] != 0:
                 retval.append(index)
@@ -178,16 +181,19 @@ class PythonFlow:
         return retval
 
     # print graph
-    def print_graph(self, graph: List[List[int64]]) -> None:
+    def print_graph(self, graph: CheckedList[CheckedList[int]]) -> None:
         for x in range(len(graph)):
             print(graph[x])
 
+def main():
+    # # example of usage
+    flow = PythonFlow()
 
-# # example of usage
-flow = PythonFlow()
+    startTime = time.time()
+    flow.main_algorithm()
+    endTime = time.time()
+    runtime = endTime - startTime
+    print(runtime)
 
-startTime = time.time()
-flow.main_algorithm()
-endTime = time.time()
-runtime = endTime - startTime
-print(runtime)
+if __name__ == "__main__":
+    main()

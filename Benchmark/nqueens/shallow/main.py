@@ -5,8 +5,12 @@
 """
 from __future__ import annotations
 import __static__
-from typing import Generator, Tuple, Iterator, List
+from typing import Iterator, List
+import sys
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 # Pure-Python implementation of itertools.permutations().
 def permutations(iterable: Iterator[int], r: int = -1) -> Iterator[List[int]]:
@@ -60,22 +64,23 @@ def bench_n_queens(queen_count: int) -> List[List[int]]:
     return list(n_queens(queen_count))
 
 
-if __name__ == "__main__":
-    import sys
-
+def main():
     num_iterations = 1
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
 
-    queen_count = 8
+    queen_count: int = 8
     startTime = time.time()
 
     for _ in range(num_iterations):
-        res = bench_n_queens(queen_count) ## main call?
+        res: list = bench_n_queens(queen_count) ## main call?
 
 
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()
 
         # assert len(res) == 92

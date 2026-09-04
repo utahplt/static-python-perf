@@ -55,10 +55,13 @@ def calc_ndigits(n: int) -> List[int]:
     return pi_digits(n)
 
 
-if __name__ == "__main__":
+def main():
 
     startTime = time.time()
     calc_ndigits(NDIGITS)
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

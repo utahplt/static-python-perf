@@ -47,14 +47,18 @@ Version History:
 """
 from __future__ import annotations
 import __static__
-from __static__ import cast, CheckedList
+from __static__ import CheckedList
 from typing import Final
+import sys
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 LOOPS: Final[int] = 50000
 
 
-__version__ = "1.2"
+__version__: str = "1.2"
 
 
 Ident1: Final[int] = 1
@@ -125,7 +129,7 @@ def Proc0(loops=LOOPS):
     local_PtrGlb.EnumComp = Ident3
     local_PtrGlb.IntComp = 40
     local_PtrGlb.StringComp = "DHRYSTONE PROGRAM, SOME STRING"
-    String1Loc = "DHRYSTONE PROGRAM, 1'ST STRING"
+    String1Loc: str = "DHRYSTONE PROGRAM, 1'ST STRING"
     Array2Glob[8][7] = 10
 
     for _i in range(loops):
@@ -299,8 +303,7 @@ def run() -> None:
     loops: int = LOOPS
     pystones(loops)
 
-if __name__ == "__main__":
-    import sys
+def main():
 
     num_iterations = 2
     if len(sys.argv) > 1:
@@ -315,3 +318,5 @@ if __name__ == "__main__":
     runtime = endTime - startTime
     print(runtime)
 
+if __name__ == "__main__":
+    main()

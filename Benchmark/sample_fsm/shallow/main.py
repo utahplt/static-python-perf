@@ -1,8 +1,8 @@
+import __static__
 from Population import Population
 from Utilities import relative_average
 from Other import build_random_population
 from typing import List, Tuple
-import __static__
 import time
 
 

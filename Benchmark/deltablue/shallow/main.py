@@ -20,11 +20,14 @@ the layout & logic from the original. (Ugh.)
 """
 from __future__ import annotations
 
-import __static__
 
+import __static__
 from __static__ import cast
 from typing import final
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 
 # The JS variant implements "OrderedCollection", which basically completely
@@ -71,7 +74,7 @@ class Strength(object):
         return s2
 
     def next_weaker(self) -> Strength:
-        strengths = {
+        strengths: dict = {
             0: self.__class__.WEAKEST,
             1: self.__class__.WEAK_DEFAULT,
             2: self.__class__.NORMAL,
@@ -101,12 +104,12 @@ class Constraint(object):
         self.strength = strength
 
     def add_constraint(self) -> None:
-        planner = get_planner()
+        planner: Planner = get_planner()
         self.add_to_graph()
         planner.incremental_add(self)
 
     def satisfy(self, mark: int) -> Constraint | None:
-        planner = get_planner()
+        planner: Planner = get_planner()
         self.choose_method(mark)
 
         if not self.is_satisfied():
@@ -131,7 +134,7 @@ class Constraint(object):
         return overridden
 
     def destroy_constraint(self) -> None:
-        planner = get_planner()
+        planner: Planner = get_planner()
         if self.is_satisfied():
             planner.incremental_remove(self)
         else:
@@ -281,8 +284,8 @@ class BinaryConstraint(Constraint):
         return self.v1
 
     def recalculate(self) -> None:
-        ihn = self.input()
-        out = self.output()
+        ihn: Variable = self.input()
+        out: Variable = self.output()
         out.walk_strength = Strength.weakest_of(
             self.strength, ihn.walk_strength)
         out.stay = ihn.stay
@@ -294,7 +297,7 @@ class BinaryConstraint(Constraint):
         self.direction = Direction.NONE
 
     def inputs_known(self, mark: int) -> bool:
-        i = self.input()
+        i: Variable = self.input()
         return i.mark == mark or i.stay or i.determined_by is None
 
     def remove_from_graph(self):
@@ -340,11 +343,11 @@ class ScaleConstraint(BinaryConstraint):
             self.v2.value = self.v1.value * self.scale.value + self.offset.value
         else:
             self.v1.value = (
-                                    self.v2.value - self.offset.value) / self.scale.value
+                                    self.v2.value - self.offset.value) // self.scale.value
 
     def recalculate(self) -> None:
-        ihn = self.input()
-        out = self.output()
+        ihn: Variable = self.input()
+        out: Variable = self.output()
         out.walk_strength = Strength.weakest_of(
             self.strength, ihn.walk_strength)
         out.stay = ihn.stay and self.scale.stay and self.offset.stay
@@ -398,7 +401,7 @@ class Planner(object):
         self.current_mark = 0
 
     def incremental_add(self, constraint: Constraint) -> None:
-        mark = self.new_mark()
+        mark: int = self.new_mark()
         overridden = constraint.satisfy(mark)
 
         while overridden is not None:
@@ -408,7 +411,7 @@ class Planner(object):
         out = constraint.output()
         constraint.mark_unsatisfied()
         constraint.remove_from_graph()
-        unsatisfied = self.remove_propagate_from(out)
+        unsatisfied: OrderedCollection = self.remove_propagate_from(out)
         strength = Strength.REQUIRED
         # Do-while, the Python way.
         repeat = True
@@ -428,9 +431,9 @@ class Planner(object):
         return self.current_mark
 
     def make_plan(self, sources: OrderedCollection) -> Plan:
-        mark = self.new_mark()
-        plan = Plan()
-        todo = sources
+        mark: int = self.new_mark()
+        plan: Plan = Plan()
+        todo: OrderedCollection = sources
 
         while len(todo):
             c = todo.pop(0)
@@ -443,9 +446,9 @@ class Planner(object):
         return plan
 
     def extract_plan_from_constraints(self, constraints: OrderedCollection) -> Plan:
-        sources = OrderedCollection()
+        sources: OrderedCollection = OrderedCollection()
 
-        x = len(constraints)
+        x: int = len(constraints)
         i = 0
         while i < x:
             c = constraints[i]
@@ -456,7 +459,7 @@ class Planner(object):
         return self.make_plan(sources)
 
     def add_propagate(self, c: Constraint, mark: int) -> bool:
-        todo = OrderedCollection()
+        todo: OrderedCollection = OrderedCollection()
         todo.append(c)
 
         while len(todo):
@@ -475,8 +478,8 @@ class Planner(object):
         out.determined_by = None
         out.walk_strength = Strength.WEAKEST
         out.stay = True
-        unsatisfied = OrderedCollection()
-        todo = OrderedCollection()
+        unsatisfied: OrderedCollection = OrderedCollection()
+        todo: OrderedCollection = OrderedCollection()
         todo.append(out)
 
         while len(todo):
@@ -508,7 +511,7 @@ class Planner(object):
         determining = v.determined_by
         cc = v.constraints
 
-        x = len(cc)
+        x: int = len(cc)
         i = 0
         while i < x:
             c = cc[i]
@@ -537,7 +540,7 @@ class Plan(object):
         return self.v[index]
 
     def execute(self) -> None:
-        x = len(self.v)
+        x: int = len(self.v)
         i = 0
         while i < x:
             c = self.v[i]
@@ -572,7 +575,7 @@ def chain_test(n: int) -> None:
     of course, very low. Typical situations lie somewhere between these
     two extremes.
     """
-    planner = recreate_planner()
+    planner: Planner = recreate_planner()
     prev: Variable | None = None
     first: Variable | None = None
     last: Variable | None = None
@@ -582,7 +585,7 @@ def chain_test(n: int) -> None:
     end = n + 1
     while i < n + 1:
         name = "v%s" % i
-        v = Variable(name)
+        v: Variable = Variable(name)
 
         if prev is not None:
             EqualityConstraint(prev, v, Strength.REQUIRED)
@@ -601,10 +604,10 @@ def chain_test(n: int) -> None:
     last = cast(Variable, last)
 
     StayConstraint(last, Strength.STRONG_DEFAULT)
-    edit = EditConstraint(first, Strength.PREFERRED)
-    edits = OrderedCollection()
+    edit: EditConstraint = EditConstraint(first, Strength.PREFERRED)
+    edits: OrderedCollection = OrderedCollection()
     edits.append(edit)
-    plan = planner.extract_plan_from_constraints(edits)
+    plan: Plan = planner.extract_plan_from_constraints(edits)
 
     i = 0
     while i < 100:
@@ -624,12 +627,12 @@ def projection_test(n: int) -> None:
     time is measured to change a variable on either side of the
     mapping and to change the scale and offset factors.
     """
-    planner = recreate_planner()
-    scale = Variable("scale", 10)
-    offset = Variable("offset", 1000)
+    planner: Planner = recreate_planner()
+    scale: Variable = Variable("scale", 10)
+    offset: Variable = Variable("offset", 1000)
     src: Variable | None = None
 
-    dests = OrderedCollection()
+    dests: OrderedCollection = OrderedCollection()
 
     i = 0
     dst = Variable("dst%s" % 0, 0)
@@ -671,12 +674,12 @@ def projection_test(n: int) -> None:
 
 
 def change(v: Variable, new_value: int) -> None:
-    planner = get_planner()
-    edit = EditConstraint(v, Strength.PREFERRED)
-    edits = OrderedCollection()
+    planner: Planner = get_planner()
+    edit: EditConstraint = EditConstraint(v, Strength.PREFERRED)
+    edits: OrderedCollection = OrderedCollection()
     edits.append(edit)
 
-    plan = planner.extract_plan_from_constraints(edits)
+    plan: Plan = planner.extract_plan_from_constraints(edits)
 
     i = 0
     while i < 10:
@@ -697,9 +700,9 @@ def delta_blue(n: int) -> None:
     projection_test(n)
 
 
-if __name__ == "__main__":
+def main():
 
-    n = 10000
+    n: int = 10000
     startTime = time.time()
     delta_blue(n)
 
@@ -707,3 +710,6 @@ if __name__ == "__main__":
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

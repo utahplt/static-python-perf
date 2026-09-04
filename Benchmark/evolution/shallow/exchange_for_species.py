@@ -1,9 +1,9 @@
 from __future__ import annotations
+import __static__
 from typing import List
 from cardplay import CardPlay
 from evolution.species import Species
 from evolution.player.player_state import PlayerState
-import __static__
 
 class ExchangeForSpecies(CardPlay):
     """

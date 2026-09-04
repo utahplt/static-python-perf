@@ -49,7 +49,7 @@ def print_score(score):
         print("%s player id: %s info: %s score: %s" % (i + 1, s[0], s[1], s[2]))
 
 
-if __name__ == "__main__":
+def main():
     start_time = time.time()
 
     if len(sys.argv) == 1:
@@ -60,3 +60,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

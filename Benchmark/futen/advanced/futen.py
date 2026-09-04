@@ -1,8 +1,8 @@
 #import sys
 #import argparse
+import __static__
 import os
 from paramiko_config import SSHConfig
-import __static__
 from typing import Dict, Tuple, List
 
 NO_PORT = "-1" #bg

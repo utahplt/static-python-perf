@@ -1,7 +1,7 @@
+import __static__
 from player import Player
 from dealer import Dealer
 from typing import List
-import __static__
 import time
 
 

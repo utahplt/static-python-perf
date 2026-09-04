@@ -11,6 +11,9 @@ bg:
 import time
 from math import sin, cos, sqrt
 
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+
 
 # @fields({'x': float, 'y': float, 'z': float})
 class Point(object):
@@ -43,7 +46,7 @@ def maximize(points):
     return next
 
 
-def benchmark(n: int) -> Point:
+def benchmark(n):
     points = [Point(i) for i in range(n)]
     for p in points:
         p.normalize()
@@ -52,7 +55,7 @@ def benchmark(n: int) -> Point:
 
 POINTS = 200000
 
-if __name__ == "__main__":
+def main():
     # t = Timer()
     # with t:
     start_time = time.time()
@@ -60,4 +63,7 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()
     # print("hello world")

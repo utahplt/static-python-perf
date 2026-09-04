@@ -13,13 +13,15 @@ based on a Java version:
 
 from __future__ import annotations
 
+import __static__
 import sys
 
-import __static__
 from __static__ import cast, cbool, int64, box, inline
 from typing import Final, Optional, List
-from typing import Optional
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 # Task IDs
 I_IDLE: Final[int] = 1
 I_WORK: Final[int] = 2
@@ -36,7 +38,7 @@ K_WORK: Final[int] = 1001
 
 BUFSIZE: Final[int] = 4
 
-BUFSIZE_RANGE = range(BUFSIZE)
+BUFSIZE_RANGE: range = range(BUFSIZE)
 
 
 class Packet(object):
@@ -153,7 +155,7 @@ class TaskState(object):
         return self.packet_pending and self.task_waiting and not self.task_holding
 
 
-tracing = False
+tracing: bool = False
 layout = 0
 
 
@@ -166,7 +168,7 @@ def trace(a):
     print(a, end="")
 
 
-TASKTABSIZE = 10
+TASKTABSIZE: int = 10
 
 
 class TaskWorkArea(object):
@@ -448,7 +450,7 @@ class Richards(object):
         return True
 
 
-if __name__ == "__main__":
+def main():
     num_iterations = 8
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
@@ -458,3 +460,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

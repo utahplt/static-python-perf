@@ -1,7 +1,7 @@
+import __static__
 import os
 from operator import itemgetter
 from union_find import UnionFind
-import __static__
 from typing import List, Dict, Tuple
 import time
 

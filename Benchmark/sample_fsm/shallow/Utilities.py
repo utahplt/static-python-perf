@@ -1,5 +1,5 @@
-import os, itertools
 import __static__
+import os, itertools
 from typing import List
 
 fname = "util-random-numbers.txt"

@@ -1,9 +1,9 @@
+import __static__
 import central_tendency
 import support
 import pstat  # required 3rd party module
 import copy  # required python modules
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
-import __static__
 from typing import List
 
 

@@ -4,6 +4,10 @@
 __author__ = "collinwinter@google.com (Collin Winter)"
 
 import time
+import sys
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 
 # Pure-Python implementation of itertools.permutations().
@@ -63,9 +67,7 @@ def run():
     bench_n_queens(queen_count)
 
 
-if __name__ == "__main__":
-    import sys
-
+def main():
     num_iterations = 1
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
@@ -80,3 +82,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

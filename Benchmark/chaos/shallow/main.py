@@ -1,9 +1,12 @@
 from __future__ import annotations
+import __static__
 import random
 import math
 from typing import List, Tuple
-import __static__
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 #   Copyright (C) 2005 Carl Friedrich Bolz
 
 """create chaosgame-like fractals
@@ -30,7 +33,7 @@ bg:
 """
 
 random.seed(1234)
-ITERATIONS = 1
+ITERATIONS: int = 1
 
 
 class GVector:
@@ -50,20 +53,20 @@ class GVector:
     def __add__(self, other: GVector) -> GVector:
         if not isinstance(other, GVector):
             raise ValueError("Can't add GVector to " + str(type(other)))
-        v = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
+        v: GVector = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
         return v
 
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
     def __mul__(self, other: float) -> GVector:
-        v = GVector(self.x * other, self.y * other, self.z * other)
+        v: GVector = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
     def linear_combination(self, other: GVector, l1: float, l2: float) -> GVector:
-        v = GVector(self.x * l1 + other.x * l2,
+        v: GVector = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
                     self.z * l1 + other.z * l2)
         return v
@@ -99,7 +102,7 @@ class Spline:
 
     def __call__(self, u: float) -> GVector:
         """Calculates a point of the B-Spline using de Boors Algorithm"""
-        dom = self.GetDomain()
+        dom: tuple = self.GetDomain()
         if u < dom[0] or u > dom[1]:
             raise ValueError("Function value not in domain")
         if u == dom[0]:
@@ -107,14 +110,14 @@ class Spline:
         if u == dom[1]:
             return self.points[-1]
         I = None  # bg: inlined self.GetIndex(u)
-        GetIndexdom = self.GetDomain()
+        GetIndexdom: tuple = self.GetDomain()
         for ii in range(self.degree - 1, len(self.knots) - self.degree):
             if u >= self.knots[ii] and u < self.knots[ii + 1]:
                 I = ii
                 break
         else:
             I = GetIndexdom[1] - 1
-        d = [self.points[I - self.degree + 1 + ii] for ii in range(self.degree + 1)]
+        d: list = [self.points[I - self.degree + 1 + ii] for ii in range(self.degree + 1)]
         U = self.knots
         for ik in range(1, self.degree + 1):
             for ii in range(I - self.degree + ik + 1, I + 2):
@@ -140,7 +143,7 @@ class Chaosgame:
         self.num_trafos = []
         maxlength = thickness * self.width / self.height
         for spl in splines:
-            length = 0
+            length: int = 0
             curr = spl(0)
             for i in range(1, 1000):
                 last = curr
@@ -150,11 +153,11 @@ class Chaosgame:
             self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
         # def create_image_chaos(self, w: int, h: int, n: int) -> None:
-        im = [[1] * h for i in range(w)]
+        im: list = [[1] * h for i in range(w)]
         point = GVector((self.maxx + self.minx) / 2,
                         (self.maxy + self.miny) / 2,
                         0)
-        colored = 0
+        colored: int = 0
         for _ in range(n):
             for i in range(5000):
                 point = self.transform_point(point)
@@ -172,7 +175,7 @@ class Chaosgame:
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
         rrr = random.randrange(int(self.num_total) + 1)
-        lll = 0
+        lll: int = 0
         for iii in range(len(self.num_trafos)):
             if rrr >= lll and rrr < lll + self.num_trafos[iii]:
                 trafo = iii, random.randrange(self.num_trafos[iii])
@@ -239,8 +242,8 @@ class Chaosgame:
     #    return
 
 
-if __name__ == "__main__":
-    splines = [
+def main():
+    splines: list = [
         Spline([
             GVector(1.597350, 3.304460, 0.000000),
             GVector(1.575810, 4.123260, 0.000000),
@@ -264,8 +267,11 @@ if __name__ == "__main__":
             3, [0, 0, 0, 1, 1, 1])
     ]
     startTime = time.time()
-    c = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
+    c: Chaosgame = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()
 

@@ -15,6 +15,9 @@ from __static__ import cast
 import sys
 from typing import Final, List
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 # Task IDs
 I_IDLE: Final[int] = 1
 I_WORK: Final[int] = 2
@@ -233,7 +236,7 @@ class Task(TaskState):
         return self.link
 
     def release(self, i: int) -> Task:
-        t = self.findtcb(i)
+        t: Task = self.findtcb(i)
         t.task_holding = False
         if t.priority > self.priority:
             return t
@@ -241,7 +244,7 @@ class Task(TaskState):
             return self
 
     def qpkt(self, pkt: Packet) -> Task:
-        t = self.findtcb(pkt.ident)
+        t: Task = self.findtcb(pkt.ident)
         taskWorkArea.qpktCount += 1
         pkt.link = None
         pkt.ident = self.ident
@@ -292,7 +295,7 @@ class HandlerTask(Task):
         work = h.work_in
         if work is None:
             return self.waitTask()
-        count = work.datum
+        count: int = work.datum
         if count >= BUFSIZE:
             h.work_in = work.link
             return self.qpkt(work)
@@ -420,7 +423,7 @@ class Richards(object):
         return True
 
 
-if __name__ == "__main__":
+def main():
     num_iterations = 8
     if len(sys.argv) > 1:
         num_iterations = int(sys.argv[1])
@@ -430,3 +433,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

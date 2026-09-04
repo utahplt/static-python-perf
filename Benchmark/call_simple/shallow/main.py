@@ -13,6 +13,9 @@ bg:
 
 import __static__
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 def foo(a: int, b: int, c: int, d: int) -> None:
     # 20 calls
     bar(a, b, c)
@@ -138,9 +141,12 @@ def test_calls() -> None:
     return
 
 
-if __name__ == "__main__":
+def main():
     startTime = time.time()
     test_calls() # call
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

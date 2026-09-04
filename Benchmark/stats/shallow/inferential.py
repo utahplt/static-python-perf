@@ -1,3 +1,4 @@
+import __static__
 import pstat
 import central_tendency
 import probability
@@ -5,7 +6,6 @@ import variability
 import support
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 from typing import List
-import __static__
 
 
 ####################################

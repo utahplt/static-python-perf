@@ -1,5 +1,5 @@
-from typing import List, Tuple
 import __static__
+from typing import List, Tuple
 
 
 class Player:

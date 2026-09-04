@@ -1,8 +1,12 @@
 from __future__ import annotations
+import __static__
 from math import sin, cos, sqrt
 from __static__ import CheckedList, inline
 from typing import final
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 """
 bg:
 - add `ITERATIONS` constant
@@ -15,13 +19,13 @@ bg:
 @final
 class Point(object):
 
-    def __init__(self: Point, i: float) -> None:
+    def __init__(self, i: float) -> None:
         x: float = sin(i)  # does this not have to be a float?
         self.x: float = x
         self.y: float = cos(i) * 3
         self.z: float = (x * x) / 2
 
-    def normalize(self: Point) -> None:
+    def normalize(self) -> None:
         x: float = self.x
         y: float = self.y
         z: float = self.z
@@ -30,7 +34,7 @@ class Point(object):
         self.y /= norm
         self.z /= norm
 
-    def maximize(self: Point, other: Point) -> Point:
+    def maximize(self, other: Point) -> Point:
         self.x = self.x if self.x > other.x else other.x
         self.y = self.y if self.y > other.y else other.y
         self.z = self.z if self.z > other.z else other.z
@@ -43,7 +47,7 @@ def maximize_all(points: CheckedList[Point]) -> Point:
     return next
 
 def normal_point(i: int) -> Point:
-    p = Point(float(i))
+    p: Point = Point(float(i))
     p.normalize()
     return p
 
@@ -53,7 +57,7 @@ def benchmark(n: int) -> Point:
 
 POINTS: int = 200000
 
-if __name__ == "__main__":
+def main():
     start_time = time.time()
 
     benchmark(POINTS)
@@ -61,3 +65,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()
