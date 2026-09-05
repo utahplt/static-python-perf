@@ -41,7 +41,11 @@ Version History:
                 making the benchmark an integer benchmark again.
 
 """
+import sys
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 LOOPS = 50000
 
@@ -265,8 +269,7 @@ def run():
     pystones(loops)
 
 
-if __name__ == "__main__":
-    import sys
+def main():
 
     num_iterations = 2
     if len(sys.argv) > 1:
@@ -277,3 +280,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

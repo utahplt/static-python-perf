@@ -1,8 +1,8 @@
+import __static__
 from random import randrange, shuffle, random, seed
 from copy import deepcopy
 from player import Player
 from typing import List, Tuple
-import __static__
 
 min_val = 2
 max_val = 7

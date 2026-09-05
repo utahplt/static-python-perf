@@ -1,6 +1,6 @@
+import __static__
 from iri2uri import Iri2Uri
 import os
-import __static__
 import time
 def main() -> None:
     iri2uri = Iri2Uri().iri2uri

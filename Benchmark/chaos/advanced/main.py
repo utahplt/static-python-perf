@@ -22,13 +22,17 @@ bg:
   - inlined GetKnots
 """
 from __future__ import annotations
-from typing import final, List, Iterator
+import __static__
+from typing import List
 from __static__ import CheckedList
 import random
 import time
 random.seed(1234)
-ITERATIONS = 1
+ITERATIONS: int = 1
 import math
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 class GVector(object):
     def __init__(self, x: float, y: float, z: float) -> None:
@@ -47,20 +51,20 @@ class GVector(object):
     def __add__(self, other: GVector) -> GVector:
         if not isinstance(other, GVector):
             raise ValueError("Can't add GVector to " + str(type(other)))
-        v = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
+        v: GVector = GVector(self.x + other.x, self.y + other.y, self.z + other.z)
         return v
 
     def __sub__(self, other: GVector) -> GVector:
         return self + other * -1
 
     def __mul__(self, other: float) -> GVector:
-        v = GVector(self.x * other, self.y * other, self.z * other)
+        v: GVector = GVector(self.x * other, self.y * other, self.z * other)
         return v
 
     __rmul__ = __mul__
 
     def linear_combination(self, other: GVector, l1: float, l2: float) -> GVector:
-        v = GVector(self.x * l1 + other.x * l2,
+        v: GVector = GVector(self.x * l1 + other.x * l2,
                     self.y * l1 + other.y * l2,
                     self.z * l1 + other.z * l2)
         return v
@@ -105,7 +109,7 @@ class Spline(object):
                 break
         else:
             I = GetIndexdom[1] - 1
-        d = [self.points[I - self.degree + 1 + ii]
+        d: list = [self.points[I - self.degree + 1 + ii]
              for ii in range(self.degree + 1)]
         U = self.knots
         for ik in range(1, self.degree + 1):
@@ -131,7 +135,7 @@ class Chaosgame(object):
         self.num_trafos = []
         maxlength = thickness * self.width / self.height
         for spl in splines:
-            length = 0
+            length: int = 0
             curr = spl(0)
             for i in range(1, 1000):
                 last = curr
@@ -140,11 +144,11 @@ class Chaosgame(object):
                 length += curr.dist(last)
             self.num_trafos.append(max(1, int(length / maxlength * 1.5)))
         self.num_total = sum(self.num_trafos)
-        im = [[1] * h for i in range(w)]
+        im: list = [[1] * h for i in range(w)]
         point = GVector((self.maxx + self.minx) / 2,
                         (self.maxy + self.miny) / 2,
                         0)
-        colored = 0
+        colored: int = 0
         for _ in range(n):
             for i in range(5000):
                 point = self.transform_point(point)
@@ -163,7 +167,7 @@ class Chaosgame(object):
         x = (point.x - self.minx) / self.width
         y = (point.y - self.miny) / self.height
         rrr = random.randrange(int(self.num_total) + 1)
-        lll = 0
+        lll: int = 0
         for iii in range(len(self.num_trafos)):
             if rrr >= lll and rrr < lll + self.num_trafos[iii]:
                 trafo = iii, random.randrange(self.num_trafos[iii])
@@ -199,8 +203,8 @@ class Chaosgame(object):
             basepoint.y = self.miny
         return basepoint
 
-if __name__ == "__main__":
-    splines = [
+def main():
+    splines: list = [
         Spline([
             GVector(1.597350, 3.304460, 0.000000),
             GVector(1.575810, 4.123260, 0.000000),
@@ -224,7 +228,10 @@ if __name__ == "__main__":
             3, [0, 0, 0, 1, 1, 1])
     ]
     startTime  = time.time()
-    c = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
+    c: Chaosgame = Chaosgame(splines, 0.25, 1000, 1200, ITERATIONS)
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

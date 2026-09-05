@@ -2,7 +2,6 @@
 Calculating (some of) the digits of pi. This stresses big integer
 arithmetic.
 """
-import sys
 import time
 
 """
@@ -54,10 +53,13 @@ def calc_ndigits(n):
     return pi_digits(n)
 
 
-if __name__ == "__main__":
+def main():
     # print (calc_ndigits(NDIGITS)) testing here
     start_time = time.time()
     calc_ndigits(NDIGITS)
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

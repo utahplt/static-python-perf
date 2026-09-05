@@ -368,7 +368,7 @@ ITERATIONS = 2
 #      242536 ZobristHash
 # (obtained by adding a `print` at the top of each method call, counting the prints from 1 run)
 
-if __name__ == "__main__":
+def main():
 
     start_time  = time.time()
     for i in range(ITERATIONS):
@@ -380,3 +380,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

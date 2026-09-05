@@ -1,7 +1,7 @@
 from __future__ import annotations
+import __static__
 import random
 from typing import List
-import __static__
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 
 """

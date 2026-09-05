@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates. (http://www.facebook.com)
+import __static__
 """
 The Computer Language Benchmarks Game
 http://benchmarksgame.alioth.debian.org/
 Contributed by Sokolov Yura, modified by Tupteq.
 """
 import time
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 DEFAULT_ARG = 9
 
@@ -55,7 +59,7 @@ def fannkuch(n):
 
 ### SECTION SEPARATOR ###
 
-if __name__ == "__main__":
+def main():
     import sys
 
     num_iterations = 1
@@ -69,3 +73,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime / num_iterations)
+
+if __name__ == "__main__":
+    main()

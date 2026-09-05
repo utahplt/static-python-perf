@@ -12,9 +12,9 @@ Converts an IRI to a URI.
 # __history__ = """
 # """
 
+import __static__
 from typing import List, Tuple
 import urllib.parse
-import __static__
 
 
 # Convert an IRI to a URI following the rules in RFC 3987

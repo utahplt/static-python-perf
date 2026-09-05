@@ -1,7 +1,7 @@
+import __static__
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 import central_tendency
 import variability
-import __static__
 from typing import List
 
 

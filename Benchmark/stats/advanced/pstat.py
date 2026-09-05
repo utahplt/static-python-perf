@@ -27,6 +27,7 @@ Dyn = 1
 Int = 1
 Float = 1
 """
+import __static__
 """
 pstat.py module
 
@@ -113,7 +114,6 @@ functions/methods.  Their inclusion here is for function name consistency.
 
 import copy
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
-import __static__
 from typing import List
 
 __version__ = 0.4

@@ -20,6 +20,9 @@ the layout & logic from the original. (Ugh.)
 """
 import time
 
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+
 
 # The JS variant implements "OrderedCollection", which basically completely
 # overlaps with ``list``. So we'll cheat. :D
@@ -329,7 +332,7 @@ class ScaleConstraint(BinaryConstraint):
             self.v2.value = self.v1.value * self.scale.value + self.offset.value
         else:
             self.v1.value = (
-                                    self.v2.value - self.offset.value) / self.scale.value
+                                    self.v2.value - self.offset.value) // self.scale.value
 
     def recalculate(self):
         ihn = self.input()
@@ -677,11 +680,14 @@ def delta_blue(n):
     projection_test(n)
 
 
-if __name__ == "__main__":
+def main():
     n = 10000
     start_time = time.time()
     delta_blue(n)
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()
     # print(n) #test

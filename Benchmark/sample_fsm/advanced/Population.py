@@ -1,10 +1,10 @@
 from __future__ import annotations
+import __static__
 from Utilities import choose_randomly
 from Automata import Automaton
 from copy import copy
 from typing import List
 import os, itertools
-import __static__
 
 fname = "population-random-numbers.txt"
 # TODO: Cannot type variable in retic

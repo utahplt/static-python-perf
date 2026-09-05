@@ -1,7 +1,7 @@
 from __future__ import annotations
+import __static__
 from typing import Tuple
 from sha2_64 import sha2_64
-import __static__
 
 
 class SHA512(sha2_64):

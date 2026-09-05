@@ -1,6 +1,6 @@
+import __static__
 from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 from typing import List
-import __static__
 ####################################
 #######  TRIMMING FUNCTIONS  #######
 ####################################

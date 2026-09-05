@@ -1,5 +1,5 @@
-from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 import __static__
+from typed_math import pow, sqrt, exp, abs, fabs, log, round, pi
 
 
 ####################################

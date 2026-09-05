@@ -19,8 +19,8 @@ bg:
 - increased size of board to `20 x 40`
 - time `get_puzzle()`, `get_footprints()` `get_senh()` calls
 """
-from typing import List, Dict, Set
 import __static__
+from typing import List, Dict, Set
 from bisect import bisect
 import time
 w: int = 20
@@ -132,7 +132,7 @@ def solve(n: int, i_min: int, free: List[int], curr_board: List[int], pieces_lef
 SOLVE_ARG = 6000
 
 
-if __name__ == "__main__":
+def main():
     board, cti, pieces = get_puzzle()
     fps = get_footprints(board, cti, pieces)
     se_nh = get_senh(board, cti)
@@ -148,3 +148,6 @@ if __name__ == "__main__":
     endTime = time.time()
     runtime = endTime - start
     print(runtime)
+
+if __name__ == "__main__":
+    main()

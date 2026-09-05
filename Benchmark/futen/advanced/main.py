@@ -1,6 +1,6 @@
+import __static__
 from os import path
 from futen import get_netlocs, execute
-import __static__
 import time
 def main(n: int) -> None:
     testfile = '../ssh.config.dat'

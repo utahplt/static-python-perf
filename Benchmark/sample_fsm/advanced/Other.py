@@ -1,7 +1,7 @@
+import __static__
 from Population import Population
 from Automata import Automaton
 from random import randrange
-import __static__
 import os, itertools
 
 fname = "automata-random-numbers.txt"

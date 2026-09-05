@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates. (http://www.facebook.com)
+import __static__
 """
 N-body benchmark from the Computer Language Benchmarks Game.
 
@@ -15,11 +16,13 @@ http://benchmarksgame.alioth.debian.org/u64q/program.php?test=nbody&lang=python3
 Contributed by Kevin Carson.
 Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
-import __static__
 
 from typing import List, Mapping, Tuple, TypeVar
 import time
-__contact__ = "collinwinter@google.com (Collin Winter)"
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+__contact__: str = "collinwinter@google.com (Collin Winter)"
 DEFAULT_ITERATIONS: int = 20000
 DEFAULT_REFERENCE: str = "sun"
 
@@ -133,7 +136,7 @@ def bench_nbody(loops: int, reference: str, iterations: int):
     # Set up global state
     offset_momentum(BODIES[reference])
 
-    range_it = range(loops)
+    range_it: range = range(loops)
     for _ in range_it:
         report_energy()
         advance(0.01, iterations)
@@ -141,14 +144,14 @@ def bench_nbody(loops: int, reference: str, iterations: int):
 
 
 def run():
-    num_loops = 5
+    num_loops: int = 5
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
 
-if __name__ == "__main__":
+def main():
     import sys
 
-    num_loops = 5
+    num_loops: int = 5
     #    if len(sys.argv) > 1:
     #        num_loops = int(sys.argv[1])
 
@@ -157,3 +160,6 @@ if __name__ == "__main__":
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

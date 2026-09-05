@@ -18,16 +18,19 @@ Contributed by Kevin Carson.
 Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 import __static__
-from __static__ import double, CheckedList, CheckedDict, box, int64
+from __static__ import double, CheckedList, CheckedDict, box
 import time
-__contact__ = "collinwinter@google.com (Collin Winter)"
-DEFAULT_ITERATIONS = 20000
+
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+__contact__: str = "collinwinter@google.com (Collin Winter)"
+DEFAULT_ITERATIONS: int = 20000
 DEFAULT_REFERENCE: str = "sun"
 
 
-PI = 3.14159265358979323
+PI: float = 3.14159265358979323
 SOLAR_MASS = 4 * PI * PI
-DAYS_PER_YEAR = 365.24
+DAYS_PER_YEAR: float = 365.24
 
 
 class Vector:
@@ -108,16 +111,16 @@ def advance(dt: double, n, bodies: CheckedList[Body] = SYSTEM, pairs: list[tuple
         b1: Body
         b2: Body
         for (b1, b2) in pairs:
-            pos1 = b1.pos
-            pos2 = b2.pos
+            pos1: Vector = b1.pos
+            pos2: Vector = b2.pos
             dx: double = pos1.x - pos2.x
             dy: double = pos1.y - pos2.y
             dz: double = pos1.z - pos2.z
-            mag = dt * ((dx * dx + dy * dy + dz * dz) ** (double(-1.5)))
-            b1m = b1.mass * mag
-            b2m = b2.mass * mag
-            v1 = b1.v
-            v2 = b2.v
+            mag: double = dt * ((dx * dx + dy * dy + dz * dz) ** (double(-1.5)))
+            b1m: double = b1.mass * mag
+            b2m: double = b2.mass * mag
+            v1: Vector = b1.v
+            v2: Vector = b2.v
             v1.x -= dx * b2m
             v1.y -= dy * b2m
             v1.z -= dz * b2m
@@ -125,8 +128,8 @@ def advance(dt: double, n, bodies: CheckedList[Body] = SYSTEM, pairs: list[tuple
             v2.y += dy * b1m
             v2.z += dz * b1m
         for body in bodies:  # noqa: B007
-            r = body.pos
-            v = body.v
+            r: Vector = body.pos
+            v: Vector = body.v
             r.x += dt * v.x
             r.y += dt * v.y
             r.z += dt * v.z
@@ -137,14 +140,14 @@ def report_energy(bodies: CheckedList[Body] = SYSTEM, pairs: list[tuple[Body,Bod
     b2: Body
     body: Body
     for (b1, b2) in pairs:  # noqa: B007
-        pos1 = b1.pos
-        pos2 = b2.pos
-        dx = pos1.x - pos2.x
-        dy = pos1.y - pos2.y
-        dz = pos1.z - pos2.z
+        pos1: Vector = b1.pos
+        pos2: Vector = b2.pos
+        dx: double = pos1.x - pos2.x
+        dy: double = pos1.y - pos2.y
+        dz: double = pos1.z - pos2.z
         e -= (b1.mass * b2.mass) / ((dx * dx + dy * dy + dz * dz) ** 0.5)
-    for body in bodies:
-        v = body.v
+    for body in bodies:  # noqa: B007
+        v: Vector = body.v
         e += body.mass * (v.x * v.x + v.y * v.y + v.z * v.z) / 2.0
     return e
 
@@ -169,7 +172,7 @@ def bench_nbody(loops: int, reference: str, iterations: int):
     # Set up global state
     offset_momentum(BODIES[reference], SYSTEM)
 
-    range_it = range(loops)
+    range_it: range = range(loops)
     for _ in range_it:
         report_energy(SYSTEM, PAIRS)
         advance(0.01, iterations, SYSTEM, PAIRS)
@@ -181,13 +184,8 @@ def run():
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
 
-if __name__ == "__main__":
-    import sys
-
+def main():
     num_loops: int = 5
-    #    if len(sys.argv) > 1:
-    #        num_loops = int(sys.argv[1])
-
     startTime = time.time()
 
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
@@ -195,3 +193,6 @@ if __name__ == "__main__":
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()

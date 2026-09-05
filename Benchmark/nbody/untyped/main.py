@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates. (http://www.facebook.com)
+import __static__
 """
 N-body benchmark from the Computer Language Benchmarks Game.
 
@@ -18,6 +19,8 @@ Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 __contact__ = "collinwinter@google.com (Collin Winter)"
 
 import time
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
 
 DEFAULT_ITERATIONS = 20000
 DEFAULT_REFERENCE = "sun"
@@ -141,7 +144,7 @@ def run():
     bench_nbody(num_loops, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
 
 
-if __name__ == "__main__":
+def main():
     import sys
 
     num_loops = 5
@@ -153,3 +156,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

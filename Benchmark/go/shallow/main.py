@@ -1,10 +1,10 @@
 from __future__ import annotations
+import __static__
 import random
 import math
 from square import Square
 from constants import SIZE, GAMES, KOMI, EMPTY, WHITE, BLACK, SHOW, PASS, MAXMOVES, TIMESTAMP, MOVES
 from typing import List, Set
-import __static__
 import time
 
 
@@ -382,7 +382,7 @@ ITERATIONS = 2
 #      242536 ZobristHash
 # (obtained by adding a `print` at the top of each method call, counting the prints from 1 run)
 
-if __name__ == "__main__":
+def main():
 
     start_time = time.time()
 
@@ -395,3 +395,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

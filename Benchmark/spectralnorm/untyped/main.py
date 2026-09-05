@@ -63,20 +63,24 @@ def part_At_times_u(i_u):
 
 DEFAULT_N = 130
 
-if __name__ == "__main__":
+def main():
     u = [1] * DEFAULT_N
+    start_time = time.time()
+    for dummy in range(10):
+        v = eval_AtA_times_u(u)
+        u = eval_AtA_times_u(v)
 
-start_time = time.time()
-for dummy in range(10):
-    v = eval_AtA_times_u(u)
-    u = eval_AtA_times_u(v)
+    vBv = vv = 0
 
-vBv = vv = 0
+    for ue, ve in zip(u, v):
+        vBv += ue * ve
+        vv += ve * ve
 
-for ue, ve in zip(u, v):
-    vBv += ue * ve
-    vv += ve * ve
+    end_time = time.time()
+    run_time = end_time - start_time
+    print(run_time)
 
-end_time = time.time()
-run_time = end_time - start_time
-print(run_time)
+if __name__ == "__main__":
+    main()
+
+

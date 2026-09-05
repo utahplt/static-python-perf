@@ -29,6 +29,9 @@ random.seed(1234)
 ITERATIONS = 1
 import math
 
+import cinderx.jit
+cinderx.jit.compile_after_n_calls(0)
+
 
 class GVector(object):
     def __init__(self, x, y, z):
@@ -268,7 +271,7 @@ class Chaosgame(object):
     #    return
 
 
-if __name__ == "__main__":
+def main():
     splines = [
         Spline([
             GVector(1.597350, 3.304460, 0.000000),
@@ -298,5 +301,8 @@ if __name__ == "__main__":
     # print(c) this causes type error, so i figuted to comment it out to get runtime and then use it for tests
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()
 
 

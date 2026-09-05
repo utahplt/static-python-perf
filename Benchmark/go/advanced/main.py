@@ -1,8 +1,9 @@
 from __future__ import annotations
+import __static__
 import random
 import math
-from typing import final, Set
-from __static__ import int64, Array, CheckedList, cbool, box
+from typing import final, Set, Generator
+from __static__ import int64, Array, CheckedList, cbool, box, clen, crange
 import time
 
 #SIZE: int64 = 9
@@ -279,8 +280,11 @@ class Board:
                (empties or weak_opps or (strong_neighs and (strong_opps or weak_neighs)))
 
     #def useful_moves(self:Board)->List(int):
-    def useful_moves(self) -> CheckedList[int]:
-        return CheckedList[int]([pos for pos in self.emptyset.empties if self.useful(pos)])
+    def useful_moves(self) -> Generator[int]:
+        pos: int64
+        for pos in self.emptyset.empties:
+            if self.useful(pos):
+                yield box(pos)
 
     #def replay(self:Board, history:List(int))->Void:
     def replay(self, history: Array[int64]) -> None:
@@ -376,7 +380,7 @@ class UCTNode:
             child = node.pos_child[pos]
             if not child:
                 child = node.pos_child[pos] = UCTNode()
-                child.unexplored = board.useful_moves()
+                child.unexplored = CheckedList[int](board.useful_moves())
                 child.pos = pos
                 child.parent = node
                 path.append(child)
@@ -467,13 +471,13 @@ def computer_move(board: Board) -> int:
     if pos == -1:
         return -1 #bg#PASS
     tree = UCTNode()
-    tree.unexplored = board.useful_moves()
+    tree.unexplored = CheckedList[int](board.useful_moves())
     nboard = Board()
-    num_hist = len(board.history)
-    ahist = Array[int64](num_hist)
+    num_hist: int = len(board.history)
+    ahist: Array[int64] = Array[int64](num_hist)
     for ii in range(num_hist):
       ahist[ii] = int64(board.history[ii])
-    for game in range(GAMES):
+    for _ in range(GAMES):
         node = tree
         nboard.reset()
         nboard.replay(ahist)
@@ -493,7 +497,7 @@ ITERATIONS = 2
 #      242536 ZobristHash
 # (obtained by adding a `print` at the top of each method call, counting the prints from 1 run)
 
-if __name__ == "__main__":
+def main():
     start_time = time.time()
 
     for i in range(ITERATIONS):
@@ -504,3 +508,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

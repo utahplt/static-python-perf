@@ -4,6 +4,7 @@
 Configuration file (aka ``ssh_config``) support.
 """
 
+import __static__
 import fnmatch  # filename match
 import os
 import re
@@ -11,7 +12,6 @@ import shlex  # shell lexical analyzers
 import socket
 
 from typing import Dict, List
-import __static__
 
 SSH_PORT = 22
 

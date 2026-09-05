@@ -131,7 +131,7 @@ def solve(n, i_min, free, curr_board, pieces_left, fps, se_nh, solutions):
 
 SOLVE_ARG = 6000
 
-if __name__ == "__main__":
+def main():
     board, cti, pieces = get_puzzle()
     fps = get_footprints(board, cti, pieces)
     se_nh = get_senh(board, cti)
@@ -146,3 +146,6 @@ if __name__ == "__main__":
     end_time = time.time()
     runtime = end_time - start_time
     print(runtime)
+
+if __name__ == "__main__":
+    main()

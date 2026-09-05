@@ -52,7 +52,7 @@ def part_At_times_u(i_u: Tuple[float, List[float]]) -> float:
 
 DEFAULT_N = 130
 
-if __name__ == "__main__":
+def main():
     u = [1] * DEFAULT_N
 
     ## inside loop??
@@ -72,3 +72,6 @@ if __name__ == "__main__":
     endTime = time.time()
     runtime = endTime - startTime
     print(runtime)
+
+if __name__ == "__main__":
+    main()
