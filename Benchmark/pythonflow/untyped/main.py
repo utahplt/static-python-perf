@@ -31,7 +31,7 @@ class PythonFlow:
         # total flow which can be retrieved
         self.total_flow = 0
         # file name
-        self.file_name = str(Path(__file__).resolve().parent / "graph2.txt")
+        self.file_name = str(Path(__file__).resolve().parent / "graph.txt")
         self.options = []
         self.cost = []
 
