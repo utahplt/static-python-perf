@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import __static__
 from __static__ import inline
 import random
 import time
